@@ -1,9 +1,112 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".Register">
+    tools:context=".Register"
+    android:background="@color/colorPrimaryDark"
+    android:padding="30dp">
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize="12sp"
+        android:text="Email adres:"
+        android:id="@+id/txt_email"
+        />
+    <EditText
+        android:inputType="textEmailAddress"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:ems="10"
+        android:id="@+id/et_email"
+        android:layout_below="@id/txt_email"
+        />
+    <TextView
+        android:layout_below="@id/et_email"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize="12sp"
+        android:text="Voornaam:"
+        android:id="@+id/txt_firstname"
+        />
+    <EditText
+        android:inputType="textPersonName"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:ems="10"
+        android:id="@+id/et_firstname"
+        android:layout_below="@id/txt_firstname"
+        />
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize="12sp"
+        android:text="Achternaam:"
+        android:id="@+id/txt_lastname"
+        android:layout_below="@id/et_firstname"
+        />
+    <EditText
+        android:inputType="textPersonName"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:ems="10"
+        android:id="@+id/et_lastname"
+        android:layout_below="@id/txt_lastname"
+        />
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize="12sp"
+        android:text="Wachtwoord:"
+        android:id="@+id/txt_password"
+        android:layout_below="@id/et_lastname"
+        />
+    <EditText
+        android:inputType="textPassword"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:ems="10"
+        android:id="@+id/et_password"
+        android:layout_below="@id/txt_password"
+        />
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize="12sp"
+        android:text="Bevestig wachtwoord:"
+        android:id="@+id/txt_confirmPassword"
+        android:layout_below="@id/et_password"
+        />
+    <EditText
+        android:inputType="textPassword"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:ems="10"
+        android:id="@+id/et_confirmPassword"
+        android:layout_below="@id/txt_confirmPassword"
+        />
+    <Button
+        android:background="@drawable/btn_rounded_corner"
+        android:id="@+id/btn_register"
+        android:textSize="16sp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:enabled="true"
+        android:layout_below="@id/et_confirmPassword"
+        android:ems="10"
+        android:text="Registreren"
+        android:onClick="register"
+        />
+    <TextView
+        android:layout_marginTop="10dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/btn_register"
+        android:text="Klik om terug naar login te gaan"
+        android:id="@+id/toRegister"
+        android:onClick="toLogin"
+        />
+
+</RelativeLayout>

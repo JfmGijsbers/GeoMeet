@@ -1,6 +1,17 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="colorPrimary">#008577</color>
-    <color name="colorPrimaryDark">#00574B</color>
-    <color name="colorAccent">#D81B60</color>
+    <color name="colorPrimary">#7DAC71</color>
+    <color name="colorPrimaryDark">#C1BA7F</color> <!-- Green -->
+    <color name="colorAccent">#516997</color>
+
+    <color name="yellowLogo">#FFFF35</color>
+    <color name="greyBackground">#F5F5F5</color>
+
+    <!-- Color scheme -->
+    <color name="earthPurple">#786892</color>
+    <color name="earthGreen">#7DAC71</color>
+    <color name="earthYellow">#C1BA7F</color>
+    <color name="earthBrown">#A58A78</color>
+    <color name="earthRed">#95686B</color>
+    <color name="earthBlue">#516997</color>
 </resources>
