@@ -97,7 +97,6 @@
         android:layout_below="@id/et_confirmPassword"
         android:ems="10"
         android:text="Registreren"
-        android:onClick="register"
         />
     <TextView
         android:layout_marginTop="10dp"
@@ -106,7 +105,6 @@
         android:layout_below="@id/btn_register"
         android:text="Klik om terug naar login te gaan"
         android:id="@+id/toRegister"
-        android:onClick="toLogin"
         />
 
 </RelativeLayout>
