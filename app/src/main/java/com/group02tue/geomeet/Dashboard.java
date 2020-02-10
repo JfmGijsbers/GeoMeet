@@ -11,7 +11,8 @@ import android.widget.Toast;
 
 public class Dashboard extends AppCompatActivity {
 
-    String countryList[] = {"India", "China", "australia", "Portugle", "America", "NewZealand"};
+    String countryList[] = {"Sprint retrospection meeting", "Sprint planning", "Lucas' monologue",
+            "Sprint 2", "Borrel meeting", "Final sprint"};
     Integer[] imageId = {
             R.drawable.ic_launcher_foreground,
             R.drawable.ic_launcher_foreground,
