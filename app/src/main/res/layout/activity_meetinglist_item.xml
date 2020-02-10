@@ -28,12 +28,14 @@
         android:orientation="vertical" >
 
         <TextView
+            android:textSize="10sp"
             android:layout_marginTop="5dp"
             android:id="@+id/textView2"
             android:layout_width="wrap_content"
             android:layout_height="29dp"
             android:text="Attending: 0" />
         <TextView
+            android:textSize="10sp"
             android:id="@+id/textView3"
             android:layout_width="wrap_content"
             android:layout_height="29dp"
