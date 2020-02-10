@@ -8,7 +8,6 @@ import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import java.util.zip.Inflater;
 
 public class MeetinglistAdapter extends ArrayAdapter<String> {
     private final Activity context;
