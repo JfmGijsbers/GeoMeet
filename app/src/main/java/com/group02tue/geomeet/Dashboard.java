@@ -42,4 +42,9 @@ public class Dashboard extends AppCompatActivity {
 
 
     }
+
+    public void chat(View view) {
+        Toast.makeText(Dashboard.this, "Chat not implemented yet", Toast.LENGTH_SHORT)
+                .show();
+    }
 }
