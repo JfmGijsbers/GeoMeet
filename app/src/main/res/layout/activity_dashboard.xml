@@ -7,21 +7,9 @@
     android:background="@color/colorPrimaryDark"
     android:padding="20dp">
 
-
-    <ImageView
-        android:id="@+id/logo"
-        android:layout_width="192dp"
-        android:layout_height="192dp"
-        android:src="@drawable/ic_launcher_background"
-        android:elevation="10dp"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="20dp"
-        />
-
     <RelativeLayout
-        android:layout_below="@id/logo"
         android:layout_width="match_parent"
-        android:layout_height="100dp"
+        android:layout_height="200dp"
         android:id="@+id/newsArticles">
 
         <ListView
@@ -29,7 +17,6 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             />
-
     </RelativeLayout>
 
     <ScrollView
