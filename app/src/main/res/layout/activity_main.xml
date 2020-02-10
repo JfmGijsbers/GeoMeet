@@ -55,16 +55,34 @@
         android:ems="10"
         android:text="INLOGGEN"
         android:onClick="login"/>
-    <TextView
-        android:layout_marginTop="10dp"
-        android:layout_width="wrap_content"
+
+    <LinearLayout
+        android:id="@+id/keepLoggedIn"
+        android:layout_width="match_parent"
+        android:gravity="center"
         android:layout_height="wrap_content"
         android:layout_below="@id/btn_login"
-        android:text="Klik hier om te registreren"
-        android:layout_centerHorizontal="true"
+        android:orientation="horizontal"
+        >
+        <CheckBox
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            />
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Keep me logged in"
+            />
+    </LinearLayout>
+    <TextView
         android:id="@+id/toRegister"
+        android:layout_width="match_parent"
+        android:gravity="center"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/keepLoggedIn"
+        android:layout_marginTop="20dp"
         android:onClick="toRegister"
-        />
+        android:text="Register" />
 
 
 </RelativeLayout>
