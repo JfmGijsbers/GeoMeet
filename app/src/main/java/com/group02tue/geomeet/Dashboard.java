@@ -2,7 +2,11 @@ package com.group02tue.geomeet;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.Intent;
 import android.os.Bundle;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ListView;
@@ -40,12 +44,47 @@ public class Dashboard extends AppCompatActivity {
                         countryList[position], Toast.LENGTH_SHORT).show();
             }
         });
-
-
     }
+
 
     public void chat(View view) {
         Toast.makeText(Dashboard.this, "Chat not implemented yet", Toast.LENGTH_SHORT)
                 .show();
     }
+    /**
+     *  Create the options menu:
+     *  */
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        MenuInflater menuInflater = getMenuInflater();
+        menuInflater.inflate(R.menu.menu, menu);
+        return true;
+    }
+    /**
+     * Reacting to menu items getting clicked:
+     */
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.profile:
+                toProfile();
+                return true;
+            case R.id.settings:
+                toSettings();
+                return true;
+            default:
+                return super.onOptionsItemSelected(item);
+        }
+    }
+    /**
+     * Below this comment are all methods that simply refer the app to a different activity
+     */
+    private void toProfile() {
+        Intent profileIntent = new Intent(this, Profile.class);
+        startActivity(profileIntent);
+    }
+    private void toSettings() {
+        // TODO: add either activity or fragment
+    }
 }
+
