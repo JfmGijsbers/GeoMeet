@@ -1,2 +1,3 @@
 Hi, testing here
 met de hand
+maar nu vanuit de android studio
