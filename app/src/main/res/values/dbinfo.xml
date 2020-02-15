@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- Webtech database-->
+    <string name="file_url">http://group24webtech.nl/php/handleSQL.php</string>
+    <string name="db_host">localhost</string>
+    <string name="db_user">u22907p49188_webtechUS</string>
+    <string name="db_pass">Group24!kDjG</string>
+    <string name="db_name">u22907p49188_webtechDB</string>
+</resources>
