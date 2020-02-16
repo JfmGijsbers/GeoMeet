@@ -5,16 +5,16 @@ An app, in which people can arrange meetings, set a location, invite their frien
 
 Functionality:
 - Login / Register
-    x Valid email
+    o Valid email
     x Valid username
     x Valid password
-    x Password confirmation
+    o Password confirmation
         ALL EASILY DONE WITHIN ANDROID STUDIO VIA REGEX
 - Google Maps
     x See where my appointments are
     (x) See where my friends are?
 - Chat 
-    x Direct Messaging
+    ? Direct Messaging
     x Group messaging
 - Arrange meetings
     x See who are coming
@@ -22,3 +22,8 @@ Functionality:
     x Invite people
     x Set location
     x Set date/time
+- See and edit profile
+    o View profile
+    x Editing profile 
+    x Store in database
+    x Store changes in database

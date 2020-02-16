@@ -8,9 +8,8 @@
 
     <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="200dp"
+        android:layout_height="280dp"
         android:id="@+id/newsArticles">
-
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -19,15 +18,14 @@
             android:textSize="32sp"
             android:gravity="center"
             />
-
         <ListView
+            android:layout_marginTop="10dp"
             android:id="@+id/meetingListView"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_below="@id/titleUpcomingMeetings"
             />
     </RelativeLayout>
-
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -38,7 +36,6 @@
             android:layout_height="wrap_content"
             android:id="@+id/wrapper"
             android:orientation="vertical"
-            android:layout_marginTop="20dp"
             >
             <LinearLayout
                 android:layout_marginTop="20dp"
@@ -183,6 +180,4 @@
             </LinearLayout>
         </LinearLayout>
     </ScrollView>
-
-
 </RelativeLayout>
