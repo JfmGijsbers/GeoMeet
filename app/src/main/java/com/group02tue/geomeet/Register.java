@@ -28,8 +28,8 @@ public class Register extends AppCompatActivity {
         String email = String.valueOf(etEmail.getText());
         String pass = String.valueOf(etPass.getText());
         String pass2 = String.valueOf(etPass2.getText());
-        String firstname = String.valueOf(etFirstname.getText());
-        String lastname = String.valueOf(etLastname.getText());
+        String firstName = String.valueOf(etFirstname.getText());
+        String lastName = String.valueOf(etLastname.getText());
         etEmail.setError(null);
         etPass.setError(null);
         etPass2.setError(null);
@@ -45,6 +45,9 @@ public class Register extends AppCompatActivity {
         if (pass.equals("")) {
             etPass.setError("Please fill in a password");
             noMistake = false;
+        } else if (!validateInput(pass)) {
+            etPass.setError("Please don't use invalid characters (\\, \' etc)");
+            noMistake = false;
         }
         if (pass2.equals("")) {
             etPass2.setError("Please fill in a password");
@@ -52,13 +55,22 @@ public class Register extends AppCompatActivity {
         } else if (!pass.equals(pass2)) {
             etPass2.setError("Passwords do not match");
             noMistake = false;
-        }
-        if (firstname.equals("")) {
-            etFirstname.setError("Please fill in your first name");
+        } else if (!validateInput(pass2)) {
+            etPass.setError("Please don't use invalid characters (\\, \' etc)");
             noMistake = false;
         }
-        if (lastname.equals("")) {
+        if (firstName.equals("")) {
+            etFirstname.setError("Please fill in your first name");
+            noMistake = false;
+        } else if (!validateInput(firstName)) {
+            etPass.setError("Please don't use invalid characters (\\, \' etc)");
+            noMistake = false;
+        }
+        if (lastName.equals("")) {
             etLastname.setError("Please fill in your last name");
+            noMistake = false;
+        } else if (!validateInput(lastName)) {
+            etPass.setError("Please don't use invalid characters (\\, \' etc)");
             noMistake = false;
         }
         if (noMistake) {
@@ -66,13 +78,24 @@ public class Register extends AppCompatActivity {
             startActivity(intent);
         }
     }
+    /*
+    Input validation functions:
+     */
     public static boolean isEmailValid(String email) {
         String expression = "^[\\w\\.-]+@([\\w\\-]+\\.)+[A-Z]{2,4}$";
         Pattern pattern = Pattern.compile(expression, Pattern.CASE_INSENSITIVE);
         Matcher matcher = pattern.matcher(email);
         return matcher.matches();
     }
-
+    public static boolean validateInput(String input) {
+        String expression = "^[\\w\\s]+$";
+        Pattern pattern = Pattern.compile(expression, Pattern.CASE_INSENSITIVE);
+        Matcher matcher = pattern.matcher(input);
+        return matcher.matches();
+    }
+    /*
+    Functions for visiting other activities:
+     */
     public void toLogin(View view) {
         Intent intent = new Intent(this, MainActivity.class);
         startActivity(intent);
