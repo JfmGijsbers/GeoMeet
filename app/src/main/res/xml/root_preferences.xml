@@ -15,12 +15,7 @@
   -->
 
 <PreferenceScreen xmlns:app="http://schemas.android.com/apk/res-auto">
-
-    <!-- When there are a lot of different settings, they can be categorized into
-         Preference categories
-    -->
     <PreferenceCategory app:title="General settings">
-
         <EditTextPreference
             app:key="signature"
             app:title="@string/signature_title"
@@ -33,23 +28,18 @@
             app:key="colorScheme"
             app:title="Color scheme"
             app:useSimpleSummaryProvider="true" />
-
+        <Preference
+            app:title="Notifications"
+            app:fragment="com.group02tue.geomeet.NotificationsFragment"
+            />
     </PreferenceCategory>
-    <!--
-    <PreferenceCategory app:title="@string/sync_header">
-
-        <SwitchPreferenceCompat
-            app:key="sync"
-            app:title="@string/sync_title" />
-
-        <SwitchPreferenceCompat
-            app:dependency="sync"
-            app:key="attachment"
-            app:summaryOff="@string/attachment_summary_off"
-            app:summaryOn="@string/attachment_summary_on"
-            app:title="@string/attachment_title" />
-
+    <PreferenceCategory
+        app:key="help_category"
+        app:title="Help">
+        <Preference
+            app:key="feedback"
+            app:summary="Report technical issues or suggest new features"
+            app:title="Send feedback" />
     </PreferenceCategory>
-    -->
-
 </PreferenceScreen>
+
