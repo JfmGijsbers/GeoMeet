@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:android="http://schemas.android.com/apk/res/android">
+    <PreferenceCategory
+        app:title="Notification settings"
+        app:key="notification_category">
+        <SwitchPreference
+            app:key="all_notifications"
+            app:title="Notifications"
+            android:defaultValue="true"/>
+    </PreferenceCategory>
+    <PreferenceCategory
+        app:title="Specific notifications"
+        app:key="category_specific"
+        app:isPreferenceVisible="false">
+        <SwitchPreference
+            app:title="New message"
+            app:key="notification_newmessage"
+            app:isPreferenceVisible="false"
+            android:defaultValue="true"/>
+        <SwitchPreference
+            android:title="New meeting"
+            app:key="notification_newmeeting"
+            app:isPreferenceVisible="false"
+            android:defaultValue="true"/>
+        <SwitchPreference
+            app:title="New connection request"
+            app:key="notification_newconnection"
+            app:isPreferenceVisible="false"
+            android:defaultValue="true"/>
+    </PreferenceCategory>
+</PreferenceScreen>

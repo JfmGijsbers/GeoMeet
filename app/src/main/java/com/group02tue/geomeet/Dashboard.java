@@ -85,6 +85,8 @@ public class Dashboard extends AppCompatActivity {
     }
     private void toSettings() {
         // TODO: add either activity or fragment
+        Intent settingsIntent = new Intent(this, SettingsActivity.class);
+        startActivity(settingsIntent);
     }
 }
 
