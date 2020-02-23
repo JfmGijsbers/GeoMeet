@@ -6,4 +6,7 @@ public final class JSONKeys {
 
     public final static String USERNAME = "username";
     public final static String AUTHENTICATION_KEY = "authenticationKey";
+
+    public final static String CALL_OK = "ok";
+    public final static String CALL_FAIL = "fail";
 }

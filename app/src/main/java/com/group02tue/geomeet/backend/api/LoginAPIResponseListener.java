@@ -1,6 +1,6 @@
 package com.group02tue.geomeet.backend.api;
 
-public interface LoginAPIResponseHandler extends APIResponseHandler {
+public interface LoginAPIResponseListener extends APIResponseListener {
     /**
      * Successfully logged in.
      * @param authenticationKey Authentication key provided by the server

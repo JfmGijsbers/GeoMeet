@@ -1,27 +1,26 @@
 package com.group02tue.geomeet.backend.api;
 
-import com.group02tue.geomeet.backend.authentication.AuthenticationManager;
 import com.loopj.android.http.RequestParams;
 
 import org.json.JSONException;
 import org.json.JSONObject;
 
 public class LoginAPICall extends AbstractAPICall {
-    private final static String LOGIN_CALL_URL = BASE_URL + "/test/test.php";
+    private final static String LOGIN_CALL_URL = BASE_URL + "/api/login.php";
     private final String username;
-    private final String password;
+    private final String key;       // Can be password or authentication key
 
-    public LoginAPICall(LoginAPIResponseHandler responseHandler, String username, String password) {
-        super(LOGIN_CALL_URL, responseHandler);
+    public LoginAPICall(LoginAPIResponseListener responseListener, String username, String key) {
+        super(LOGIN_CALL_URL, responseListener);
         this.username = username;
-        this.password = password;
+        this.key = key;
     }
 
     @Override
     protected RequestParams generateParams() {
         RequestParams params = new RequestParams();
         params.add(ParamKeys.USERNAME, username);
-        params.add(ParamKeys.PASSWORD, password);
+        params.add(ParamKeys.PASSWORD, key);
         return params;
     }
 
@@ -30,9 +29,9 @@ public class LoginAPICall extends AbstractAPICall {
         if (response.has(JSONKeys.USERNAME) && response.has(JSONKeys.AUTHENTICATION_KEY)
                 && response.getString(JSONKeys.USERNAME).equals(username)) {
             String authenticationKey = response.getString(JSONKeys.AUTHENTICATION_KEY);
-            ((LoginAPIResponseHandler)responseHandler).onSuccess(authenticationKey);
+            ((LoginAPIResponseListener)responseListener).onSuccess(authenticationKey);
         } else {
-            responseHandler.onFailure(APIFailureReason.INVALID_OUTPUT);
+            responseListener.onFailure(APIFailureReason.INVALID_OUTPUT);
         }
     }
 }

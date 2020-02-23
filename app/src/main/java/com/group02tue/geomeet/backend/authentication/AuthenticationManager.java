@@ -8,7 +8,7 @@ import androidx.preference.PreferenceManager;
 import com.group02tue.geomeet.backend.api.APIFailureReason;
 import com.group02tue.geomeet.backend.api.AbstractAuthorizedAPICall;
 import com.group02tue.geomeet.backend.api.LoginAPICall;
-import com.group02tue.geomeet.backend.api.LoginAPIResponseHandler;
+import com.group02tue.geomeet.backend.api.LoginAPIResponseListener;
 
 public class AuthenticationManager {
     private final SharedPreferences preferences;
@@ -28,7 +28,7 @@ public class AuthenticationManager {
      * Tries to login using the credentials in memory.
      * @param responseHandler Handler for response
      */
-    public void login(final AuthenticationEventHandler responseHandler) {
+    public void login(final AuthenticationEventListener responseHandler) {
         login(username, authenticationKey, responseHandler);
     }
 
@@ -36,20 +36,20 @@ public class AuthenticationManager {
      * Tries to login. Saves the username and authentication key on disk if login is successful.
      * @param username Username
      * @param key Password or authentication key
-     * @param eventHandler Handler for authentication events
+     * @param eventListener Handler for authentication events
      */
-    public void login(final String username, String key, final AuthenticationEventHandler eventHandler) {
+    public void login(final String username, String key, final AuthenticationEventListener eventListener) {
         setUsername(username);
-        LoginAPICall apiCall = new LoginAPICall(new LoginAPIResponseHandler() {
+        LoginAPICall apiCall = new LoginAPICall(new LoginAPIResponseListener() {
             @Override
             public void onSuccess(String authenticationKey) {
                 setAuthenticationKey(authenticationKey);
-                eventHandler.onSuccess();
+                eventListener.onSuccess();
             }
 
             @Override
             public void onFailure(APIFailureReason response) {
-                eventHandler.onFailure();
+                eventListener.onFailure();
             }
         }, username, key);
         apiCall.execute();
@@ -102,5 +102,13 @@ public class AuthenticationManager {
      */
     public void addAuthenticationInfoToCall(AbstractAuthorizedAPICall call) {
         call.addAuthenticationInfo(username, authenticationKey);
+    }
+
+    /**
+     * Gets the username of the current logged in user.
+     * @return Username or empty if no user logged in.
+     */
+    public String getUsername() {
+        return username;
     }
 }

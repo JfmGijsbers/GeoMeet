@@ -7,8 +7,8 @@ public abstract class AbstractAuthorizedAPICall extends AbstractAPICall {
     private String username = "";
     private String authenticationKey = "";
 
-    public AbstractAuthorizedAPICall(AuthenticationManager authenticationManager, String url, APIResponseHandler responseHandler) {
-        super(url, responseHandler);
+    public AbstractAuthorizedAPICall(AuthenticationManager authenticationManager, String url, APIResponseListener responseListener) {
+        super(url, responseListener);
         authenticationManager.addAuthenticationInfoToCall(this);
     }
 

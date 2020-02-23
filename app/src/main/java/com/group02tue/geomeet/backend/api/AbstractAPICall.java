@@ -14,17 +14,17 @@ public abstract class AbstractAPICall extends JsonHttpResponseHandler {
 
     protected final static String BASE_URL = "http://test.com";     // Base URL of the API
     private final String url;                                       // URL of API
-    protected final APIResponseHandler responseHandler;             // Handler for failure handling
+    protected final APIResponseListener responseListener;             // Handler for failure handling
 
 
     /**
      * Constructor
      * @param url URL of the API
-     * @param responseHandler Handler for failure handling
+     * @param responseListener Handler for failure handling
      */
-    public AbstractAPICall(String url, APIResponseHandler responseHandler) {
+    public AbstractAPICall(String url, APIResponseListener responseListener) {
         this.url = url;
-        this.responseHandler = responseHandler;
+        this.responseListener = responseListener;
     }
     /**
      * Executes the call.
@@ -57,14 +57,14 @@ public abstract class AbstractAPICall extends JsonHttpResponseHandler {
     public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
         try {
             if (response.has(JSONKeys.INVALID_INPUT)) {
-                responseHandler.onFailure(APIFailureReason.INVALID_INPUT);
+                responseListener.onFailure(APIFailureReason.INVALID_INPUT);
             } else if (response.has(JSONKeys.UNAUTHORIZED)) {
-                responseHandler.onFailure(APIFailureReason.UNAUTHORIZED);
+                responseListener.onFailure(APIFailureReason.UNAUTHORIZED);
             } else {
                 processResponse(response);
             }
         } catch (JSONException e) {
-            responseHandler.onFailure(APIFailureReason.INVALID_OUTPUT);
+            responseListener.onFailure(APIFailureReason.INVALID_OUTPUT);
         }
     }
 
@@ -73,7 +73,7 @@ public abstract class AbstractAPICall extends JsonHttpResponseHandler {
      */
     @Override
     public void onFailure(int statusCode, Header[] headers, Throwable throwable, JSONObject response) {
-        responseHandler.onFailure(APIFailureReason.NO_CONNECTION);
+        responseListener.onFailure(APIFailureReason.NO_CONNECTION);
     }
 
     /**
