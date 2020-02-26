@@ -9,4 +9,6 @@ public final class JSONKeys {
 
     public final static String CALL_OK = "ok";
     public final static String CALL_FAIL = "fail";
+
+    public final static String MESSAGES = "messages";
 }

@@ -6,7 +6,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 public class LoginAPICall extends AbstractAPICall {
-    private final static String LOGIN_CALL_URL = BASE_URL + "/api/login.php";
+    private final static String LOGIN_CALL_URL = BASE_URL + "/php/SQLfiles/webtech.login.php";
     private final String username;
     private final String key;       // Can be password or authentication key
 
@@ -29,7 +29,7 @@ public class LoginAPICall extends AbstractAPICall {
         if (response.has(JSONKeys.USERNAME) && response.has(JSONKeys.AUTHENTICATION_KEY)
                 && response.getString(JSONKeys.USERNAME).equals(username)) {
             String authenticationKey = response.getString(JSONKeys.AUTHENTICATION_KEY);
-            ((LoginAPIResponseListener)responseListener).onSuccess(authenticationKey);
+            ((LoginAPIResponseListener)responseListener).onLoggedIn(authenticationKey);
         } else {
             responseListener.onFailure(APIFailureReason.INVALID_OUTPUT);
         }

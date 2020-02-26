@@ -4,6 +4,9 @@ import com.google.gson.TypeAdapter;
 import com.google.gson.stream.JsonReader;
 import com.google.gson.stream.JsonWriter;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import java.io.IOException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -11,10 +14,10 @@ import java.util.Date;
 import java.util.UUID;
 
 public class ChatMessageAdapter extends TypeAdapter<ChatMessage> {
-    public final static SimpleDateFormat DATE_FORMAT = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'");
+    public final static SimpleDateFormat DATE_FORMAT = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 
     /**
-     * Convert object into Json.
+     * Convert chat message into Json using gson. To be used for local storage.
      * @param writer Writer
      * @param value Object to convert
      * @throws IOException Failure in conversion process
@@ -25,7 +28,7 @@ public class ChatMessageAdapter extends TypeAdapter<ChatMessage> {
     }
 
     /**
-     * Convert Json into object.
+     * Convert json into chat message using gson. To be used for local storage.
      * @param in Reader
      * @return New Json object
      * @throws IOException Failure occurred while reading/processing the Json
@@ -68,6 +71,30 @@ public class ChatMessageAdapter extends TypeAdapter<ChatMessage> {
             return new ChatMessage(id, sender, receiver, content, moment, isSent);
         } else {
             throw new IOException("Invalid ChatMessage Json detected");
+        }
+    }
+
+    /**
+     * Convert a JSONObject into a chat message. To be used for server communication.
+     * @param jsonObject Object to convert
+     * @return Chat
+     * @throws JSONException Failed to parse the date
+     */
+    public static ChatMessage read(JSONObject jsonObject) throws JSONException {
+        if (jsonObject.has("sender") && jsonObject.has("receiver") && jsonObject.has("id")
+        && jsonObject.has("content") && jsonObject.has("moment")) {
+            try {
+                return new ChatMessage(UUID.fromString(jsonObject.getString("id")),
+                        jsonObject.getString("sender"),
+                        jsonObject.getString("receiver"),
+                        jsonObject.getString("content"),
+                        DATE_FORMAT.parse(jsonObject.getString("moment")),
+                        true);
+            } catch (ParseException e) {
+                return null;
+            }
+        } else {
+            return null;
         }
     }
 }

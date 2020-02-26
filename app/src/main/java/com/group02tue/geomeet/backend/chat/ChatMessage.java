@@ -1,5 +1,7 @@
 package com.group02tue.geomeet.backend.chat;
 
+import android.util.Log;
+
 import com.google.gson.annotations.JsonAdapter;
 import com.google.gson.stream.JsonWriter;
 import com.group02tue.geomeet.backend.api.APIFailureReason;
@@ -54,6 +56,10 @@ public class ChatMessage {
         this.moment = moment;
     }
 
+    public UUID getId() {
+        return id;
+    }
+
     /**
      * Tries to send the message to the server.
      * @param authenticationManager Authentication manager
@@ -82,15 +88,13 @@ public class ChatMessage {
             @Override
             public void onFailure(APIFailureReason response) {
                 isBeingSent = false;
-                if (response != APIFailureReason.NO_CONNECTION) {
-                    responseListener.onFailure(response);
-                }
+                responseListener.onFailure(response);
             }
-        }, receiver, content).execute();
+        }, receiver, content, id, moment).execute();
     }
 
     /**
-     * Serialize this message using a JsonWriter.
+     * Serializes this message using a JsonWriter. To be used for data storage (gson).
      * @param writer Writer to use
      * @throws IOException Incorrect Json data
      */
