@@ -96,7 +96,6 @@ public class ChatManager extends ObservableManager<ChatEventListener> {
 
             @Override
             public void onFailure(final String reason) {
-
                 notifyListeners(new Consumer<ChatEventListener>() {
                     @Override
                     public void accept(ChatEventListener listener) {

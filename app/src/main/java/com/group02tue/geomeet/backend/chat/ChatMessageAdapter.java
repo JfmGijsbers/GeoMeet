@@ -3,6 +3,7 @@ package com.group02tue.geomeet.backend.chat;
 import com.google.gson.TypeAdapter;
 import com.google.gson.stream.JsonReader;
 import com.google.gson.stream.JsonWriter;
+import com.group02tue.geomeet.MainApplication;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -14,7 +15,7 @@ import java.util.Date;
 import java.util.UUID;
 
 public class ChatMessageAdapter extends TypeAdapter<ChatMessage> {
-    public final static SimpleDateFormat DATE_FORMAT = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+
 
     /**
      * Convert chat message into Json using gson. To be used for local storage.
@@ -57,7 +58,7 @@ public class ChatMessageAdapter extends TypeAdapter<ChatMessage> {
                 isSent = in.nextBoolean();
             } else if (name.equals("moment")) {
                 try {
-                    moment = DATE_FORMAT.parse(in.nextString());
+                    moment = MainApplication.DATE_FORMAT.parse(in.nextString());
                 } catch (ParseException e) {
                     throw new IOException("Failed to load date.");
                 }
@@ -88,7 +89,7 @@ public class ChatMessageAdapter extends TypeAdapter<ChatMessage> {
                         jsonObject.getString("sender"),
                         jsonObject.getString("receiver"),
                         jsonObject.getString("content"),
-                        DATE_FORMAT.parse(jsonObject.getString("moment")),
+                        MainApplication.DATE_FORMAT.parse(jsonObject.getString("moment")),
                         true);
             } catch (ParseException e) {
                 return null;

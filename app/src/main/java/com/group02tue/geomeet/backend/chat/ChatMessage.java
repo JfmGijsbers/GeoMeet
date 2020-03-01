@@ -4,6 +4,7 @@ import android.util.Log;
 
 import com.google.gson.annotations.JsonAdapter;
 import com.google.gson.stream.JsonWriter;
+import com.group02tue.geomeet.MainApplication;
 import com.group02tue.geomeet.backend.api.APIFailureReason;
 import com.group02tue.geomeet.backend.api.BooleanAPIResponseListener;
 import com.group02tue.geomeet.backend.api.SendChatMessageAPICall;
@@ -105,7 +106,7 @@ public class ChatMessage {
         writer.name("sender").value(sender);
         writer.name("content").value(content);
         writer.name("isSent").value(isSent);
-        writer.name("moment").value(ChatMessageAdapter.DATE_FORMAT.format(moment));
+        writer.name("moment").value(MainApplication.DATE_FORMAT.format(moment));
         writer.endObject();
     }
 }

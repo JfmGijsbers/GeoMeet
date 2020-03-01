@@ -19,7 +19,7 @@ public class BackendTest implements AuthenticationEventListener, ChatEventListen
     public BackendTest(MainApplication application) {
         authenticationManager = application.getAuthenticationManager();
         chatManager = application.getChatManager();
-        userProfile = application.getUserProfile();
+        userProfile = application.getInternalUserProfile();
     }
 
     public void start() {
