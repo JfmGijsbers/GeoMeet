@@ -1,5 +1,6 @@
-package com.group02tue.geomeet.backend.api;
+package com.group02tue.geomeet.backend.api.chat;
 
+import com.group02tue.geomeet.backend.api.APIResponseListener;
 import com.group02tue.geomeet.backend.chat.ChatMessage;
 
 import java.util.ArrayList;

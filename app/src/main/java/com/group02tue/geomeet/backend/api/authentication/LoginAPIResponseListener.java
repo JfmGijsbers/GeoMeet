@@ -1,4 +1,6 @@
-package com.group02tue.geomeet.backend.api;
+package com.group02tue.geomeet.backend.api.authentication;
+
+import com.group02tue.geomeet.backend.api.APIResponseListener;
 
 public interface LoginAPIResponseListener extends APIResponseListener {
     /**

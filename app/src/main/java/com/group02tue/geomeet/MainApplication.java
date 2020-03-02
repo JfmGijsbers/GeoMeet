@@ -16,6 +16,7 @@ public class MainApplication extends Application {
     private AuthenticationManager authenticationManager;
     private ChatManager chatManager;
     private InternalUserProfile internalUserProfile;
+    private InternalUserProfile.ProfileManager profileManager;
 
     @Override
     public void onCreate() {
@@ -23,6 +24,7 @@ public class MainApplication extends Application {
         authenticationManager = new AuthenticationManager(getApplicationContext());
         chatManager = new ChatManager(getApplicationContext(), authenticationManager);
         internalUserProfile = new InternalUserProfile(getApplicationContext(), authenticationManager);
+        profileManager = internalUserProfile.new ProfileManager();
 
         // NOTE: part below is for testing
         BackendTest test = new BackendTest(this);
@@ -35,11 +37,17 @@ public class MainApplication extends Application {
     public ChatManager getChatManager() {
         return chatManager;
     }
-    public InternalUserProfile getInternalUserProfile() { return internalUserProfile; }
+    public InternalUserProfile getInternalUserProfile() {
+        return internalUserProfile;
+    }
+    public InternalUserProfile.ProfileManager getProfileManager() {
+        return profileManager;
+    }
+
 
     public void reset() {
         authenticationManager.reset();
         chatManager.reset();
-        internalUserProfile.reset();
+        profileManager.resetLocal();
     }
 }

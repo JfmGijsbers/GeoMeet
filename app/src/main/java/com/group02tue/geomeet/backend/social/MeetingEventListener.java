@@ -4,8 +4,34 @@ import java.util.EventListener;
 import java.util.UUID;
 
 public interface MeetingEventListener extends EventListener {
-    void onNewMeetingAvailable(UUID id);
-    void onMeetingRemoved(UUID id);
-    void onMeetingUpdated(UUID id);
+    /**
+     * Successfully removed a meeting.
+     * @param id Id of meeting removed
+     */
+    void onRemovedMeeting(UUID id);
 
+    /**
+     * Successfully joined a meeting.
+     * @param id Id of joined meeting
+     */
+    void onJoinedMeeting(UUID id);
+
+    /**
+     * Successfully created a meeting.
+     * @param id Id of created meeting
+     */
+    void onCreatedMeeting(UUID id);
+
+    /**
+     * Failed to process a call.
+     * @param id Id to which the call was related
+     * @param reason Reason for failing
+     */
+    void onFailure(UUID id, String reason);
+
+    /**
+     * Received an update for a meeting.
+     * @param meeting Newly received meeting
+     */
+    void onMeetingUpdatedReceived(Meeting meeting);
 }

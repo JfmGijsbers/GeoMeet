@@ -1,7 +1,10 @@
-package com.group02tue.geomeet.backend.api;
+package com.group02tue.geomeet.backend.api.chat;
 
+import com.group02tue.geomeet.MainApplication;
+import com.group02tue.geomeet.backend.api.AbstractCommandingAPICall;
+import com.group02tue.geomeet.backend.api.BooleanAPIResponseListener;
+import com.group02tue.geomeet.backend.api.ParamKeys;
 import com.group02tue.geomeet.backend.authentication.AuthenticationManager;
-import com.group02tue.geomeet.backend.chat.ChatMessage;
 import com.group02tue.geomeet.backend.chat.ChatMessageAdapter;
 import com.loopj.android.http.RequestParams;
 
@@ -29,10 +32,10 @@ public class SendChatMessageAPICall extends AbstractCommandingAPICall {
     @Override
     protected RequestParams generateParams() {
         RequestParams params = new RequestParams();
-        params.add(ParamKeys.CHAT_MESSAGE_RECEIVER, receiver);
-        params.add(ParamKeys.CHAT_MESSAGE_CONTENT, content);
-        params.add(ParamKeys.CHAT_MESSAGE_ID, id.toString());
-        params.add(ParamKeys.CHAT_MESSAGE_MOMENT, ChatMessageAdapter.DATE_FORMAT.format(moment));
+        params.add(ParamKeys.RECEIVER, receiver);
+        params.add(ParamKeys.MESSAGE, content);
+        params.add(ParamKeys.ID, id.toString());
+        params.add(ParamKeys.MOMENT, MainApplication.DATE_FORMAT.format(moment));
         return params;
     }
 }

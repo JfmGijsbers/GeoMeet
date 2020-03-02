@@ -1,6 +1,7 @@
 package com.group02tue.geomeet.backend.api;
 
 import com.group02tue.geomeet.backend.authentication.AuthenticationManager;
+import com.loopj.android.http.RequestParams;
 
 import org.json.JSONException;
 import org.json.JSONObject;

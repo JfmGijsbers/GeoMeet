@@ -8,6 +8,12 @@ import com.google.gson.annotations.JsonAdapter;
 import com.google.gson.stream.JsonWriter;
 import com.group02tue.geomeet.MainApplication;
 import com.group02tue.geomeet.backend.Location2D;
+import com.group02tue.geomeet.backend.api.APIFailureReason;
+import com.group02tue.geomeet.backend.api.BooleanAPIResponseListener;
+import com.group02tue.geomeet.backend.api.meetings.CreateMeetingAPICall;
+import com.group02tue.geomeet.backend.api.meetings.InviteUserToMeetingAPICall;
+import com.group02tue.geomeet.backend.api.meetings.RemoveUserFromMeetingAPICall;
+import com.group02tue.geomeet.backend.api.meetings.UpdateMeetingAPICall;
 import com.group02tue.geomeet.backend.authentication.AuthenticationManager;
 
 import java.io.IOError;
@@ -27,47 +33,103 @@ public class Meeting {
     private Date moment;
     private Location2D location;
     private final Set<String> members;
+    private final String adminUsername;
 
-    public Meeting(String name, String description, Date moment, Location2D location) {
+    public Meeting(String name, String description, Date moment, Location2D location, String adminUsername) {
         id = UUID.randomUUID();
         this.name = name;
         this.description = description;
         this.moment = moment;
         this.location = location;
+        this.adminUsername = adminUsername;
         members = new HashSet<>();
     }
 
-    public Meeting(UUID id, String name, String description, Date moment, Location2D location, Set<String> members) {
+    public Meeting(UUID id, String name, String description, Date moment, Location2D location, String adminUsername, Set<String> members) {
         this.id = id;
         this.name = name;
         this.description = description;
         this.moment = moment;
         this.location = location;
         this.members = members;
+        this.adminUsername = adminUsername;
     }
 
     public UUID getId() {
         return id;
     }
+    public String getName() {return name; }
+    public String getDescription() { return description; }
+    public Date getMoment() { return moment; }
+    public Location2D getLocation() { return location; }
 
-    public void inviteUser(String username, Runnable saveAction, AuthenticationManager authenticationManager) {
-        synchronized (members) {
-            members.add(username);
-            saveAction.run();
-            // TODO: sync
-        }
-    }
 
-    public void removeUser(String username, Runnable saveAction, AuthenticationManager authenticationManager) {
-        synchronized (members) {
-            if (isMember(username)) {
-                members.remove(username);
-                saveAction.run();
-                // TODO: sync
+
+    /**
+     * Invites a new user to the meeting. Only executable by the admin of the meeting.
+     * @param username Username to invite
+     * @param authenticationManager Authentication manager
+     * @param responseListener Listener for responses
+     */
+    public void inviteUser(final String username, AuthenticationManager authenticationManager,
+                           final BooleanAPIResponseListener responseListener) {
+        new InviteUserToMeetingAPICall(authenticationManager, new BooleanAPIResponseListener() {
+            @Override
+            public void onSuccess() {
+                synchronized (members) {
+                    members.add(username);
+                }
+                responseListener.onSuccess();
             }
-        }
+
+            @Override
+            public void onFailure(String reason) {
+                responseListener.onFailure(reason);
+            }
+
+            @Override
+            public void onFailure(APIFailureReason response) {
+                responseListener.onFailure(response);
+            }
+        }, id, username).execute();
     }
 
+    /**
+     * Removes a user from a meeting. Only executable by the admin of the meeting.
+     * @param username Username to invite
+     * @param authenticationManager Authentication manager
+     * @param responseListener Listener for responses
+     */
+    public void removeUser(final String username, AuthenticationManager authenticationManager,
+                           final BooleanAPIResponseListener responseListener) {
+        new RemoveUserFromMeetingAPICall(authenticationManager, new BooleanAPIResponseListener() {
+            @Override
+            public void onSuccess() {
+                synchronized (members) {
+                    if (isMember(username)) {
+                        members.remove(username);
+                    }
+                }
+                responseListener.onSuccess();
+            }
+
+            @Override
+            public void onFailure(String reason) {
+                responseListener.onFailure(reason);
+            }
+
+            @Override
+            public void onFailure(APIFailureReason response) {
+                responseListener.onFailure(response);
+            }
+        }, id, username).execute();
+    }
+
+    /**
+     * Checks if a certain user a member of the meeting.
+     * @param username Username to check
+     * @return Is a member?
+     */
     public boolean isMember(String username) {
         synchronized (members) {
             return members.contains(username);
@@ -87,6 +149,7 @@ public class Meeting {
         writer.name(MeetingAdapter.ID_KEY).value(id.toString());
         writer.name(MeetingAdapter.LOCATION_KEY).value(location.toString());
         writer.name(MeetingAdapter.MOMENT_KEY).value(MainApplication.DATE_FORMAT.format(moment));
+        writer.name(MeetingAdapter.ADMIN_USERNAME_KEY).value(adminUsername);
         writer.endObject();
     }
 }

@@ -2,8 +2,6 @@ package com.group02tue.geomeet.backend.chat;
 
 import android.content.Context;
 import android.content.SharedPreferences;
-import android.util.Log;
-import android.widget.ArrayAdapter;
 
 import androidx.core.util.Consumer;
 import androidx.preference.PreferenceManager;
@@ -13,14 +11,13 @@ import com.google.gson.reflect.TypeToken;
 import com.group02tue.geomeet.backend.ObservableManager;
 import com.group02tue.geomeet.backend.api.APIFailureReason;
 import com.group02tue.geomeet.backend.api.BooleanAPIResponseListener;
-import com.group02tue.geomeet.backend.api.ReceiveChatMessageAPICall;
-import com.group02tue.geomeet.backend.api.ReceiveChatMessageAPIResponseListener;
+import com.group02tue.geomeet.backend.api.chat.ReceiveChatMessageAPICall;
+import com.group02tue.geomeet.backend.api.chat.ReceiveChatMessageAPIResponseListener;
 import com.group02tue.geomeet.backend.authentication.AuthenticationManager;
 
 import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 

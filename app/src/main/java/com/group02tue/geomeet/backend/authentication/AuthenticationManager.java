@@ -6,14 +6,13 @@ import android.content.SharedPreferences;
 import androidx.core.util.Consumer;
 import androidx.preference.PreferenceManager;
 
-import com.group02tue.geomeet.Profile;
 import com.group02tue.geomeet.backend.ObservableManager;
 import com.group02tue.geomeet.backend.api.APIFailureReason;
 import com.group02tue.geomeet.backend.api.AbstractAuthorizedAPICall;
-import com.group02tue.geomeet.backend.api.LoginAPICall;
-import com.group02tue.geomeet.backend.api.LoginAPIResponseListener;
-import com.group02tue.geomeet.backend.api.RegisterAPICall;
-import com.group02tue.geomeet.backend.api.RegisterAPIResponseListener;
+import com.group02tue.geomeet.backend.api.authentication.LoginAPICall;
+import com.group02tue.geomeet.backend.api.authentication.LoginAPIResponseListener;
+import com.group02tue.geomeet.backend.api.authentication.RegisterAPICall;
+import com.group02tue.geomeet.backend.api.authentication.RegisterAPIResponseListener;
 import com.group02tue.geomeet.backend.social.UserProfile;
 
 public class AuthenticationManager extends ObservableManager<AuthenticationEventListener> {

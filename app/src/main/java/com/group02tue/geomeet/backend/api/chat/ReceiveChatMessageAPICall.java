@@ -1,5 +1,8 @@
-package com.group02tue.geomeet.backend.api;
+package com.group02tue.geomeet.backend.api.chat;
 
+import com.group02tue.geomeet.backend.api.APIFailureReason;
+import com.group02tue.geomeet.backend.api.AbstractAuthorizedAPICall;
+import com.group02tue.geomeet.backend.api.JSONKeys;
 import com.group02tue.geomeet.backend.authentication.AuthenticationManager;
 import com.group02tue.geomeet.backend.chat.ChatMessage;
 import com.group02tue.geomeet.backend.chat.ChatMessageAdapter;

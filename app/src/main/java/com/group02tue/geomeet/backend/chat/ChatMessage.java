@@ -1,13 +1,11 @@
 package com.group02tue.geomeet.backend.chat;
 
-import android.util.Log;
-
 import com.google.gson.annotations.JsonAdapter;
 import com.google.gson.stream.JsonWriter;
 import com.group02tue.geomeet.MainApplication;
 import com.group02tue.geomeet.backend.api.APIFailureReason;
 import com.group02tue.geomeet.backend.api.BooleanAPIResponseListener;
-import com.group02tue.geomeet.backend.api.SendChatMessageAPICall;
+import com.group02tue.geomeet.backend.api.chat.SendChatMessageAPICall;
 import com.group02tue.geomeet.backend.authentication.AuthenticationManager;
 
 import java.io.IOException;

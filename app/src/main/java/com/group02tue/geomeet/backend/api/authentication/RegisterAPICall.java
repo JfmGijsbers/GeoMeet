@@ -1,5 +1,9 @@
-package com.group02tue.geomeet.backend.api;
+package com.group02tue.geomeet.backend.api.authentication;
 
+import com.group02tue.geomeet.backend.api.APIFailureReason;
+import com.group02tue.geomeet.backend.api.AbstractAPICall;
+import com.group02tue.geomeet.backend.api.JSONKeys;
+import com.group02tue.geomeet.backend.api.ParamKeys;
 import com.loopj.android.http.RequestParams;
 
 import org.json.JSONException;

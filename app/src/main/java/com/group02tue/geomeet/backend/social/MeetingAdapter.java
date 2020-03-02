@@ -25,6 +25,7 @@ public class MeetingAdapter extends TypeAdapter<Meeting> {
     public final static String MOMENT_KEY = "moment";
     public final static String MEMBERS_KEY = "members";
     public final static String DESCRIPTION_KEY = "description";
+    public final static String ADMIN_USERNAME_KEY = "adminUsername";
 
 
     @Override
@@ -40,6 +41,7 @@ public class MeetingAdapter extends TypeAdapter<Meeting> {
         String description = null;
         Date moment = null;
         Set<String> members = null;
+        String adminUsername = null;
 
         in.beginObject();
         while (in.hasNext()) {
@@ -63,8 +65,11 @@ public class MeetingAdapter extends TypeAdapter<Meeting> {
             } else if (name.equals(DESCRIPTION_KEY)) {
                 description = in.nextString();
             } else if (name.equals(MEMBERS_KEY)) {
-                Type setType = new TypeToken<HashSet<String>>(){}.getType();
+                Type setType = new TypeToken<HashSet<String>>() {
+                }.getType();
                 members = new Gson().fromJson(in.nextString(), setType);
+            } else if (name.equals(ADMIN_USERNAME_KEY)) {
+                adminUsername = in.nextString();
             } else {
                 in.skipValue();
             }
@@ -72,8 +77,8 @@ public class MeetingAdapter extends TypeAdapter<Meeting> {
         in.endObject();
 
         if (location != null && id != null && meetingName != null && description != null &&
-            moment != null && members != null) {
-            return new Meeting(id, meetingName, description, moment, location, members);
+            moment != null && members != null && adminUsername != null) {
+            return new Meeting(id, meetingName, description, moment, location, adminUsername, members);
         } else {
             throw new IOException("Invalid meeting Json detected");
         }
