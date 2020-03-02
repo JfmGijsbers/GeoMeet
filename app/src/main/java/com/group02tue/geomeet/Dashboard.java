@@ -1,8 +1,10 @@
 package com.group02tue.geomeet;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.preference.PreferenceManager;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -28,8 +30,20 @@ public class Dashboard extends AppCompatActivity {
     ListView list;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(this);
+        String userTheme = preferences.getString("colorScheme", "darkab");
+        if (userTheme.equals("earth"))
+            setTheme(R.style.AppTheme);
+        else if (userTheme.equals("light"))
+            setTheme(R.style.light);
+        else if (userTheme.equals("dark"))
+            setTheme(R.style.dark);
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_dashboard);
+
+
+        //super.onCreate(savedInstanceState);
+        //setContentView(R.layout.activity_dashboard);
 
         MeetinglistAdapter listAdapter = new MeetinglistAdapter(Dashboard.this,
                 countryList, imageId);
@@ -87,6 +101,11 @@ public class Dashboard extends AppCompatActivity {
         // TODO: add either activity or fragment
         Intent settingsIntent = new Intent(this, SettingsActivity.class);
         startActivity(settingsIntent);
+    }
+
+    public void toAllMeetings(View view) {
+        Intent meetingOverviewIntent = new Intent(this, MeetingsOverview.class);
+        startActivity(meetingOverviewIntent);
     }
 }
 

@@ -22,9 +22,18 @@
             android:layout_marginTop="10dp"
             android:id="@+id/meetingListView"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
+            android:layout_height="200dp"
             android:layout_below="@id/titleUpcomingMeetings"
             />
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="View all meetings"
+            android:gravity="end"
+            android:onClick="toAllMeetings"
+            android:layout_below="@id/meetingListView"
+            />
+
     </RelativeLayout>
     <ScrollView
         android:layout_width="match_parent"
@@ -79,7 +88,7 @@
                     <TextView
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:text="Friend list"
+                        android:text="My connections"
                         android:gravity="center"
                         />
                 </LinearLayout>
@@ -107,53 +116,6 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:text="My profile"
-                        android:gravity="center"
-                        />
-
-                </LinearLayout>
-                <LinearLayout
-                    android:padding="30dp"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:orientation="vertical"
-                    >
-                    <ImageView
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:src="@drawable/baseline_feedback_black_18dp"
-                        />
-                    <TextView
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:text="Feedback"
-                        android:gravity="center"
-                        />
-                </LinearLayout>
-            </LinearLayout>
-            <LinearLayout
-                android:layout_marginTop="20dp"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                android:id="@+id/itemRow4"
-                >
-                <LinearLayout
-                    android:padding="30dp"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:orientation="vertical"
-                    >
-                    <ImageView
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:src="@drawable/baseline_search_black_18dp"
-                        />
-                    <TextView
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:text="Search"
                         android:gravity="center"
                         />
 
