@@ -12,7 +12,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textSize="12sp"
-        android:text="Email adres:"
+        android:text="Email address:"
         android:id="@+id/txt_email"
         />
     <EditText
@@ -28,7 +28,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textSize="12sp"
-        android:text="Voornaam:"
+        android:text="First name:"
         android:id="@+id/txt_firstname"
         />
     <EditText
@@ -43,7 +43,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textSize="12sp"
-        android:text="Achternaam:"
+        android:text="Last name:"
         android:id="@+id/txt_lastname"
         android:layout_below="@id/et_firstname"
         />
@@ -59,7 +59,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textSize="12sp"
-        android:text="Wachtwoord:"
+        android:text="Password:"
         android:id="@+id/txt_password"
         android:layout_below="@id/et_lastname"
         />
@@ -75,7 +75,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textSize="12sp"
-        android:text="Bevestig wachtwoord:"
+        android:text="Confirm password:"
         android:id="@+id/txt_confirmPassword"
         android:layout_below="@id/et_password"
         />
@@ -97,7 +97,7 @@
         android:enabled="true"
         android:layout_below="@id/et_confirmPassword"
         android:ems="10"
-        android:text="Registreren"
+        android:text="Register"
         />
     <TextView
         android:onClick="toLogin"
@@ -105,7 +105,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_below="@id/btn_register"
-        android:text="Klik om terug naar login te gaan"
+        android:text="Back to login"
         android:id="@+id/toRegister"
         />
 

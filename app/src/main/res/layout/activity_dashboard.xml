@@ -29,11 +29,12 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="View all meetings"
+            android:layout_marginTop="10dp"
+            android:textColor="@color/colorAnalogous"
             android:gravity="end"
             android:onClick="toAllMeetings"
             android:layout_below="@id/meetingListView"
             />
-
     </RelativeLayout>
     <ScrollView
         android:layout_width="match_parent"
@@ -54,6 +55,7 @@
                 android:id="@+id/itemRow2"
                 >
                 <LinearLayout
+                    android:onClick="toGroups"
                     android:padding="30dp"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
@@ -71,9 +73,9 @@
                         android:text="Groups"
                         android:gravity="center"
                         />
-
                 </LinearLayout>
                 <LinearLayout
+                    android:onClick="toConnections"
                     android:padding="30dp"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
@@ -101,6 +103,7 @@
                 android:id="@+id/itemRow3"
                 >
                 <LinearLayout
+                    android:onClick="toProfile"
                     android:padding="30dp"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
@@ -118,9 +121,9 @@
                         android:text="My profile"
                         android:gravity="center"
                         />
-
                 </LinearLayout>
                 <LinearLayout
+                    android:onClick="toSettings"
                     android:padding="30dp"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"

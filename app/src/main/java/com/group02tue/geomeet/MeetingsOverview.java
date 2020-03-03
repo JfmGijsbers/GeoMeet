@@ -41,4 +41,8 @@ public class MeetingsOverview extends AppCompatActivity {
             }
         });
     }
+    public void chat(View view) {
+        Toast.makeText(MeetingsOverview.this, "Chat not implemented yet", Toast.LENGTH_SHORT)
+                .show();
+    }
 }

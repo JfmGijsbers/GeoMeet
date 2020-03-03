@@ -107,5 +107,21 @@ public class Dashboard extends AppCompatActivity {
         Intent meetingOverviewIntent = new Intent(this, MeetingsOverview.class);
         startActivity(meetingOverviewIntent);
     }
+
+    public void toSettings(View view) {
+        Intent settingsIntent = new Intent(this, SettingsActivity.class);
+        startActivity(settingsIntent);
+    }
+
+    public void toProfile(View view) {
+        Intent profileIntent = new Intent(this, Profile.class);
+        startActivity(profileIntent);
+    }
+
+    public void toConnections(View view) {
+    }
+
+    public void toGroups(View view) {
+    }
 }
 
