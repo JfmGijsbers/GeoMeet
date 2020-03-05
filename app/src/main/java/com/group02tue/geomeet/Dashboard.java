@@ -27,23 +27,13 @@ public class Dashboard extends AppCompatActivity {
             R.drawable.ic_launcher_foreground,
             R.drawable.ic_launcher_foreground
     };
+
     ListView list;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(this);
-        String userTheme = preferences.getString("colorScheme", "darkab");
-        if (userTheme.equals("earth"))
-            setTheme(R.style.AppTheme);
-        else if (userTheme.equals("light"))
-            setTheme(R.style.light);
-        else if (userTheme.equals("dark"))
-            setTheme(R.style.dark);
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_dashboard);
-
-
-        //super.onCreate(savedInstanceState);
-        //setContentView(R.layout.activity_dashboard);
 
         MeetinglistAdapter listAdapter = new MeetinglistAdapter(Dashboard.this,
                 countryList, imageId);
@@ -98,7 +88,6 @@ public class Dashboard extends AppCompatActivity {
         startActivity(profileIntent);
     }
     private void toSettings() {
-        // TODO: add either activity or fragment
         Intent settingsIntent = new Intent(this, SettingsActivity.class);
         startActivity(settingsIntent);
     }
@@ -119,6 +108,8 @@ public class Dashboard extends AppCompatActivity {
     }
 
     public void toConnections(View view) {
+        Intent connectionIntent = new Intent(this, MyConnections.class);
+        startActivity(connectionIntent);
     }
 
     public void toGroups(View view) {

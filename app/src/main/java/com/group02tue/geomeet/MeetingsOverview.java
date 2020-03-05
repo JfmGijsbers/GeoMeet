@@ -2,6 +2,7 @@ package com.group02tue.geomeet;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.AdapterView;
@@ -44,5 +45,10 @@ public class MeetingsOverview extends AppCompatActivity {
     public void chat(View view) {
         Toast.makeText(MeetingsOverview.this, "Chat not implemented yet", Toast.LENGTH_SHORT)
                 .show();
+    }
+
+    public void newMeeting(View view) {
+        Intent newMeeting = new Intent(this, com.group02tue.geomeet.newMeeting.class);
+        startActivity(newMeeting);
     }
 }

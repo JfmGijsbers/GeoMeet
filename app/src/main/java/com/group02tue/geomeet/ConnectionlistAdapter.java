@@ -15,7 +15,7 @@ public class ConnectionlistAdapter extends ArrayAdapter<String> {
     private final Integer[] imageId;
 
     public ConnectionlistAdapter(Activity context, String[] web, Integer[] imageId) {
-        super(context, R.layout.activity, web);
+        super(context, R.layout.activity_connectionlist_item, web);
         this.context = context;
         this.web = web;
         this.imageId = imageId;
@@ -23,11 +23,11 @@ public class ConnectionlistAdapter extends ArrayAdapter<String> {
     @Override
     public View getView(int position,View view, ViewGroup parent) {
         LayoutInflater inflater = context.getLayoutInflater();
-        View rowView = inflater.inflate(R.layout.activity_meetinglist_item, null, true);
-        TextView txtTitle = (TextView) rowView.findViewById(R.id.textView);
+        View rowView = inflater.inflate(R.layout.activity_connectionlist_item, null, true);
+        TextView txtTitle = (TextView) rowView.findViewById(R.id.profileName);
         txtTitle.setText(web[position]);
 
-        ImageView imageView = (ImageView) rowView.findViewById(R.id.icon);
+        ImageView imageView = (ImageView) rowView.findViewById(R.id.profilePicture);
         imageView.setImageResource(imageId[position]);
         return rowView;
     }

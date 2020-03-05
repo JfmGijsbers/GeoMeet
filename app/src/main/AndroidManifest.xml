@@ -9,7 +9,9 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".MeetingsOverview"></activity>
+        <activity android:name=".newMeeting"></activity>
+        <activity android:name=".MyConnections" />
+        <activity android:name=".MeetingsOverview" />
         <activity android:name=".Profile" />
         <activity
             android:name=".SettingsActivity"
