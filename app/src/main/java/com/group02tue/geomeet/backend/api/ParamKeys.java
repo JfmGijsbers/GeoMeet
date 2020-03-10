@@ -6,7 +6,7 @@ public final class ParamKeys {
     public final static String FIRST_NAME = "firstName";
     public final static String LAST_NAME = "lastName";
     public final static String EMAIL = "email";
-    public final static String AUTHENTICATION_KEY = "key";
+    public final static String AUTHENTICATION_KEY = "authenticationKey";
     public final static String RECEIVER = "receiver";
     public final static String MESSAGE = "message";
     public final static String ID = "id";

@@ -15,6 +15,8 @@ import com.group02tue.geomeet.backend.api.meetings.InviteUserToMeetingAPICall;
 import com.group02tue.geomeet.backend.api.meetings.RemoveUserFromMeetingAPICall;
 import com.group02tue.geomeet.backend.api.meetings.UpdateMeetingAPICall;
 import com.group02tue.geomeet.backend.authentication.AuthenticationManager;
+import com.group02tue.geomeet.backend.chat.ChatManager;
+import com.group02tue.geomeet.backend.chat.ChatMessage;
 
 import java.io.IOError;
 import java.io.IOException;
@@ -64,6 +66,14 @@ public class Meeting {
     public Location2D getLocation() { return location; }
 
 
+    /**
+     * Sends a message in the chat of the meeting.
+     * @param message Message content to send
+     * @param chatManager Chat manager
+     */
+    public void sendMessage(String message, ChatManager chatManager) {
+        chatManager.sendMessage(id.toString(), message);
+    }
 
     /**
      * Invites a new user to the meeting. Only executable by the admin of the meeting.

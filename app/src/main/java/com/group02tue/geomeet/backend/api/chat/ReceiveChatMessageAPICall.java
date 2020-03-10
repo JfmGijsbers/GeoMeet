@@ -35,7 +35,10 @@ public class ReceiveChatMessageAPICall extends AbstractAuthorizedAPICall {
             JSONArray array = response.getJSONArray(JSONKeys.MESSAGES);
             for (int i = 0; i < array.length(); i++) {
                 JSONObject messageJson = array.getJSONObject(i);
-                messages.add(ChatMessageAdapter.read(messageJson));
+                ChatMessage message = ChatMessageAdapter.read(messageJson);
+                if (message != null) {
+                    messages.add(message);
+                }
             }
             // "Return"
             ((ReceiveChatMessageAPIResponseListener)responseListener).onSuccess(messages);

@@ -41,15 +41,15 @@ public class QueryMeetingAPICall extends AbstractAuthorizedAPICall {
     @Override
     protected void processResponse(JSONObject response) throws JSONException {
         if (response.has(JSONKeys.NAME) && response.has(JSONKeys.LOCATION) && response.has(JSONKeys.MOMENT) &&
-            response.has(JSONKeys.DESCRIPTION) && response.has(JSONKeys.MEMBERS)) {
+            response.has(JSONKeys.DESCRIPTION) && response.has(JSONKeys.MEMBERS) && response.has(JSONKeys.ADMIN_USERNAME)) {
 
             // Get members
             HashSet<String> members = new HashSet<>();
             JSONArray array = response.getJSONArray(JSONKeys.MEMBERS);
             for (int i = 0; i < array.length(); i++) {
-                JSONObject membersJson = array.getJSONObject(i);
-                if (membersJson.has(JSONKeys.MEMBER)) {
-                    members.add(membersJson.getString(JSONKeys.MEMBER));
+                String membersJson = array.getString(i);
+                if (membersJson != null) {
+                    members.add(membersJson);
                 }
             }
 
@@ -61,6 +61,7 @@ public class QueryMeetingAPICall extends AbstractAuthorizedAPICall {
                         response.getString(JSONKeys.DESCRIPTION),
                         MainApplication.DATE_FORMAT.parse(response.getString(JSONKeys.MOMENT)),
                         Location2D.parse(response.getString(JSONKeys.LOCATION)),
+                        response.getString(JSONKeys.ADMIN_USERNAME),
                         members
                 ));
             } catch (ParseException e) {
