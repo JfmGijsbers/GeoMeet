@@ -10,7 +10,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 public class LoginAPICall extends AbstractAPICall {
-    private final static String LOGIN_CALL_URL = BASE_URL + "/php/SQLfiles/webtech.login.php";
+    private final static String LOGIN_CALL_URL = BASE_URL + "/api/login.php";
     private final String username;
     private final String key;       // Can be password or authentication key
 

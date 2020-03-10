@@ -54,7 +54,7 @@ public class ImmutableMeeting {
         return new ImmutableMeeting(
             UUID.fromString(object.getString(JSONKeys.ID)),
             object.getString(JSONKeys.NAME),
-            Location2D.parse(object.getString(JSONKeys.DESCRIPTION)),
+            Location2D.parse(object.getString(JSONKeys.LOCATION)),
             MainApplication.DATE_FORMAT.parse(object.getString(JSONKeys.MOMENT))
         );
     }

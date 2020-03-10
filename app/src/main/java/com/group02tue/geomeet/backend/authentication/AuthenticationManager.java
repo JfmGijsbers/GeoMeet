@@ -30,7 +30,7 @@ public class AuthenticationManager extends ObservableManager<AuthenticationEvent
     }
 
 
-    public void register(final String username, String password, UserProfile profile) {
+    public void register(final String username, String password, String firstName, String lastName, String email) {
         new RegisterAPICall(new RegisterAPIResponseListener() {
             @Override
             public void onRegistered(String authenticationKey) {
@@ -58,7 +58,7 @@ public class AuthenticationManager extends ObservableManager<AuthenticationEvent
             public void onFailure(APIFailureReason response) {
                 onFailure("Server error: " + response.toString());
             }
-        }, username, password, profile.getFirstName(), profile.getLastName(), profile.getEmail()).execute();
+        }, username, password, firstName, lastName, email).execute();
     }
 
     /**
@@ -92,7 +92,7 @@ public class AuthenticationManager extends ObservableManager<AuthenticationEvent
                 notifyListeners(new Consumer<AuthenticationEventListener>() {
                     @Override
                     public void accept(AuthenticationEventListener authenticationEventListener) {
-                        authenticationEventListener.onAuthenticationFailure("Incorrect username/password");
+                        authenticationEventListener.onAuthenticationFailure("Failed to login");
                     }
                 });
             }
