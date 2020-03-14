@@ -5,31 +5,67 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.EditText;
+import android.widget.Toast;
 
 import com.group02tue.geomeet.backend.authentication.AuthenticationEventListener;
 import com.group02tue.geomeet.backend.authentication.AuthenticationManager;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity implements AuthenticationEventListener {
     private AuthenticationManager authenticationManager;
+    private EditText email;
+    private EditText password;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        email = findViewById(R.id.et_email);
+        password = findViewById(R.id.et_password);
         authenticationManager = ((MainApplication)getApplication()).getAuthenticationManager();
+    }
+
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+        authenticationManager.addListener(this);
     }
 
     @Override
     protected void onStop() {
         super.onStop();
+        authenticationManager.removeListener(this);
     }
 
+    /**
+     * Login button call
+     */
     public void login(View view) {
-        Intent intent = new Intent(this, Dashboard.class);
-        startActivity(intent);
+        authenticationManager.login(email.getText().toString(), password.getText().toString());
     }
+
+    /**
+     * Register button call
+     */
     public void toRegister(View view) {
         Intent intent = new Intent(this, Register.class);
         startActivity(intent);
+    }
+
+    @Override
+    public void onLoggedIn() {
+        Intent intent = new Intent(this, Dashboard.class);
+        startActivity(intent);
+    }
+
+    @Override
+    public void onRegistered() {
+        // N/A
+    }
+
+    @Override
+    public void onAuthenticationFailure(String reason) {
+        Toast.makeText(this, "Login failed: " + reason, Toast.LENGTH_LONG).show();
     }
 }

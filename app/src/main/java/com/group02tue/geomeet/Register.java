@@ -6,12 +6,17 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.EditText;
+import android.widget.Toast;
+
+import com.group02tue.geomeet.backend.authentication.AuthenticationEventListener;
+import com.group02tue.geomeet.backend.authentication.AuthenticationManager;
 
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-public class Register extends AppCompatActivity {
-    EditText etEmail, etPass, etPass2, etFirstname, etLastname;
+public class Register extends AppCompatActivity implements AuthenticationEventListener {
+    EditText etEmail, etPass, etPass2, etFirstname, etLastname; // TODO
+    private AuthenticationManager authenticationManager;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -22,7 +27,21 @@ public class Register extends AppCompatActivity {
         etPass2 = findViewById(R.id.et_confirmPassword);
         etFirstname = findViewById(R.id.et_firstname);
         etLastname = findViewById(R.id.et_lastname);
+
+        authenticationManager = ((MainApplication)getApplication()).getAuthenticationManager();
     }
+    @Override
+    protected void onStart() {
+        super.onStart();
+        authenticationManager.addListener(this);
+    }
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+        authenticationManager.removeListener(this);
+    }
+
     public void register(View view) {
         boolean noMistake = true;
         String email = String.valueOf(etEmail.getText());
@@ -74,8 +93,7 @@ public class Register extends AppCompatActivity {
             noMistake = false;
         }
         if (noMistake) {
-            Intent intent = new Intent(this, Dashboard.class);
-            startActivity(intent);
+            authenticationManager.register(email, pass, firstName, lastName, email);
         }
     }
     /*
@@ -99,5 +117,21 @@ public class Register extends AppCompatActivity {
     public void toLogin(View view) {
         Intent intent = new Intent(this, MainActivity.class);
         startActivity(intent);
+    }
+
+    @Override
+    public void onLoggedIn() {
+        // N/A
+    }
+
+    @Override
+    public void onRegistered() {
+        Intent intent = new Intent(this, Dashboard.class);
+        startActivity(intent);
+    }
+
+    @Override
+    public void onAuthenticationFailure(String reason) {
+        Toast.makeText(this, "Register failed: " + reason, Toast.LENGTH_LONG).show();
     }
 }
