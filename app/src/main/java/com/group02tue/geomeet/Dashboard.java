@@ -48,6 +48,7 @@ public class Dashboard extends AppCompatActivity {
                         countryList[position], Toast.LENGTH_SHORT).show();
             }
         });
+
     }
 
 
@@ -76,10 +77,20 @@ public class Dashboard extends AppCompatActivity {
             case R.id.settings:
                 toSettings();
                 return true;
+            case R.id.logout:
+                logout();
+                return true;
             default:
                 return super.onOptionsItemSelected(item);
         }
     }
+
+    @Override
+    public void onBackPressed() {
+        // TODO: alertDialog
+        logout();
+    }
+
     /**
      * Below this comment are all methods that simply refer the app to a different activity
      */
@@ -90,6 +101,12 @@ public class Dashboard extends AppCompatActivity {
     private void toSettings() {
         Intent settingsIntent = new Intent(this, SettingsActivity.class);
         startActivity(settingsIntent);
+    }
+    private void logout() {
+        ((MainApplication)getApplication()).reset();
+        Intent mainActivityIntent = new Intent(this, MainActivity.class);
+        startActivity(mainActivityIntent);
+        finish();
     }
 
     public void toAllMeetings(View view) {
@@ -114,5 +131,6 @@ public class Dashboard extends AppCompatActivity {
 
     public void toGroups(View view) {
     }
+
 }
 

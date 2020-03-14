@@ -11,6 +11,11 @@
         android:title="Settings"
         app:showAsAction="never"
         />
+    <item android:id="@+id/logout"
+        android:icon="@drawable/baseline_settings_black_18dp"
+        android:title="Logout"
+        app:showAsAction="never"
+        />
     <!-- For submenu:
         <menu>
             <item/>

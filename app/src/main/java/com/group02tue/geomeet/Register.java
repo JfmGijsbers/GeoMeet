@@ -94,6 +94,11 @@ public class Register extends AppCompatActivity implements AuthenticationEventLi
         }
         if (noMistake) {
             authenticationManager.register(email, pass, firstName, lastName, email);
+            etPass.setText("");
+            etPass2.setText("");
+            etEmail.setText("");
+            etFirstname.setText("");
+            etLastname.setText("");
         }
     }
     /*
@@ -128,6 +133,7 @@ public class Register extends AppCompatActivity implements AuthenticationEventLi
     public void onRegistered() {
         Intent intent = new Intent(this, Dashboard.class);
         startActivity(intent);
+        finish();
     }
 
     @Override

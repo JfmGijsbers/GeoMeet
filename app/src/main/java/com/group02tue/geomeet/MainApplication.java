@@ -30,8 +30,8 @@ public class MainApplication extends Application {
         meetingManager = new MeetingManager(getApplicationContext(), authenticationManager);
 
         // NOTE: part below is for testing
-        BackendTest test = new BackendTest(this);
-        test.start();
+        //BackendTest test = new BackendTest(this);
+        //test.start();
     }
 
     public AuthenticationManager getAuthenticationManager() {

@@ -42,7 +42,7 @@ public class MainActivity extends AppCompatActivity implements AuthenticationEve
      * Login button call
      */
     public void login(View view) {
-        authenticationManager.login(email.getText().toString(), password.getText().toString());
+        authenticationManager.login(String.valueOf(email.getText()), String.valueOf(password.getText()));
     }
 
     /**
@@ -57,6 +57,7 @@ public class MainActivity extends AppCompatActivity implements AuthenticationEve
     public void onLoggedIn() {
         Intent intent = new Intent(this, Dashboard.class);
         startActivity(intent);
+        finish();
     }
 
     @Override
