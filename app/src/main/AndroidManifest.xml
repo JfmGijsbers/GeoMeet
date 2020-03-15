@@ -14,7 +14,7 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <activity android:name=".SeeMeeting"></activity>
-        <activity android:name=".newMeeting" />
+        <activity android:name=".NewMeeting" />
         <activity android:name=".MyConnections" />
         <activity android:name=".MeetingsOverview" />
         <activity android:name=".Profile" />

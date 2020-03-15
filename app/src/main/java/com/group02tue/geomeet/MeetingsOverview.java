@@ -48,7 +48,7 @@ public class MeetingsOverview extends AppCompatActivity {
     }
 
     public void newMeeting(View view) {
-        Intent newMeeting = new Intent(this, com.group02tue.geomeet.newMeeting.class);
+        Intent newMeeting = new Intent(this, NewMeeting.class);
         startActivity(newMeeting);
     }
 }
