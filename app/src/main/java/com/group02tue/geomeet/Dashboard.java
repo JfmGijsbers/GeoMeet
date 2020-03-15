@@ -44,8 +44,8 @@ public class Dashboard extends AppCompatActivity {
             @Override
             public void onItemClick(AdapterView<?> parent, View view,
                                     int position, long id) {
-                Toast.makeText(Dashboard.this, "You clicked at " +
-                        countryList[position], Toast.LENGTH_SHORT).show();
+                String name = countryList[position];
+                toMeeting();
             }
         });
 
@@ -94,6 +94,10 @@ public class Dashboard extends AppCompatActivity {
     /**
      * Below this comment are all methods that simply refer the app to a different activity
      */
+    private void toMeeting() {
+        Intent meetingIntent = new Intent(this, SeeMeeting.class);
+        startActivity(meetingIntent);
+    }
     private void toProfile() {
         Intent profileIntent = new Intent(this, Profile.class);
         startActivity(profileIntent);
