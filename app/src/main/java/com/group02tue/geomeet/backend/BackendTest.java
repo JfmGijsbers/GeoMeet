@@ -69,9 +69,9 @@ public class BackendTest implements AuthenticationEventListener, ChatEventListen
         Log.println(Log.DEBUG, "Backend", "Successfully logged in");
         //Meeting meeting = new Meeting("MyMeeting", "Test meeting", new Date(), new Location2D(1, 1), authenticationManager.getUsername());
         //meetingManager.addMeeting(meeting);
-        Meeting meeting = meetingManager.getMeeting(UUID.fromString("4a631983-a19b-4292-8e7f-029a3bf8466b"));
-        MeetingAsAdminManager meetingAsAdminManager = new MeetingAsAdminManager(meetingManager, authenticationManager, meeting);
-        meetingAsAdminManager.removeUserFromMeeting("tester");
+        ///Meeting meeting = meetingManager.getMeeting(UUID.fromString("4a631983-a19b-4292-8e7f-029a3bf8466b"));
+        //MeetingAsAdminManager meetingAsAdminManager = new MeetingAsAdminManager(meetingManager, authenticationManager, meeting);
+        //meetingAsAdminManager.removeUserFromMeeting("tester");
         //meetingAsAdminManager.inviteUserToMeeting("tester");
 
         //meetingManager.requestMeetingInvitations();

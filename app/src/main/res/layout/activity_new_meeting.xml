@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 
-<RelativeLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".Register"
+    xmlns:style="http://schemas.android.com/apk/res-auto"
+    tools:context=".NewMeeting"
     android:background="@color/colorPrimaryDark"
     android:padding="30dp">
 
@@ -17,15 +17,15 @@
         android:id="@+id/txt_email"
         />
     <EditText
-        android:inputType="textEmailAddress"
+        android:inputType="textPersonName"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:ems="10"
-        android:id="@+id/et_email"
+        android:id="@+id/et_name"
         android:layout_below="@id/txt_email"
         />
     <TextView
-        android:layout_below="@id/et_email"
+        android:layout_below="@id/et_name"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textSize="12sp"
@@ -33,11 +33,10 @@
         android:id="@+id/txt_firstname"
         />
     <EditText
-        android:inputType="textPersonName"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:ems="10"
-        android:id="@+id/et_firstname"
+        android:id="@+id/et_location"
         android:layout_below="@id/txt_firstname"
         />
     <TextView
@@ -46,14 +45,14 @@
         android:textSize="12sp"
         android:text="Invited:"
         android:id="@+id/txt_lastname"
-        android:layout_below="@id/et_firstname"
+        android:layout_below="@id/et_location"
         />
     <ListView
         android:inputType="textPersonName"
         android:layout_width="wrap_content"
         android:layout_height="150dp"
         android:ems="10"
-        android:id="@+id/et_lastname"
+        android:id="@+id/connectionListView"
         android:layout_below="@id/txt_lastname"
         />
     <TextView
@@ -63,7 +62,7 @@
         android:textSize="12sp"
         android:text="Description:"
         android:id="@+id/txt_password"
-        android:layout_below="@id/et_lastname"
+        android:layout_below="@id/connectionListView"
         />
     <EditText
         android:inputType="textMultiLine|textCapSentences"
@@ -71,7 +70,7 @@
         android:layout_height="wrap_content"
         android:ems="10"
         android:maxLines="5"
-        android:id="@+id/et_password"
+        android:id="@+id/et_description"
         android:layout_below="@id/txt_password"
         />
     <TextView
@@ -80,30 +79,28 @@
         android:layout_height="wrap_content"
         android:textSize="24sp"
         android:text="03/03/2020 at 13:30"
-        android:onClick="pickTime"
         android:id="@+id/txt_confirmPassword"
-        android:layout_below="@id/et_password"
-        />
+        android:layout_below="@id/et_description"
+        />  <!--android:onClick="pickTime" TODO -->
     <Button
         android:layout_marginTop="5dp"
         android:layout_gravity="center"
-        android:onClick="register"
-        android:background="@drawable/btn_rounded_corner"
-        android:id="@+id/btn_register"
-        android:textSize="16sp"
+        android:onClick="createMeeting"
+        android:id="@+id/btn_create"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:enabled="true"
         android:layout_below="@id/txt_confirmPassword"
         android:ems="10"
         android:text="Create"
+        style="@style/Widget.AppCompat.Button.Colored"
         />
     <TextView
-        android:onClick="toLogin"
+        android:onClick="toAllMeetings"
         android:layout_marginTop="10dp"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@id/btn_register"
+        android:layout_below="@id/btn_create"
         android:text="Cancel"
         android:id="@+id/toRegister"
         />

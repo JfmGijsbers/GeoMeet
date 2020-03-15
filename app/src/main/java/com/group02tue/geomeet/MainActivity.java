@@ -5,6 +5,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
@@ -15,6 +16,7 @@ public class MainActivity extends AppCompatActivity implements AuthenticationEve
     private AuthenticationManager authenticationManager;
     private EditText email;
     private EditText password;
+    private Button btnLogin;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -22,7 +24,12 @@ public class MainActivity extends AppCompatActivity implements AuthenticationEve
         setContentView(R.layout.activity_main);
         email = findViewById(R.id.et_email);
         password = findViewById(R.id.et_password);
+        btnLogin = findViewById(R.id.btn_login);
         authenticationManager = ((MainApplication)getApplication()).getAuthenticationManager();
+
+        if (authenticationManager.areCredentialsStored()) {
+            authenticationManager.login();
+        }
     }
 
 
@@ -43,6 +50,7 @@ public class MainActivity extends AppCompatActivity implements AuthenticationEve
      */
     public void login(View view) {
         authenticationManager.login(String.valueOf(email.getText()), String.valueOf(password.getText()));
+        btnLogin.setEnabled(false);
     }
 
     /**
@@ -68,5 +76,6 @@ public class MainActivity extends AppCompatActivity implements AuthenticationEve
     @Override
     public void onAuthenticationFailure(String reason) {
         Toast.makeText(this, "Login failed: " + reason, Toast.LENGTH_LONG).show();
+        btnLogin.setEnabled(true);
     }
 }

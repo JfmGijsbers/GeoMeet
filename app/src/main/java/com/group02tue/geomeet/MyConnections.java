@@ -27,7 +27,7 @@ public class MyConnections extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_my_connections);
 
-        ConnectionlistAdapter listAdapter = new ConnectionlistAdapter(MyConnections.this,
+        /*ConnectionListAdapter listAdapter = new ConnectionListAdapter(MyConnections.this,
                 countryList, imageId);
         connectionList = (ListView) findViewById(R.id.connectionListView);
         connectionList.setAdapter(listAdapter);
@@ -39,6 +39,6 @@ public class MyConnections extends AppCompatActivity {
                 Toast.makeText(MyConnections.this, "You clicked at " +
                         countryList[position], Toast.LENGTH_SHORT).show();
             }
-        });
+        });*/
     }
 }

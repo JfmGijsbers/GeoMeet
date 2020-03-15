@@ -27,7 +27,7 @@ public class SeeMeeting extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_see_meeting);
 
-        ConnectionlistAdapter listAdapter = new ConnectionlistAdapter(SeeMeeting.this,
+        /*ConnectionListAdapter listAdapter = new ConnectionListAdapter(SeeMeeting.this,
                 countryList, imageId);
         connectionList = (ListView) findViewById(R.id.seeMeeting_comingConnectionsListView);
         connectionList.setAdapter(listAdapter);
@@ -39,6 +39,6 @@ public class SeeMeeting extends AppCompatActivity {
                 Toast.makeText(SeeMeeting.this, "You clicked at " +
                         countryList[position], Toast.LENGTH_SHORT).show();
             }
-        });
+        });*/
     }
 }
