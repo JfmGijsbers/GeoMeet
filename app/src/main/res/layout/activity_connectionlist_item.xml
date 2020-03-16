@@ -20,5 +20,11 @@
         android:layout_width="0dp"
         android:layout_height="fill_parent"
         android:text="Friend name" />
+    <CheckBox
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:layout_gravity="center"
+        />
 
 </LinearLayout>
