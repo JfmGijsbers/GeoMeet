@@ -1,10 +1,8 @@
 package com.group02tue.geomeet;
 
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.preference.PreferenceManager;
 
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -12,8 +10,11 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ListView;
-import android.app.Activity;
 import android.widget.Toast;
+
+import com.group02tue.geomeet.backend.social.Meeting;
+
+import java.util.ArrayList;
 
 public class Dashboard extends AppCompatActivity {
 
@@ -35,8 +36,8 @@ public class Dashboard extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_dashboard);
 
-        MeetinglistAdapter listAdapter = new MeetinglistAdapter(Dashboard.this,
-                countryList, imageId);
+        MeetingListAdapter listAdapter = new MeetingListAdapter(Dashboard.this,
+                new ArrayList<Meeting>());
         list = (ListView) findViewById(R.id.meetingListView);
         list.setAdapter(listAdapter);
 

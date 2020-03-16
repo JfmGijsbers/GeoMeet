@@ -104,7 +104,7 @@ public class AuthenticationManager extends ObservableManager<AuthenticationEvent
      * @return Saved?
      */
     public boolean areCredentialsStored() {
-        return authenticationKey.equals("") && username.equals("");
+        return !authenticationKey.equals("") && !username.equals("");
     }
 
     /**

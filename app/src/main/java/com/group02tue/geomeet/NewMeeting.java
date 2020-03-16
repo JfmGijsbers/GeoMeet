@@ -2,13 +2,11 @@ package com.group02tue.geomeet;
 
 import androidx.appcompat.app.AppCompatActivity;
 
-import android.app.DatePickerDialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.Button;
-import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.Toast;
@@ -16,23 +14,24 @@ import android.widget.Toast;
 import com.group02tue.geomeet.backend.Location2D;
 import com.group02tue.geomeet.backend.authentication.AuthenticationManager;
 import com.group02tue.geomeet.backend.social.ExternalUserProfile;
-import com.group02tue.geomeet.backend.social.ImmutableMeeting;
 import com.group02tue.geomeet.backend.social.Meeting;
 import com.group02tue.geomeet.backend.social.MeetingAsAdminManager;
-import com.group02tue.geomeet.backend.social.MeetingEventListener;
 import com.group02tue.geomeet.backend.social.MeetingManager;
+import com.group02tue.geomeet.backend.social.MeetingSemiAdminEventListener;
+import com.group02tue.geomeet.backend.social.MeetingSyncEventListener;
 
 import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.UUID;
 
-public class NewMeeting extends AppCompatActivity implements  MeetingEventListener {
+public class NewMeeting extends AppCompatActivity implements MeetingSemiAdminEventListener {
     private EditText etName, etLocation, etDescription;
     private EditText etDay, etMonth, etYear, etHour, etMinute;
     private Button btnCreate;
     private ListView connectionList;
     private MeetingManager meetingManager;
+    private MeetingManager.MeetingSyncManager meetingSyncManager;
     private AuthenticationManager authenticationManager;
 
     private UserListItem[] testList = {
@@ -46,6 +45,7 @@ public class NewMeeting extends AppCompatActivity implements  MeetingEventListen
         setContentView(R.layout.activity_new_meeting);
 
         meetingManager = ((MainApplication)getApplication()).getMeetingManager();
+        meetingSyncManager = ((MainApplication)getApplication()).getMeetingSyncManager();
         authenticationManager = ((MainApplication)getApplication()).getAuthenticationManager();
 
         String date = "03" + "03" + "2020" + "13" + "30";
@@ -124,7 +124,7 @@ public class NewMeeting extends AppCompatActivity implements  MeetingEventListen
         if (id.equals(createdMeetingId)) {
             // Add all invited users to the meeting
             MeetingAsAdminManager adminManager = new MeetingAsAdminManager(meetingManager,
-                    authenticationManager, meetingManager.getMeeting(id));
+                    authenticationManager, meetingManager.getMeeting(id, meetingSyncManager));
             for (int i = 0; i < connectionList.getAdapter().getCount(); i++) {
                 String username = ((UserListItem)connectionList.getAdapter().getItem(i)).getUsername();
                 adminManager.inviteUserToMeeting(username);
@@ -139,6 +139,11 @@ public class NewMeeting extends AppCompatActivity implements  MeetingEventListen
     }
 
     @Override
+    public void onRemovedMeeting(UUID id) {
+
+    }
+
+    @Override
     public void onFailure(UUID id, String reason) {
         if (id.equals(createdMeetingId)) {
             createdMeetingId = null;
@@ -146,21 +151,5 @@ public class NewMeeting extends AppCompatActivity implements  MeetingEventListen
                     Toast.LENGTH_LONG).show();
             btnCreate.setEnabled(true);
         }
-    }
-
-    @Override
-    public void onMeetingUpdatedReceived(Meeting meeting) {
-    }
-
-    @Override
-    public void onLeftMeeting(UUID id) {
-    }
-
-    @Override
-    public void onReceivedMeetingInvitations(ArrayList<ImmutableMeeting> meetings) {
-    }
-
-    @Override
-    public void onRemovedMeeting(UUID id) {
     }
 }
