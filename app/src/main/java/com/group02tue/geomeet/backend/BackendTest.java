@@ -1,11 +1,8 @@
 package com.group02tue.geomeet.backend;
 
-import android.content.Context;
 import android.util.Log;
 
 import com.group02tue.geomeet.MainApplication;
-import com.group02tue.geomeet.backend.api.APIFailureReason;
-import com.group02tue.geomeet.backend.api.BooleanAPIResponseListener;
 import com.group02tue.geomeet.backend.authentication.AuthenticationEventListener;
 import com.group02tue.geomeet.backend.authentication.AuthenticationManager;
 import com.group02tue.geomeet.backend.chat.ChatEventListener;
@@ -16,18 +13,15 @@ import com.group02tue.geomeet.backend.social.ImmutableMeeting;
 import com.group02tue.geomeet.backend.social.InternalUserProfile;
 import com.group02tue.geomeet.backend.social.Meeting;
 import com.group02tue.geomeet.backend.social.MeetingAsAdminEventListener;
-import com.group02tue.geomeet.backend.social.MeetingAsAdminManager;
-import com.group02tue.geomeet.backend.social.MeetingEventListener;
+import com.group02tue.geomeet.backend.social.MeetingSemiAdminEventListener;
 import com.group02tue.geomeet.backend.social.MeetingManager;
+import com.group02tue.geomeet.backend.social.MeetingSyncEventListener;
 import com.group02tue.geomeet.backend.social.ProfileEventListener;
-import com.group02tue.geomeet.backend.social.UserProfile;
 
 import java.util.ArrayList;
-import java.util.Date;
-import java.util.Set;
 import java.util.UUID;
 
-public class BackendTest implements AuthenticationEventListener, ChatEventListener, MeetingEventListener, ProfileEventListener, MeetingAsAdminEventListener {
+public class BackendTest implements AuthenticationEventListener, ChatEventListener, MeetingSemiAdminEventListener, ProfileEventListener, MeetingAsAdminEventListener, MeetingSyncEventListener {
     private AuthenticationManager authenticationManager;
     private ChatManager chatManager;
     private MeetingManager meetingManager;
@@ -49,7 +43,7 @@ public class BackendTest implements AuthenticationEventListener, ChatEventListen
         meetingManager.addListener(this);
         profileManager.addListener(this);
 
-        authenticationManager.login("firstUser", "supersecret");
+        //authenticationManager.login("firstUser", "supersecret");
         //authenticationManager.register("tester", "1", "FirstName", "LastName", "email@email.nl");
         //authenticationManager.login("tester", "1");
         //authenticationManager.login();

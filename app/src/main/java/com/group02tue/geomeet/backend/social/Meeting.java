@@ -64,7 +64,9 @@ public class Meeting {
     public String getDescription() { return description; }
     public Date getMoment() { return moment; }
     public Location2D getLocation() { return location; }
-
+    public int getAttendingCount() {
+        return members.size();
+    }
 
     /**
      * Sends a message in the chat of the meeting.
