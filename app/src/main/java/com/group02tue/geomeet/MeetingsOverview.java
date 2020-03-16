@@ -9,7 +9,19 @@ import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.Toast;
 
-public class MeetingsOverview extends AppCompatActivity {
+import com.group02tue.geomeet.backend.social.ImmutableMeeting;
+import com.group02tue.geomeet.backend.social.Meeting;
+import com.group02tue.geomeet.backend.social.MeetingManager;
+import com.group02tue.geomeet.backend.social.MeetingSyncEventListener;
+
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Date;
+import java.util.List;
+import java.util.Map;
+import java.util.UUID;
+
+public class MeetingsOverview extends AppCompatActivity implements MeetingSyncEventListener {
     String countryList[] = {"Sprint retrospection meeting", "Sprint planning", "Lucas' monologue",
             "Sprint 2", "Borrel meeting", "Final sprint"};
     Integer[] imageId = {
@@ -23,13 +35,17 @@ public class MeetingsOverview extends AppCompatActivity {
 
     ListView meetingOverviewList;
 
+    private MeetingManager.MeetingSyncManager meetingSyncManager;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_meetings_overview);
+        meetingSyncManager = ((MainApplication)getApplication()).getMeetingSyncManager();
 
-        MeetinglistAdapter listAdapter = new MeetinglistAdapter(MeetingsOverview.this,
-                countryList, imageId);
+        List<Meeting> meetings = meetingSyncManager.getMeetingMemberships();
+        MeetingListAdapter listAdapter = new MeetingListAdapter(MeetingsOverview.this,
+                meetings);
         meetingOverviewList = (ListView) findViewById(R.id.fullMeetingListView);
         meetingOverviewList.setAdapter(listAdapter);
 
@@ -42,6 +58,20 @@ public class MeetingsOverview extends AppCompatActivity {
             }
         });
     }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+        meetingSyncManager.addListener(this);
+    }
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+        meetingSyncManager.removeListener(this);
+    }
+
+
     public void chat(View view) {
         Toast.makeText(MeetingsOverview.this, "Chat not implemented yet", Toast.LENGTH_SHORT)
                 .show();
@@ -50,5 +80,25 @@ public class MeetingsOverview extends AppCompatActivity {
     public void newMeeting(View view) {
         Intent newMeeting = new Intent(this, NewMeeting.class);
         startActivity(newMeeting);
+    }
+
+
+    @Override
+    public void onMeetingUpdatedReceived(Meeting meeting) {
+
+    }
+
+    @Override
+    public void onLeftMeeting(UUID id) {
+
+    }
+
+    @Override
+    public void onFailure(UUID id, String reason) {
+
+    }
+
+    @Override
+    public void onReceivedMeetingInvitations(ArrayList<ImmutableMeeting> meetings) {
     }
 }
