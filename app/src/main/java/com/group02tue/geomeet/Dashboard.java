@@ -1,10 +1,8 @@
 package com.group02tue.geomeet;
 
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.preference.PreferenceManager;
 
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -12,7 +10,6 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ListView;
-import android.app.Activity;
 import android.widget.Toast;
 
 public class Dashboard extends AppCompatActivity {
@@ -55,6 +52,8 @@ public class Dashboard extends AppCompatActivity {
     public void chat(View view) {
         Toast.makeText(Dashboard.this, "Chat not implemented yet", Toast.LENGTH_SHORT)
                 .show();
+        Intent locationIntent = new Intent(this, LocationViewer.class);
+        startActivity(locationIntent);
     }
     /**
      *  Create the options menu:
