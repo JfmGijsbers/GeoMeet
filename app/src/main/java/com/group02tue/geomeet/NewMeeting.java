@@ -27,8 +27,9 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.UUID;
 
-public class NewMeeting extends AppCompatActivity implements DatePickerDialog.OnDateSetListener, MeetingEventListener {
+public class NewMeeting extends AppCompatActivity implements  MeetingEventListener {
     private EditText etName, etLocation, etDescription;
+    private EditText etDay, etMonth, etYear, etHour, etMinute;
     private Button btnCreate;
     private ListView connectionList;
     private MeetingManager meetingManager;
@@ -53,6 +54,12 @@ public class NewMeeting extends AppCompatActivity implements DatePickerDialog.On
         etDescription = findViewById(R.id.et_description);
         connectionList = findViewById(R.id.connectionListView);
         btnCreate = findViewById(R.id.btn_create);
+
+        etDay = findViewById(R.id.et_day);
+        etMonth = findViewById(R.id.et_month);
+        etYear = findViewById(R.id.et_year);
+        etHour = findViewById(R.id.et_hour);
+        etMinute = findViewById(R.id.et_minute);
 
         // Initialize list adapter
         ConnectionListAdapter listAdapter = new ConnectionListAdapter(NewMeeting.this,
@@ -82,18 +89,17 @@ public class NewMeeting extends AppCompatActivity implements DatePickerDialog.On
         meetingManager.removeListener(this);
     }
 
-    @Override
-    public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
-        DatePickerDialog datePickerDialog = new DatePickerDialog(this,
-                NewMeeting.this, 2020, 03, 03);
-        datePickerDialog.show();
-    }
-
     public void createMeeting(View view) {
         String name = String.valueOf(etName.getText());
         String strLocation = String.valueOf(etLocation.getText());
         String description = String.valueOf(etDescription.getText());
-        Date meetingMoment = new Date();    // TODO: Date(int year, int month, int date, int hrs, int min)
+
+        int day = Integer.parseInt(String.valueOf(etDay.getText()));
+        int month = Integer.parseInt(String.valueOf(etMonth.getText()));
+        int year = Integer.parseInt(String.valueOf(etYear.getText()));
+        int hour = Integer.parseInt(String.valueOf(etHour.getText()));
+        int minute = Integer.parseInt(String.valueOf(etMinute.getText()));
+        Date meetingMoment = new Date(year, month, day, hour, minute);
 
         try {
             Location2D location = Location2D.parse(strLocation);
