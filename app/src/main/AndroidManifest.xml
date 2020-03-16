@@ -2,8 +2,15 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.group02tue.geomeet">
 
+    <!--
+         The ACCESS_COARSE/FINE_LOCATION permissions are not required to use
+         Google Maps Android API v2, but you must specify either coarse or fine
+         location permissions for the 'MyLocation' functionality.
+    -->
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
     <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
     <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
 
     <application
         android:name=".MainApplication"
@@ -13,7 +20,24 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".SeeMeeting"></activity>
+
+        <!--
+             The API key for Google Maps-based APIs is defined as a string resource.
+             (See the file "res/values/google_maps_api.xml").
+             Note that the API key is linked to the encryption key used to sign the APK.
+             You need a different API key for each encryption key, including the release key that is used to
+             sign the APK for publishing.
+             You can define the keys for the debug and release targets in src/debug/ and src/release/.
+        -->
+        <meta-data
+            android:name="com.google.android.geo.API_KEY"
+            android:value="@string/google_maps_key" />
+
+        <activity
+            android:name=".LocationViewer"
+            android:label="@string/title_activity_location"></activity>
+        <activity android:name=".ViewLocation" />
+        <activity android:name=".SeeMeeting" />
         <activity android:name=".NewMeeting" />
         <activity android:name=".MyConnections" />
         <activity android:name=".MeetingsOverview" />
@@ -31,7 +55,7 @@
             </intent-filter>
         </activity>
 
-        <receiver android:name=".backend.AlarmBroadcastReceiver"></receiver>
+        <receiver android:name=".backend.AlarmBroadcastReceiver" />
         <receiver
             android:name=".backend.BootBroadcastReceiver"
             android:enabled="false">
