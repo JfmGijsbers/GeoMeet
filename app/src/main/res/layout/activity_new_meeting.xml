@@ -73,15 +73,84 @@
         android:id="@+id/et_description"
         android:layout_below="@id/txt_password"
         />
-    <TextView
+    <LinearLayout
+        android:id="@+id/linearlayout_date"
         android:layout_marginTop="10dp"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:textSize="24sp"
-        android:text="03/03/2020 at 13:30"
-        android:id="@+id/txt_confirmPassword"
         android:layout_below="@id/et_description"
-        />  <!--android:onClick="pickTime" TODO -->
+        android:orientation="horizontal"
+        >
+        <EditText
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:inputType="number"
+            android:maxLength="2"
+            android:hint="DD"
+            android:id="@+id/et_day"
+
+        />
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="/"
+            />
+        <EditText
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:inputType="number"
+            android:maxLength="2"
+            android:hint="MM"
+            android:id="@+id/et_month"
+            />
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="/"
+            />
+        <EditText
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:inputType="number"
+            android:maxLength="4"
+            android:hint="YYYY"
+            android:id="@+id/et_year"
+            />
+        <TextView
+            android:layout_marginLeft="10dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="at"
+            />
+        <EditText
+            android:layout_marginLeft="10dp"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:inputType="number"
+            android:maxLength="2"
+            android:hint="HH"
+            android:id="@+id/et_hour"
+            />
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text=":"
+            />
+        <EditText
+            android:layout_marginLeft="10dp"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:inputType="number"
+            android:maxLength="2"
+            android:hint="MM"
+            android:id="@+id/et_minute"
+            />
+    </LinearLayout>
     <Button
         android:layout_marginTop="5dp"
         android:layout_gravity="center"
@@ -90,7 +159,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:enabled="true"
-        android:layout_below="@id/txt_confirmPassword"
+        android:layout_below="@id/linearlayout_date"
         android:ems="10"
         android:text="Create"
         style="@style/Widget.AppCompat.Button.Colored"
