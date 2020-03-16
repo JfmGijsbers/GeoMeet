@@ -104,8 +104,7 @@ public class AuthenticationManager extends ObservableManager<AuthenticationEvent
      * @return Saved?
      */
     public boolean areCredentialsStored() {
-        return preferences.getString(AUTHENTICATION_KEY_PREFERENCE, "").equalsIgnoreCase("") &&
-                preferences.getString(USERNAME_PREFERENCE, "").equalsIgnoreCase("");
+        return authenticationKey.equals("") && username.equals("");
     }
 
     /**
@@ -138,6 +137,8 @@ public class AuthenticationManager extends ObservableManager<AuthenticationEvent
         editor.remove(USERNAME_PREFERENCE);
         editor.remove(AUTHENTICATION_KEY_PREFERENCE);
         editor.apply();
+        username = "";
+        authenticationKey = "";
     }
 
     /**

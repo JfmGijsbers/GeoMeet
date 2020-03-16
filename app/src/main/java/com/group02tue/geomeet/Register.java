@@ -5,6 +5,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
@@ -15,7 +16,8 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 public class Register extends AppCompatActivity implements AuthenticationEventListener {
-    EditText etEmail, etPass, etPass2, etFirstname, etLastname; // TODO
+    private EditText etEmail, etPass, etPass2, etFirstname, etLastname; // TODO
+    private Button btnRegister;
     private AuthenticationManager authenticationManager;
 
     @Override
@@ -27,6 +29,7 @@ public class Register extends AppCompatActivity implements AuthenticationEventLi
         etPass2 = findViewById(R.id.et_confirmPassword);
         etFirstname = findViewById(R.id.et_firstname);
         etLastname = findViewById(R.id.et_lastname);
+        btnRegister = findViewById(R.id.btn_register);
 
         authenticationManager = ((MainApplication)getApplication()).getAuthenticationManager();
     }
@@ -99,6 +102,7 @@ public class Register extends AppCompatActivity implements AuthenticationEventLi
             etEmail.setText("");
             etFirstname.setText("");
             etLastname.setText("");
+            btnRegister.setEnabled(false);
         }
     }
     /*
@@ -139,5 +143,6 @@ public class Register extends AppCompatActivity implements AuthenticationEventLi
     @Override
     public void onAuthenticationFailure(String reason) {
         Toast.makeText(this, "Register failed: " + reason, Toast.LENGTH_LONG).show();
+        btnRegister.setEnabled(true);
     }
 }
