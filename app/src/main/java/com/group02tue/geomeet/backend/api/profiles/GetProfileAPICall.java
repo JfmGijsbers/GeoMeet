@@ -30,18 +30,9 @@ public class GetProfileAPICall extends AbstractAuthorizedAPICall {
 
     @Override
     protected void processResponse(JSONObject response) throws JSONException {
-        if (response.has(JSONKeys.FIRST_NAME) && response.has(JSONKeys.LAST_NAME) &&
-                response.has(JSONKeys.DESCRIPTION)) {
-            String email = "";
-            if (response.has(JSONKeys.EMAIL)) {
-                email = response.getString(JSONKeys.EMAIL);
-            }
-            ((GetProfileAPIResponseListener) responseListener).onFoundProfile(new ExternalUserProfile(
-                    response.getString(JSONKeys.FIRST_NAME),
-                    response.getString(JSONKeys.LAST_NAME),
-                    email,
-                    response.getString(JSONKeys.DESCRIPTION)
-            ));
+        ExternalUserProfile profile = ExternalUserProfile.read(userToGet, response);
+        if (profile != null) {
+            ((GetProfileAPIResponseListener) responseListener).onFoundProfile(profile);
         } else {
             ((GetProfileAPIResponseListener) responseListener).onProfileNotFound();
         }
