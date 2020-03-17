@@ -9,6 +9,7 @@ import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.Toast;
 
+import com.group02tue.geomeet.backend.Location2D;
 import com.group02tue.geomeet.backend.social.ImmutableMeeting;
 import com.group02tue.geomeet.backend.social.Meeting;
 import com.group02tue.geomeet.backend.social.MeetingManager;
@@ -19,6 +20,7 @@ import java.util.Collection;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 import java.util.UUID;
 
 public class MeetingsOverview extends AppCompatActivity implements MeetingSyncEventListener {
@@ -44,7 +46,7 @@ public class MeetingsOverview extends AppCompatActivity implements MeetingSyncEv
         meetingSyncManager = ((MainApplication)getApplication()).getMeetingSyncManager();
 
         List<Meeting> meetings = meetingSyncManager.getMeetingMemberships();
-        MeetingListAdapter listAdapter = new MeetingListAdapter(MeetingsOverview.this,
+        final MeetingListAdapter listAdapter = new MeetingListAdapter(MeetingsOverview.this,
                 meetings);
         meetingOverviewList = (ListView) findViewById(R.id.fullMeetingListView);
         meetingOverviewList.setAdapter(listAdapter);
@@ -53,8 +55,10 @@ public class MeetingsOverview extends AppCompatActivity implements MeetingSyncEv
             @Override
             public void onItemClick(AdapterView<?> parent, View view,
                                     int position, long id) {
-                Toast.makeText(MeetingsOverview.this, "You clicked at " +
-                        countryList[position], Toast.LENGTH_SHORT).show();
+                //Toast.makeText(MeetingsOverview.this, "You clicked at " +
+                //        countryList[position], Toast.LENGTH_SHORT).show();
+                Meeting meeting = listAdapter.getItem(position);
+                toMeeting(meeting);
             }
         });
     }
@@ -100,5 +104,22 @@ public class MeetingsOverview extends AppCompatActivity implements MeetingSyncEv
 
     @Override
     public void onReceivedMeetingInvitations(ArrayList<ImmutableMeeting> meetings) {
+    }
+    private void toMeeting(Meeting meeting) {
+        Intent meetingIntent = new Intent(this, SeeMeeting.class);
+        String name = meeting.getName();
+        String description = meeting.getDescription();
+        Date date = meeting.getMoment();
+        Location2D location = meeting.getLocation();
+        String strLocation = location.toString();
+        // TODO: get attending users Set<String> members = meeting.get
+        // TODO: get Admin Name: String hostedBy = meeting.getAdmin
+        meetingIntent.putExtra("name", name);
+        meetingIntent.putExtra("description", description);
+        meetingIntent.putExtra("date", date);
+        meetingIntent.putExtra("location", strLocation);
+        // meetingIntent.putExtra("adminName", hostedBy);
+        // meetingIntent.putExtra("members", members);
+        startActivity(meetingIntent);
     }
 }
