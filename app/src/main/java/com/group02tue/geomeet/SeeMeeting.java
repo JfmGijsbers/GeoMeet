@@ -14,7 +14,9 @@ import android.widget.Toast;
 import com.group02tue.geomeet.backend.Location2D;
 
 import java.text.ParseException;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.Set;
 
 public class SeeMeeting extends AppCompatActivity {
     TextView txtTitle, txtLocation, txtAdmin, txtDate, txtDescription;
@@ -38,6 +40,14 @@ public class SeeMeeting extends AppCompatActivity {
             Location2D location = Location2D.parse(strLocation);
         } catch (ParseException e) {
             e.printStackTrace();
+        }
+        String member = "";
+        int i = 0;
+        ArrayList<String> members = new ArrayList<>();
+        while (member != null) {
+            member = intent.getStringExtra("member" + i);
+            i++;
+            members.add(member);
         }
         /*
         Then, we need to find our views

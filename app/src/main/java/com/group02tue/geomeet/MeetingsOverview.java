@@ -15,6 +15,7 @@ import com.group02tue.geomeet.backend.social.Meeting;
 import com.group02tue.geomeet.backend.social.MeetingManager;
 import com.group02tue.geomeet.backend.social.MeetingSyncEventListener;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Date;
@@ -112,14 +113,18 @@ public class MeetingsOverview extends AppCompatActivity implements MeetingSyncEv
         Date date = meeting.getMoment();
         Location2D location = meeting.getLocation();
         String strLocation = location.toString();
-        // TODO: get attending users Set<String> members = meeting.get
-        // TODO: get Admin Name: String hostedBy = meeting.getAdmin
+        Set<String> members = meeting.getMembers();
+        String hostedBy = meeting.getAdminUsername();
         meetingIntent.putExtra("name", name);
         meetingIntent.putExtra("description", description);
         meetingIntent.putExtra("date", date);
         meetingIntent.putExtra("location", strLocation);
-        // meetingIntent.putExtra("adminName", hostedBy);
-        // meetingIntent.putExtra("members", members);
+        meetingIntent.putExtra("hostedBy", hostedBy);
+        int i = 0;
+        for (String member: members) {
+            meetingIntent.putExtra("member" + i, member);
+            i++;
+        }
         startActivity(meetingIntent);
     }
 }
