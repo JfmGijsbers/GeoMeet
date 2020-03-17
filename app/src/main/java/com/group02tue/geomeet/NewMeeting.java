@@ -34,8 +34,8 @@ public class NewMeeting extends AppCompatActivity implements MeetingSemiAdminEve
     private MeetingManager.MeetingSyncManager meetingSyncManager;
     private AuthenticationManager authenticationManager;
 
-    private UserListItem[] testList = {
-            new UserListItem("user", new ExternalUserProfile("a", "b", "email", "test")) };
+    private ExternalUserProfile[] testList = {
+            new ExternalUserProfile("user","a", "b", "email", "test") };
 
     private UUID createdMeetingId = null;
 
@@ -63,13 +63,13 @@ public class NewMeeting extends AppCompatActivity implements MeetingSemiAdminEve
 
         // Initialize list adapter
         ConnectionListAdapter listAdapter = new ConnectionListAdapter(NewMeeting.this,
-                new ArrayList<UserListItem>());
+                new ArrayList<ExternalUserProfile>());
         connectionList.setAdapter(listAdapter);
         connectionList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view,
                                     int position, long id) {
-                UserListItem userClicked = (UserListItem)parent.getItemAtPosition(position);
+                ExternalUserProfile userClicked = (ExternalUserProfile)parent.getItemAtPosition(position);
                 // TODO
             }
         });
@@ -126,7 +126,7 @@ public class NewMeeting extends AppCompatActivity implements MeetingSemiAdminEve
             MeetingAsAdminManager adminManager = new MeetingAsAdminManager(meetingManager,
                     authenticationManager, meetingManager.getMeeting(id, meetingSyncManager));
             for (int i = 0; i < connectionList.getAdapter().getCount(); i++) {
-                String username = ((UserListItem)connectionList.getAdapter().getItem(i)).getUsername();
+                String username = ((ExternalUserProfile)connectionList.getAdapter().getItem(i)).getUsername();
                 adminManager.inviteUserToMeeting(username);
                 // TODO: loop over list items and add users
             }

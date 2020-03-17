@@ -5,6 +5,7 @@ import android.app.Application;
 import com.group02tue.geomeet.backend.BackendTest;
 import com.group02tue.geomeet.backend.authentication.AuthenticationManager;
 import com.group02tue.geomeet.backend.chat.ChatManager;
+import com.group02tue.geomeet.backend.social.ConnectionsManager;
 import com.group02tue.geomeet.backend.social.InternalUserProfile;
 import com.group02tue.geomeet.backend.social.Meeting;
 import com.group02tue.geomeet.backend.social.MeetingManager;
@@ -22,6 +23,7 @@ public class MainApplication extends Application {
     private InternalUserProfile.ProfileManager profileManager;
     private MeetingManager meetingManager;
     private MeetingManager.MeetingSyncManager meetingSyncManager;
+    private ConnectionsManager connectionsManager;
 
     @Override
     public void onCreate() {
@@ -32,6 +34,7 @@ public class MainApplication extends Application {
         profileManager = internalUserProfile.new ProfileManager();
         meetingManager = new MeetingManager(getApplicationContext(), authenticationManager);
         meetingSyncManager = meetingManager.new MeetingSyncManager();
+        connectionsManager = new ConnectionsManager(authenticationManager);
 
         // NOTE: part below is for testing
         BackendTest test = new BackendTest(this);

@@ -13,11 +13,11 @@ import com.group02tue.geomeet.backend.social.ExternalUserProfile;
 import java.util.List;
 
 
-public class ConnectionListAdapter extends ArrayAdapter<UserListItem> {
+public class ConnectionListAdapter extends ArrayAdapter<ExternalUserProfile> {
     private final Activity context;
-    private final List<UserListItem> users;
+    private final List<ExternalUserProfile> users;
 
-    public ConnectionListAdapter(Activity context, List<UserListItem> users) {
+    public ConnectionListAdapter(Activity context, List<ExternalUserProfile> users) {
         super(context, R.layout.activity_connectionlist_item);
         this.context = context;
         this.users = users;
@@ -30,8 +30,8 @@ public class ConnectionListAdapter extends ArrayAdapter<UserListItem> {
                 true);
         TextView txtTitle = (TextView) rowView.findViewById(R.id.profileName);
         if (position < users.size()) {
-            txtTitle.setText(users.get(position).getProfile().getFirstName() + " " +
-                    users.get(position).getProfile().getLastName());
+            txtTitle.setText(users.get(position).getFirstName() + " " +
+                    users.get(position).getLastName());
         }
         return rowView;
     }
