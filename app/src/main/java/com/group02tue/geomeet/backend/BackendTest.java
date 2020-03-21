@@ -8,6 +8,7 @@ import com.group02tue.geomeet.backend.authentication.AuthenticationManager;
 import com.group02tue.geomeet.backend.chat.ChatEventListener;
 import com.group02tue.geomeet.backend.chat.ChatManager;
 import com.group02tue.geomeet.backend.chat.ChatMessage;
+import com.group02tue.geomeet.backend.social.ConnectionsManager;
 import com.group02tue.geomeet.backend.social.ExternalUserProfile;
 import com.group02tue.geomeet.backend.social.ImmutableMeeting;
 import com.group02tue.geomeet.backend.social.InternalUserProfile;
@@ -21,12 +22,17 @@ import com.group02tue.geomeet.backend.social.ProfileEventListener;
 import java.util.ArrayList;
 import java.util.UUID;
 
-public class BackendTest implements AuthenticationEventListener, ChatEventListener, MeetingSemiAdminEventListener, ProfileEventListener, MeetingAsAdminEventListener, MeetingSyncEventListener {
+import javax.sql.ConnectionEvent;
+import javax.sql.ConnectionEventListener;
+import com.group02tue.geomeet.backend.social.ConnectionsEventListener;
+
+public class BackendTest implements AuthenticationEventListener, ChatEventListener, MeetingSemiAdminEventListener, ProfileEventListener, MeetingAsAdminEventListener, MeetingSyncEventListener, ConnectionsEventListener {
     private AuthenticationManager authenticationManager;
     private ChatManager chatManager;
     private MeetingManager meetingManager;
     private InternalUserProfile internalUserProfile;
     private InternalUserProfile.ProfileManager profileManager;
+    private ConnectionsManager connectionsManager;
 
     public BackendTest(MainApplication application) {
         authenticationManager = application.getAuthenticationManager();
@@ -34,6 +40,7 @@ public class BackendTest implements AuthenticationEventListener, ChatEventListen
         internalUserProfile = application.getInternalUserProfile();
         meetingManager = application.getMeetingManager();
         profileManager = application.getProfileManager();
+        connectionsManager = application.getConnectionsManager();
     }
 
     public void start() {
@@ -42,6 +49,7 @@ public class BackendTest implements AuthenticationEventListener, ChatEventListen
         chatManager.addListener(this);
         meetingManager.addListener(this);
         profileManager.addListener(this);
+        connectionsManager.addListener(this);
 
         //authenticationManager.login("firstUser", "supersecret");
         //authenticationManager.register("tester", "1", "FirstName", "LastName", "email@email.nl");
@@ -54,6 +62,7 @@ public class BackendTest implements AuthenticationEventListener, ChatEventListen
         authenticationManager.removeListener(this);
         meetingManager.removeListener(this);
         profileManager.removeListener(this);
+        connectionsManager.removeListener(this);
     }
 
 
@@ -177,5 +186,10 @@ public class BackendTest implements AuthenticationEventListener, ChatEventListen
     @Override
     public void onProfileNotFound(String requestedUser) {
         Log.println(Log.DEBUG, "BackendProfile", "Failed to find profile for " + requestedUser);
+    }
+
+    @Override
+    public void onReceivedConnections(ArrayList<ExternalUserProfile> connections) {
+        Log.println(Log.DEBUG, "BackendConnections", "Received " + connections.size() + " connections");
     }
 }

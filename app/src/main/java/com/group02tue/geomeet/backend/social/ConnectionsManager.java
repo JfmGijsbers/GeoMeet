@@ -21,7 +21,7 @@ public class ConnectionsManager extends ObservableManager<ConnectionsEventListen
      * Makes a request to the server to get all connections.
      */
     public void requestConnections() {
-        new GetConnectionsAPICall(null, new GetConnectionsAPIResponseListener() {
+        new GetConnectionsAPICall(authenticationManager, new GetConnectionsAPIResponseListener() {
             @Override
             public void onReceivedConnections(final ArrayList<ExternalUserProfile> connections) {
                 notifyListeners(new Consumer<ConnectionsEventListener>() {
