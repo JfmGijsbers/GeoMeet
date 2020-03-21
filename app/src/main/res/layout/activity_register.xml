@@ -12,6 +12,22 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textSize="12sp"
+        android:text="User name:"
+        android:id="@+id/txt_username"
+        />
+    <EditText
+        android:inputType="textEmailAddress"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:ems="10"
+        android:id="@+id/et_username"
+        android:layout_below="@id/txt_username"
+        />
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize="12sp"
+        android:layout_below="@id/et_username"
         android:text="Email address:"
         android:id="@+id/txt_email"
         />
