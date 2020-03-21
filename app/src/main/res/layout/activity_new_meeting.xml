@@ -39,13 +39,31 @@
         android:id="@+id/et_location"
         android:layout_below="@id/txt_firstname"
         />
+    <EditText
+        android:layout_marginTop="20dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:ems="10"
+        android:id="@+id/et_manualUser"
+        android:layout_below="@id/et_location"
+        />
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/btn_addUser"
+        android:text="Add user"
+        style="@style/Widget.AppCompat.Button.Colored"
+        android:layout_alignTop="@id/et_manualUser"
+        android:layout_toEndOf="@id/et_manualUser"
+
+        />
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textSize="12sp"
         android:text="Invited:"
         android:id="@+id/txt_lastname"
-        android:layout_below="@id/et_location"
+        android:layout_below="@id/et_manualUser"
         />
     <ListView
         android:inputType="textPersonName"
