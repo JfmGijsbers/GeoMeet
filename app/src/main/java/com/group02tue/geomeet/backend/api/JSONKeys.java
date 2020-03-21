@@ -29,4 +29,6 @@ public final class JSONKeys {
 
     public final static String CONNECTIONS = "connections";
     public final static String CONNECTION_COUNT = "count";
+
+    public final static String FOUND = "found";
 }
