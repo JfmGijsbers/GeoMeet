@@ -55,6 +55,7 @@ public class MainApplication extends Application {
     }
     public MeetingManager getMeetingManager() { return meetingManager; }
     public MeetingManager.MeetingSyncManager getMeetingSyncManager() { return meetingSyncManager; }
+    public ConnectionsManager getConnectionsManager() { return connectionsManager; }
 
     public void reset() {
         authenticationManager.reset();

@@ -14,7 +14,7 @@ import org.json.JSONObject;
 import java.util.ArrayList;
 
 public class GetConnectionsAPICall extends AbstractAuthorizedAPICall {
-    private final static String CALL_URL = BASE_URL + "/api/contacts/get.php";
+    private final static String CALL_URL = BASE_URL + "/api/connections/get.php";
 
     public GetConnectionsAPICall(AuthenticationManager authenticationManager,
                                  GetConnectionsAPIResponseListener responseListener) {
@@ -39,6 +39,7 @@ public class GetConnectionsAPICall extends AbstractAuthorizedAPICall {
                     if (profile != null) {
                         int connectionCount = profileJson.getInt(JSONKeys.CONNECTION_COUNT);    // TODO: not used
                         connections.add(profile);
+
                     }
                 }
             }

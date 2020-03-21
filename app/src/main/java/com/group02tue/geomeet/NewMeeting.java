@@ -13,6 +13,7 @@ import android.widget.Toast;
 
 import com.group02tue.geomeet.backend.Location2D;
 import com.group02tue.geomeet.backend.authentication.AuthenticationManager;
+import com.group02tue.geomeet.backend.social.ConnectionsManager;
 import com.group02tue.geomeet.backend.social.ExternalUserProfile;
 import com.group02tue.geomeet.backend.social.Meeting;
 import com.group02tue.geomeet.backend.social.MeetingAsAdminManager;
@@ -25,7 +26,10 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.UUID;
 
-public class NewMeeting extends AppCompatActivity implements MeetingSemiAdminEventListener {
+import com.group02tue.geomeet.backend.social.ConnectionsEventListener;
+
+
+public class NewMeeting extends AppCompatActivity implements MeetingSemiAdminEventListener, ConnectionsEventListener {
     private EditText etName, etLocation, etDescription;
     private EditText etDay, etMonth, etYear, etHour, etMinute;
     private Button btnCreate;
@@ -33,9 +37,10 @@ public class NewMeeting extends AppCompatActivity implements MeetingSemiAdminEve
     private MeetingManager meetingManager;
     private MeetingManager.MeetingSyncManager meetingSyncManager;
     private AuthenticationManager authenticationManager;
+    private ConnectionsManager connectionsManager;
 
-    private ExternalUserProfile[] testList = {
-            new ExternalUserProfile("user","a", "b", "email", "test") };
+    //private ExternalUserProfile[] testList = {
+     //       new ExternalUserProfile("user","a", "b", "email", "test") };
 
     private UUID createdMeetingId = null;
 
@@ -47,6 +52,7 @@ public class NewMeeting extends AppCompatActivity implements MeetingSemiAdminEve
         meetingManager = ((MainApplication)getApplication()).getMeetingManager();
         meetingSyncManager = ((MainApplication)getApplication()).getMeetingSyncManager();
         authenticationManager = ((MainApplication)getApplication()).getAuthenticationManager();
+        connectionsManager = ((MainApplication)getApplication()).getConnectionsManager();
 
         String date = "03" + "03" + "2020" + "13" + "30";
         etName = findViewById(R.id.et_name);
@@ -65,28 +71,22 @@ public class NewMeeting extends AppCompatActivity implements MeetingSemiAdminEve
         ConnectionListAdapter listAdapter = new ConnectionListAdapter(NewMeeting.this,
                 new ArrayList<ExternalUserProfile>());
         connectionList.setAdapter(listAdapter);
-        connectionList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view,
-                                    int position, long id) {
-                ExternalUserProfile userClicked = (ExternalUserProfile)parent.getItemAtPosition(position);
-                // TODO
-            }
-        });
-        listAdapter.add(testList[0]);
-        // TODO: retrieve all current user's connections and add them to the listview
+        //listAdapter.add(testList[0]);
     }
 
     @Override
     protected void onStart() {
         super.onStart();
         meetingManager.addListener(this);
+        connectionsManager.addListener(this);
+        connectionsManager.requestConnections();
     }
 
     @Override
     protected void onStop() {
         super.onStop();
         meetingManager.removeListener(this);
+        connectionsManager.removeListener(this);
     }
 
     public void createMeeting(View view) {
@@ -126,15 +126,15 @@ public class NewMeeting extends AppCompatActivity implements MeetingSemiAdminEve
             MeetingAsAdminManager adminManager = new MeetingAsAdminManager(meetingManager,
                     authenticationManager, meetingManager.getMeeting(id, meetingSyncManager));
             for (int i = 0; i < connectionList.getAdapter().getCount(); i++) {
-                String username = ((ExternalUserProfile)connectionList.getAdapter().getItem(i)).getUsername();
-                adminManager.inviteUserToMeeting(username);
-                // TODO: loop over list items and add users
+                if (((ConnectionListAdapter)connectionList.getAdapter()).isChecked(i)) {
+                    String username = ((ExternalUserProfile)connectionList.getAdapter().getItem(i)).getUsername();
+                    adminManager.inviteUserToMeeting(username);
+                }
             }
 
-            Intent intent = new Intent(this, Dashboard.class);
+            Intent intent = new Intent(this, MeetingsOverview.class);
             startActivity(intent);
             finish();
-            // TODO: switch dashboard to MyMeetings
         }
     }
 
@@ -151,5 +151,16 @@ public class NewMeeting extends AppCompatActivity implements MeetingSemiAdminEve
                     Toast.LENGTH_LONG).show();
             btnCreate.setEnabled(true);
         }
+    }
+
+    @Override
+    public void onReceivedConnections(final ArrayList<ExternalUserProfile> connections) {
+        runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                connectionList.setAdapter(new ConnectionListAdapter(NewMeeting.this,
+                        connections));
+            }
+        });
     }
 }
