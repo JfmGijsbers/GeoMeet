@@ -6,6 +6,8 @@ import com.group02tue.geomeet.backend.ObservableManager;
 import com.group02tue.geomeet.backend.api.APIFailureReason;
 import com.group02tue.geomeet.backend.api.connections.GetConnectionsAPICall;
 import com.group02tue.geomeet.backend.api.connections.GetConnectionsAPIResponseListener;
+import com.group02tue.geomeet.backend.api.profiles.QueryUsersAPICall;
+import com.group02tue.geomeet.backend.api.profiles.QueryUsersAPIResponseListener;
 import com.group02tue.geomeet.backend.authentication.AuthenticationManager;
 
 import java.util.ArrayList;
@@ -36,5 +38,17 @@ public class ConnectionsManager extends ObservableManager<ConnectionsEventListen
             public void onFailure(APIFailureReason response) {
             }
         }).execute();
+    }
+
+    /**
+     * Queries all users corresponding to the given queryUserString.
+     * @param authenticationManager Authentication manager
+     * @param responseListener Listener for responses from the server
+     * @param queryUserString What to look for
+     */
+    public static void QueryUsernames(AuthenticationManager authenticationManager,
+                                      QueryUsersAPIResponseListener responseListener,
+                                      String queryUserString) {
+        new QueryUsersAPICall(authenticationManager, responseListener, queryUserString).execute();
     }
 }

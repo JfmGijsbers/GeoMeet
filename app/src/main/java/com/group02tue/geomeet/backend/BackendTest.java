@@ -3,6 +3,8 @@ package com.group02tue.geomeet.backend;
 import android.util.Log;
 
 import com.group02tue.geomeet.MainApplication;
+import com.group02tue.geomeet.backend.api.APIFailureReason;
+import com.group02tue.geomeet.backend.api.profiles.QueryUsersAPIResponseListener;
 import com.group02tue.geomeet.backend.authentication.AuthenticationEventListener;
 import com.group02tue.geomeet.backend.authentication.AuthenticationManager;
 import com.group02tue.geomeet.backend.chat.ChatEventListener;
@@ -20,6 +22,7 @@ import com.group02tue.geomeet.backend.social.MeetingSyncEventListener;
 import com.group02tue.geomeet.backend.social.ProfileEventListener;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.UUID;
 
 import javax.sql.ConnectionEvent;
