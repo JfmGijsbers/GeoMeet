@@ -26,14 +26,13 @@ public class ChatMessage {
     public boolean hasBeenSent() {
         return isSent;
     }
-
     public String getSender() {
         return sender;
     }
-
     public String getContent() {
         return content;
     }
+    public String getReceiver() {return receiver;}
 
     public Date getMoment() {
         return moment;

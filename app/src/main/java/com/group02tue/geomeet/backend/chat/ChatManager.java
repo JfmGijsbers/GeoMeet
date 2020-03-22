@@ -164,7 +164,15 @@ public class ChatManager extends ObservableManager<ChatEventListener> {
      * TODO 1: write this adapter (part of UI).
      * TODO 2: method which convert List<ChatMessage> into array adapter for ListView (part of backend).
      */
-     public List<ChatMessage> getMessages() {
-         return new ArrayList<>(messages.values());
+     public List<ChatMessage> getMessages(String meetingId) {
+         synchronized (messages) {
+             ArrayList<ChatMessage> meetingMessages = new ArrayList<>();
+             for (ChatMessage message : messages.values()) {
+                 if (message.getReceiver().equals(meetingId)) {
+                     meetingMessages.add(message);
+                 }
+             }
+             return meetingMessages;
+         }
      }
 }
