@@ -92,7 +92,6 @@
         android:layout_height="wrap_content"
         style="@style/Widget.AppCompat.Button.Colored"
         android:text="Go to chat"
-        android:onClick="toChat"
         android:layout_below="@id/seeMeeting_description"
         android:layout_alignEnd="@id/seeMeeting_description"
         android:onClick="toChat"

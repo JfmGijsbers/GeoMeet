@@ -25,10 +25,12 @@ public class MessageListActivity extends AppCompatActivity implements ChatEventL
     private ChatManager chatManager;
     private String meetingId;
 
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_message_list);
+
         meetingId = getIntent().getStringExtra("meetingId");
         chatBox = findViewById(R.id.edittext_chatbox);
         chatManager = ((MainApplication)getApplication()).getChatManager();
@@ -39,7 +41,22 @@ public class MessageListActivity extends AppCompatActivity implements ChatEventL
                 ((MainApplication)getApplication()).getAuthenticationManager());
         messageRecycler.setLayoutManager(new LinearLayoutManager(this));
         messageRecycler.setAdapter(messageAdapter);
+
+        fixChat();
+
+        messageRecycler.addOnLayoutChangeListener( new View.OnLayoutChangeListener() {
+            public void onLayoutChange(View v, int left, int top, int right, int bottom,
+                                       int leftWas, int topWas, int rightWas, int bottomWas) {
+                fixChat();
+            }
+        });
+
     }
+    private void fixChat() {
+        messageAdapter.notifyDataSetChanged();
+        messageRecycler.scrollToPosition(messageAdapter.getItemCount() - 1);
+    }
+
 
     @Override
     protected void onStart() {
@@ -57,11 +74,13 @@ public class MessageListActivity extends AppCompatActivity implements ChatEventL
     @Override
     public void onNewMessageReceived(ChatMessage message) {
         messages.add(message);
+        fixChat();
     }
 
     @Override
     public void onMessageSent(ChatMessage message) {
         messages.add(message);
+        fixChat();
     }
 
     @Override
@@ -76,6 +95,7 @@ public class MessageListActivity extends AppCompatActivity implements ChatEventL
             chatManager.sendMessage(meetingId, message);
         }
         chatBox.setText("");
+        fixChat();
     }
     
 }
