@@ -14,7 +14,6 @@ import com.group02tue.geomeet.backend.chat.ChatEventListener;
 import com.group02tue.geomeet.backend.chat.ChatManager;
 import com.group02tue.geomeet.backend.chat.ChatMessage;
 
-import java.util.ArrayList;
 import java.util.List;
 
 public class MessageListActivity extends AppCompatActivity implements ChatEventListener {
@@ -35,11 +34,13 @@ public class MessageListActivity extends AppCompatActivity implements ChatEventL
         chatManager = ((MainApplication)getApplication()).getChatManager();
 
         messages = chatManager.getMessages();
+        ChatMessage dummy = new ChatMessage("Jero", meetingId, "Hoi");
         messageRecycler = (RecyclerView) findViewById(R.id.recyclerview_message_list);
         messageAdapter = new MessageListAdapter(messages,
                 ((MainApplication)getApplication()).getAuthenticationManager());
-        messageRecycler.setAdapter(messageAdapter);
+        //Log.e("DEBUG", String.valueOf(messageAdapter.getItemCount()));
         messageRecycler.setLayoutManager(new LinearLayoutManager(this));
+        messageRecycler.setAdapter(messageAdapter);
     }
 
     @Override
@@ -77,4 +78,5 @@ public class MessageListActivity extends AppCompatActivity implements ChatEventL
             chatManager.sendMessage(meetingId, message);
         }
     }
+    
 }

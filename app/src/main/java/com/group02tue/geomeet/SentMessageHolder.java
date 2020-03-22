@@ -1,12 +1,9 @@
 package com.group02tue.geomeet;
 
+import android.util.Log;
 import android.view.View;
-import android.widget.ImageView;
 import android.widget.TextView;
-
 import androidx.recyclerview.widget.RecyclerView;
-
-import java.util.Date;
 
 public class SentMessageHolder extends RecyclerView.ViewHolder {
     TextView messageText, timeText;

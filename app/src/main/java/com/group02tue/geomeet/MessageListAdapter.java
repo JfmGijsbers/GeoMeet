@@ -1,6 +1,7 @@
 package com.group02tue.geomeet;
 
 import android.content.Context;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -32,10 +33,10 @@ public class MessageListAdapter extends RecyclerView.Adapter {
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View view;
-
         if (viewType == VIEW_TYPE_MESSAGE_SENT) {
             view = LayoutInflater.from(parent.getContext())
                     .inflate(R.layout.item_message_sent, parent, false);
+            Log.e("DEBUG", "get here");
             return new SentMessageHolder(view);
         }
         else if (viewType == VIEW_TYPE_MESSAGE_RECEIVED) {
@@ -67,6 +68,7 @@ public class MessageListAdapter extends RecyclerView.Adapter {
 
     @Override
     public int getItemViewType(int position) {
+        Log.e("DEBUG", "Pos: " + position);
         ChatMessage message = messageList.get(position);
         if (message.isSentByMe(authenticationManager.getUsername())) {
             return VIEW_TYPE_MESSAGE_SENT;
