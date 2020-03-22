@@ -25,17 +25,6 @@ import java.util.Set;
 import java.util.UUID;
 
 public class MeetingsOverview extends AppCompatActivity implements MeetingSyncEventListener {
-    String countryList[] = {"Sprint retrospection meeting", "Sprint planning", "Lucas' monologue",
-            "Sprint 2", "Borrel meeting", "Final sprint"};
-    Integer[] imageId = {
-            R.drawable.ic_launcher_foreground,
-            R.drawable.ic_launcher_foreground,
-            R.drawable.ic_launcher_foreground,
-            R.drawable.ic_launcher_foreground,
-            R.drawable.ic_launcher_foreground,
-            R.drawable.ic_launcher_foreground
-    };
-
     ListView meetingOverviewList;
 
     private MeetingManager.MeetingSyncManager meetingSyncManager;
@@ -76,12 +65,6 @@ public class MeetingsOverview extends AppCompatActivity implements MeetingSyncEv
         meetingSyncManager.removeListener(this);
     }
 
-
-    public void chat(View view) {
-        Toast.makeText(MeetingsOverview.this, "Chat not implemented yet", Toast.LENGTH_SHORT)
-                .show();
-    }
-
     public void newMeeting(View view) {
         Intent newMeeting = new Intent(this, NewMeeting.class);
         startActivity(newMeeting);
@@ -120,6 +103,7 @@ public class MeetingsOverview extends AppCompatActivity implements MeetingSyncEv
         meetingIntent.putExtra("date", date);
         meetingIntent.putExtra("location", strLocation);
         meetingIntent.putExtra("hostedBy", hostedBy);
+        meetingIntent.putExtra("meetingId", meeting.getId().toString());
         int i = 0;
         for (String member: members) {
             meetingIntent.putExtra("member" + i, member);

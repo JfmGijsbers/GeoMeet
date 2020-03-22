@@ -8,6 +8,9 @@ import android.view.ViewGroup;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.group02tue.geomeet.backend.authentication.AuthenticationManager;
+import com.group02tue.geomeet.backend.chat.ChatMessage;
+
 import java.util.Date;
 import java.util.List;
 import java.util.Random;
@@ -16,12 +19,13 @@ public class MessageListAdapter extends RecyclerView.Adapter {
     private static final int VIEW_TYPE_MESSAGE_SENT = 1;
     private static final int VIEW_TYPE_MESSAGE_RECEIVED = 2;
 
-    private Context context;
-    private List<BaseMessage> messageList;
+    private final List<ChatMessage> messageList;
+    private final AuthenticationManager authenticationManager;
 
-    public MessageListAdapter(Context context, List<BaseMessage> messageList) {
-        this.context = context;
+    public MessageListAdapter(List<ChatMessage> messageList,
+                              AuthenticationManager authenticationManager) {
         this.messageList = messageList;
+        this.authenticationManager = authenticationManager;
     }
 
     @NonNull
@@ -44,17 +48,15 @@ public class MessageListAdapter extends RecyclerView.Adapter {
 
     @Override
     public void onBindViewHolder(@NonNull RecyclerView.ViewHolder holder, int position) {
-        //BaseMessage message = messageList.get(position);
-        String message = "Hello";
-        Date date = new Date();
-        String name = "Jero";
+        ChatMessage message = messageList.get(position);
 
         switch (holder.getItemViewType()) {
             case VIEW_TYPE_MESSAGE_SENT:
-                ((SentMessageHolder) holder).bind(message);
+                ((SentMessageHolder) holder).bind(message.getContent());
                 break;
             case VIEW_TYPE_MESSAGE_RECEIVED:
-                ((ReceivedMessageHolder) holder).bind(message, date, name);
+                ((ReceivedMessageHolder) holder).bind(message.getContent(),
+                        message.getMoment(), message.getSender());
         }
     }
 
@@ -65,15 +67,11 @@ public class MessageListAdapter extends RecyclerView.Adapter {
 
     @Override
     public int getItemViewType(int position) {
-        BaseMessage message = messageList.get(position);
-
-        /** if (message.sender.ID == currentUser.ID)) {
-         * return VIEW_TYPE_MESSAGE_SENT;
-         *  else {
-         *  return VIEW_TYPE_MESSAGE_RECEIVED
-         */
-        return (Math.random() <= 0.5) ? 1 : 2;
+        ChatMessage message = messageList.get(position);
+        if (message.isSentByMe(authenticationManager.getUsername())) {
+            return VIEW_TYPE_MESSAGE_SENT;
+        } else {
+            return VIEW_TYPE_MESSAGE_RECEIVED;
+        }
     }
-
-
 }

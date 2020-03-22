@@ -21,6 +21,7 @@ import java.util.Set;
 public class SeeMeeting extends AppCompatActivity {
     TextView txtTitle, txtLocation, txtAdmin, txtDate, txtDescription;
     ListView connectionList;
+    private String meetingId;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -36,6 +37,7 @@ public class SeeMeeting extends AppCompatActivity {
         Date date = (Date) intent.getSerializableExtra("date");
         String strLocation = intent.getStringExtra("location");
         String hostedBy = intent.getStringExtra("hostedBy");
+        meetingId = intent.getStringExtra("meetingId");
         try {
             Location2D location = Location2D.parse(strLocation);
         } catch (ParseException e) {
@@ -68,8 +70,14 @@ public class SeeMeeting extends AppCompatActivity {
         txtDescription.setText(description);
 
     }
-    public void toMap(View view){
+    public void toMap(View view) {
         Intent mapIntent = new Intent(this, LocationViewer.class);
         startActivity(mapIntent);
+    }
+
+    public void toChat(View view) {
+        Intent chatIntent = new Intent(this, MessageListActivity.class);
+        chatIntent.putExtra("meetingId", meetingId);
+        startActivity(chatIntent);
     }
 }

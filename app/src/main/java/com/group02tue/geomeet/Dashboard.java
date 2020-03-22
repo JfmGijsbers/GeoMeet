@@ -138,10 +138,5 @@ public class Dashboard extends AppCompatActivity {
 
     public void toGroups(View view) {
     }
-
-    public void toChat(View view) {
-        Intent chatIntent = new Intent(this, MessageListActivity.class);
-        startActivity(chatIntent);
-    }
 }
 

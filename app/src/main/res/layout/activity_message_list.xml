@@ -55,7 +55,8 @@
             android:layout_width="64dp"
             android:layout_height="48dp"
             android:gravity="center"
-            android:layout_gravity="bottom" />
+            android:layout_gravity="bottom"
+            android:onClick="onNewMessage"/>
 
     </LinearLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>
