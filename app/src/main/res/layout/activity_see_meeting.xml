@@ -94,6 +94,7 @@
         android:text="Go to chat"
         android:layout_below="@id/seeMeeting_description"
         android:layout_alignEnd="@id/seeMeeting_description"
+        android:onClick="toChat"
         />
 
 

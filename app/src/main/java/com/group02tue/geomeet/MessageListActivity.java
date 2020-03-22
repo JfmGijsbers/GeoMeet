@@ -34,12 +34,12 @@ public class MessageListActivity extends AppCompatActivity implements ChatEventL
         chatBox = findViewById(R.id.edittext_chatbox);
         chatManager = ((MainApplication)getApplication()).getChatManager();
 
-        messages = chatManager.getMessages();
+        messages = chatManager.getMessages(meetingId);
         messageRecycler = (RecyclerView) findViewById(R.id.recyclerview_message_list);
         messageAdapter = new MessageListAdapter(messages,
                 ((MainApplication)getApplication()).getAuthenticationManager());
-        messageRecycler.setAdapter(messageAdapter);
         messageRecycler.setLayoutManager(new LinearLayoutManager(this));
+        messageRecycler.setAdapter(messageAdapter);
     }
 
     @Override
@@ -76,5 +76,6 @@ public class MessageListActivity extends AppCompatActivity implements ChatEventL
         if (!message.isEmpty()) {
             chatManager.sendMessage(meetingId, message);
         }
+        chatBox.setText("");
     }
 }
