@@ -129,6 +129,11 @@ public class Dashboard extends AppCompatActivity {
     public void toProfile(View view) {
         Intent profileIntent = new Intent(this, Profile.class);
         startActivity(profileIntent);
+
+        /*Intent locationIntent = new Intent(this, LocationViewer.class);
+        locationIntent.putExtra("fromSeeMeeting", -1);
+        locationIntent.putExtra("location", "61.0@28.0@Test");
+        startActivity(locationIntent);*/
     }
 
     public void toConnections(View view) {
