@@ -17,17 +17,24 @@ import com.group02tue.geomeet.backend.social.ExternalUserProfile;
 import java.util.List;
 
 
-public class ConnectionListAdapter extends ArrayAdapter<ExternalUserProfile>
+public class ConnectionListAdapter extends ArrayAdapter<String>
         implements CheckBox.OnCheckedChangeListener {
     private final Activity context;
-    private final List<ExternalUserProfile> users;
+    private final List<String> users;
     private final SparseBooleanArray mCheckStates;
 
-    public ConnectionListAdapter(Activity context, List<ExternalUserProfile> users) {
+    public ConnectionListAdapter(Activity context, List<String> users) {
         super(context, R.layout.activity_connectionlist_item);
         this.context = context;
         this.users = users;
         mCheckStates = new SparseBooleanArray(users.size());
+    }
+
+
+    @Override
+    public void add(String object) {
+        users.add(object);
+        super.add(object);
     }
 
     @Override
@@ -40,12 +47,10 @@ public class ConnectionListAdapter extends ArrayAdapter<ExternalUserProfile>
         chkUser.setOnCheckedChangeListener(this);
         chkUser.setTag(position);
         if (position < users.size()) {
-            txtTitle.setText(users.get(position).getFirstName() + " " +
-                    users.get(position).getLastName());
+            txtTitle.setText(users.get(position));
         }
         return rowView;
     }
-
 
     public boolean isChecked(int position) {
         return mCheckStates.get(position, false);

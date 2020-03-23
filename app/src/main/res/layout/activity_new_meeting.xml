@@ -1,17 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 
-<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout  xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:style="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".NewMeeting"
     android:background="@color/colorPrimaryDark">
-<androidx.constraintlayout.widget.ConstraintLayout
-    android:id="@+id/relativeLayout"
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:padding="10dp">
 
     <TextView
         android:id="@+id/txt_meeting_name"
@@ -54,7 +49,7 @@
         style:layout_constraintTop_toBottomOf="@+id/txt_meeting_location" />
 
     <EditText
-        android:id="@+id/et__meeting_manual_user"
+        android:id="@+id/et_meeting_manual_user"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:ems="10"
@@ -73,9 +68,10 @@
         style:layout_constraintBottom_toTopOf="@+id/listview_connections"
         style:layout_constraintEnd_toEndOf="parent"
         style:layout_constraintHorizontal_bias="0.0"
-        style:layout_constraintStart_toEndOf="@+id/et__meeting_manual_user"
+        style:layout_constraintStart_toEndOf="@+id/et_meeting_manual_user"
         style:layout_constraintTop_toBottomOf="@+id/et_meeting_location"
-        style:layout_constraintVertical_bias="0.514" />
+        style:layout_constraintVertical_bias="0.514"
+        android:onClick="addManualUser"/>
 
     <TextView
         android:id="@+id/txt_invited_connections"
@@ -85,19 +81,19 @@
         android:text="Invited:"
         android:textSize="12sp"
         style:layout_constraintStart_toStartOf="@+id/listview_connections"
-        style:layout_constraintTop_toBottomOf="@+id/et__meeting_manual_user" />
+        style:layout_constraintTop_toBottomOf="@+id/et_meeting_manual_user" />
 
     <ListView
         android:id="@+id/listview_connections"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
         android:layout_marginTop="127dp"
         android:layout_marginBottom="127dp"
         android:ems="10"
         android:inputType="textPersonName"
-        style:layout_constraintBottom_toBottomOf="@+id/et_day"
+        style:layout_constraintBottom_toTopOf="@+id/et_meeting_description"
         style:layout_constraintEnd_toEndOf="parent"
-        style:layout_constraintTop_toBottomOf="@+id/txt_meeting_location" />
+        style:layout_constraintTop_toBottomOf="@+id/txt_invited_connections" />
 
     <TextView
         android:id="@+id/txt_meeting_description"
@@ -241,5 +237,4 @@
         android:text="Cancel"
         style:layout_constraintStart_toStartOf="@+id/btn_create_meeting"
         style:layout_constraintTop_toBottomOf="@+id/btn_create_meeting" />
-</androidx.constraintlayout.widget.ConstraintLayout>
-</ScrollView>
+</androidx.constraintlayout.widget.ConstraintLayout >

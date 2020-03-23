@@ -4,6 +4,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -14,6 +15,7 @@ import com.group02tue.geomeet.backend.Location2D;
 import com.group02tue.geomeet.backend.authentication.AuthenticationManager;
 import com.group02tue.geomeet.backend.social.ConnectionsManager;
 import com.group02tue.geomeet.backend.social.ExternalUserProfile;
+import com.group02tue.geomeet.backend.social.InternalUserProfile;
 import com.group02tue.geomeet.backend.social.Meeting;
 import com.group02tue.geomeet.backend.social.MeetingAsAdminManager;
 import com.group02tue.geomeet.backend.social.MeetingManager;
@@ -25,11 +27,14 @@ import java.util.Date;
 import java.util.UUID;
 
 import com.group02tue.geomeet.backend.social.ConnectionsEventListener;
+import com.group02tue.geomeet.backend.social.ProfileEventListener;
 
 
-public class NewMeeting extends AppCompatActivity implements MeetingSemiAdminEventListener, ConnectionsEventListener {
+public class NewMeeting extends AppCompatActivity implements MeetingSemiAdminEventListener,
+        ConnectionsEventListener {
     private EditText etName, etLocation, etDescription;
     private EditText etDay, etMonth, etYear, etHour, etMinute;
+    private EditText manualUser;
     private Button btnCreate;
     private ListView connectionList;
     private MeetingManager meetingManager;
@@ -52,7 +57,6 @@ public class NewMeeting extends AppCompatActivity implements MeetingSemiAdminEve
         authenticationManager = ((MainApplication)getApplication()).getAuthenticationManager();
         connectionsManager = ((MainApplication)getApplication()).getConnectionsManager();
 
-        String date = "03" + "03" + "2020" + "13" + "30";
         etName = findViewById(R.id.et_meeting_name);
         etLocation = findViewById(R.id.et_meeting_location);
         etDescription = findViewById(R.id.et_meeting_description);
@@ -65,11 +69,12 @@ public class NewMeeting extends AppCompatActivity implements MeetingSemiAdminEve
         etHour = findViewById(R.id.et_hour);
         etMinute = findViewById(R.id.et_minute);
 
+        manualUser = findViewById(R.id.et_meeting_manual_user);
+
         // Initialize list adapter
         ConnectionListAdapter listAdapter = new ConnectionListAdapter(NewMeeting.this,
-                new ArrayList<ExternalUserProfile>());
+                new ArrayList<String>());
         connectionList.setAdapter(listAdapter);
-        //listAdapter.add(testList[0]);
     }
 
     @Override
@@ -85,6 +90,12 @@ public class NewMeeting extends AppCompatActivity implements MeetingSemiAdminEve
         super.onStop();
         meetingManager.removeListener(this);
         connectionsManager.removeListener(this);
+    }
+
+    public void addManualUser(View view) {
+        String username = String.valueOf(manualUser.getText());
+        ((ConnectionListAdapter)connectionList.getAdapter()).add(username);
+        ((ConnectionListAdapter) connectionList.getAdapter()).notifyDataSetChanged();
     }
 
     public void createMeeting(View view) {
@@ -125,7 +136,7 @@ public class NewMeeting extends AppCompatActivity implements MeetingSemiAdminEve
                     authenticationManager, meetingManager.getMeeting(id, meetingSyncManager));
             for (int i = 0; i < connectionList.getAdapter().getCount(); i++) {
                 if (((ConnectionListAdapter)connectionList.getAdapter()).isChecked(i)) {
-                    String username = ((ExternalUserProfile)connectionList.getAdapter().getItem(i)).getUsername();
+                    String username = (String)connectionList.getAdapter().getItem(i);
                     adminManager.inviteUserToMeeting(username);
                 }
             }
@@ -156,8 +167,11 @@ public class NewMeeting extends AppCompatActivity implements MeetingSemiAdminEve
         runOnUiThread(new Runnable() {
             @Override
             public void run() {
-                connectionList.setAdapter(new ConnectionListAdapter(NewMeeting.this,
-                        connections));
+                for (ExternalUserProfile profile : connections) {
+                    ((ConnectionListAdapter)connectionList.getAdapter()).add(
+                            profile.getUsername());
+                }
+                ((ConnectionListAdapter)connectionList.getAdapter()).notifyDataSetChanged();
             }
         });
     }
