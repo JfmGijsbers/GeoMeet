@@ -1,38 +1,41 @@
 package com.group02tue.geomeet.backend;
 
-import android.content.Context;
 import android.util.Log;
 
 import com.group02tue.geomeet.MainApplication;
 import com.group02tue.geomeet.backend.api.APIFailureReason;
-import com.group02tue.geomeet.backend.api.BooleanAPIResponseListener;
+import com.group02tue.geomeet.backend.api.profiles.QueryUsersAPIResponseListener;
 import com.group02tue.geomeet.backend.authentication.AuthenticationEventListener;
 import com.group02tue.geomeet.backend.authentication.AuthenticationManager;
 import com.group02tue.geomeet.backend.chat.ChatEventListener;
 import com.group02tue.geomeet.backend.chat.ChatManager;
 import com.group02tue.geomeet.backend.chat.ChatMessage;
+import com.group02tue.geomeet.backend.social.ConnectionsManager;
 import com.group02tue.geomeet.backend.social.ExternalUserProfile;
 import com.group02tue.geomeet.backend.social.ImmutableMeeting;
 import com.group02tue.geomeet.backend.social.InternalUserProfile;
 import com.group02tue.geomeet.backend.social.Meeting;
 import com.group02tue.geomeet.backend.social.MeetingAsAdminEventListener;
-import com.group02tue.geomeet.backend.social.MeetingAsAdminManager;
-import com.group02tue.geomeet.backend.social.MeetingEventListener;
+import com.group02tue.geomeet.backend.social.MeetingSemiAdminEventListener;
 import com.group02tue.geomeet.backend.social.MeetingManager;
+import com.group02tue.geomeet.backend.social.MeetingSyncEventListener;
 import com.group02tue.geomeet.backend.social.ProfileEventListener;
-import com.group02tue.geomeet.backend.social.UserProfile;
 
 import java.util.ArrayList;
-import java.util.Date;
-import java.util.Set;
+import java.util.HashSet;
 import java.util.UUID;
 
-public class BackendTest implements AuthenticationEventListener, ChatEventListener, MeetingEventListener, ProfileEventListener, MeetingAsAdminEventListener {
+import javax.sql.ConnectionEvent;
+import javax.sql.ConnectionEventListener;
+import com.group02tue.geomeet.backend.social.ConnectionsEventListener;
+
+public class BackendTest implements AuthenticationEventListener, ChatEventListener, MeetingSemiAdminEventListener, ProfileEventListener, MeetingAsAdminEventListener, MeetingSyncEventListener, ConnectionsEventListener {
     private AuthenticationManager authenticationManager;
     private ChatManager chatManager;
     private MeetingManager meetingManager;
     private InternalUserProfile internalUserProfile;
     private InternalUserProfile.ProfileManager profileManager;
+    private ConnectionsManager connectionsManager;
 
     public BackendTest(MainApplication application) {
         authenticationManager = application.getAuthenticationManager();
@@ -40,6 +43,7 @@ public class BackendTest implements AuthenticationEventListener, ChatEventListen
         internalUserProfile = application.getInternalUserProfile();
         meetingManager = application.getMeetingManager();
         profileManager = application.getProfileManager();
+        connectionsManager = application.getConnectionsManager();
     }
 
     public void start() {
@@ -48,8 +52,9 @@ public class BackendTest implements AuthenticationEventListener, ChatEventListen
         chatManager.addListener(this);
         meetingManager.addListener(this);
         profileManager.addListener(this);
+        connectionsManager.addListener(this);
 
-        authenticationManager.login("firstUser", "supersecret");
+        //authenticationManager.login("firstUser", "supersecret");
         //authenticationManager.register("tester", "1", "FirstName", "LastName", "email@email.nl");
         //authenticationManager.login("tester", "1");
         //authenticationManager.login();
@@ -60,6 +65,7 @@ public class BackendTest implements AuthenticationEventListener, ChatEventListen
         authenticationManager.removeListener(this);
         meetingManager.removeListener(this);
         profileManager.removeListener(this);
+        connectionsManager.removeListener(this);
     }
 
 
@@ -183,5 +189,10 @@ public class BackendTest implements AuthenticationEventListener, ChatEventListen
     @Override
     public void onProfileNotFound(String requestedUser) {
         Log.println(Log.DEBUG, "BackendProfile", "Failed to find profile for " + requestedUser);
+    }
+
+    @Override
+    public void onReceivedConnections(ArrayList<ExternalUserProfile> connections) {
+        Log.println(Log.DEBUG, "BackendConnections", "Received " + connections.size() + " connections");
     }
 }

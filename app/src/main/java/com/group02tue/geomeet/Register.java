@@ -16,7 +16,7 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 public class Register extends AppCompatActivity implements AuthenticationEventListener {
-    private EditText etEmail, etPass, etPass2, etFirstname, etLastname; // TODO
+    private EditText etEmail, etPass, etPass2, etFirstname, etLastname, etUsername;
     private Button btnRegister;
     private AuthenticationManager authenticationManager;
 
@@ -29,6 +29,8 @@ public class Register extends AppCompatActivity implements AuthenticationEventLi
         etPass2 = findViewById(R.id.et_confirmPassword);
         etFirstname = findViewById(R.id.et_firstname);
         etLastname = findViewById(R.id.et_lastname);
+        etUsername = findViewById(R.id.et_username);
+
         btnRegister = findViewById(R.id.btn_register);
 
         authenticationManager = ((MainApplication)getApplication()).getAuthenticationManager();
@@ -52,6 +54,7 @@ public class Register extends AppCompatActivity implements AuthenticationEventLi
         String pass2 = String.valueOf(etPass2.getText());
         String firstName = String.valueOf(etFirstname.getText());
         String lastName = String.valueOf(etLastname.getText());
+        String username = String.valueOf(etUsername.getText());
         etEmail.setError(null);
         etPass.setError(null);
         etPass2.setError(null);
@@ -78,26 +81,34 @@ public class Register extends AppCompatActivity implements AuthenticationEventLi
             etPass2.setError("Passwords do not match");
             noMistake = false;
         } else if (!validateInput(pass2)) {
-            etPass.setError("Please don't use invalid characters (\\, \' etc)");
+            etPass2.setError("Please don't use invalid characters (\\, \' etc)");
             noMistake = false;
         }
         if (firstName.equals("")) {
             etFirstname.setError("Please fill in your first name");
             noMistake = false;
         } else if (!validateInput(firstName)) {
-            etPass.setError("Please don't use invalid characters (\\, \' etc)");
+            etFirstname.setError("Please don't use invalid characters (\\, \' etc)");
             noMistake = false;
         }
         if (lastName.equals("")) {
             etLastname.setError("Please fill in your last name");
             noMistake = false;
         } else if (!validateInput(lastName)) {
-            etPass.setError("Please don't use invalid characters (\\, \' etc)");
+            etLastname.setError("Please don't use invalid characters (\\, \' etc)");
+            noMistake = false;
+        }
+        if (username.equals("")) {
+            etUsername.setError("Please fill in your last name");
+            noMistake = false;
+        } else if (!validateUsername(username)) {
+            etUsername.setError("Invalid username");
             noMistake = false;
         }
         if (noMistake) {
-            authenticationManager.register(email, pass, firstName, lastName, email);
+            authenticationManager.register(username, pass, firstName, lastName, email);
             etPass.setText("");
+            etUsername.setText("");
             etPass2.setText("");
             etEmail.setText("");
             etFirstname.setText("");
@@ -118,6 +129,12 @@ public class Register extends AppCompatActivity implements AuthenticationEventLi
         String expression = "^[\\w\\s]+$";
         Pattern pattern = Pattern.compile(expression, Pattern.CASE_INSENSITIVE);
         Matcher matcher = pattern.matcher(input);
+        return matcher.matches();
+    }
+    public static boolean validateUsername(String username) {
+        String expression = "/^[a-zA-Z0-9]+([a-zA-Z0-9](_|-| )[a-zA-Z0-9])*[a-zA-Z0-9]+$/";
+        Pattern pattern = Pattern.compile(expression);
+        Matcher matcher = pattern.matcher(username);
         return matcher.matches();
     }
     /*

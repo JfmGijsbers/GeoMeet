@@ -18,6 +18,7 @@ import com.group02tue.geomeet.backend.authentication.AuthenticationManager;
 import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 
@@ -163,5 +164,15 @@ public class ChatManager extends ObservableManager<ChatEventListener> {
      * TODO 1: write this adapter (part of UI).
      * TODO 2: method which convert List<ChatMessage> into array adapter for ListView (part of backend).
      */
-    // public Adapter getChatMessageAdapter() { ... }
+     public List<ChatMessage> getMessages(String meetingId) {
+         synchronized (messages) {
+             ArrayList<ChatMessage> meetingMessages = new ArrayList<>();
+             for (ChatMessage message : messages.values()) {
+                 if (message.getReceiver().equals(meetingId)) {
+                     meetingMessages.add(message);
+                 }
+             }
+             return meetingMessages;
+         }
+     }
 }

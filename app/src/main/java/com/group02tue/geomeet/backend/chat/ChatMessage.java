@@ -26,6 +26,17 @@ public class ChatMessage {
     public boolean hasBeenSent() {
         return isSent;
     }
+    public String getSender() {
+        return sender;
+    }
+    public String getContent() {
+        return content;
+    }
+    public String getReceiver() {return receiver;}
+
+    public Date getMoment() {
+        return moment;
+    }
 
     /**
      * Initializes a new chat message.
@@ -35,6 +46,10 @@ public class ChatMessage {
      */
     public ChatMessage(String sender, String receiver, String content) {
         this(UUID.randomUUID(), sender, receiver, content, Calendar.getInstance().getTime(), false);
+    }
+
+    public boolean isSentByMe(String myUsername) {
+        return sender.equals(myUsername);
     }
 
     /**

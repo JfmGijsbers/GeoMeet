@@ -28,5 +28,5 @@ public abstract class AbstractAuthorizedAPICall extends AbstractAPICall {
         params.add(ParamKeys.USERNAME, username);
         params.add(ParamKeys.AUTHENTICATION_KEY, authenticationKey);
         super.execute(params);
-    }
+}
 }

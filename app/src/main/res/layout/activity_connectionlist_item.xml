@@ -5,14 +5,6 @@
     android:layout_height="wrap_content"
     android:orientation="horizontal">
 
-    <ImageView
-        android:id="@+id/profilePicture"
-        android:layout_gravity="center"
-        android:layout_weight="2"
-        android:layout_width="0dp"
-        android:layout_height="75dp"
-        android:src="@drawable/ic_launcher_foreground" />
-
     <TextView
         android:id="@+id/profileName"
         android:gravity="center"
@@ -20,5 +12,12 @@
         android:layout_width="0dp"
         android:layout_height="fill_parent"
         android:text="Friend name" />
+    <CheckBox
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:layout_gravity="center"
+        android:id="@+id/listItemCheckbox"
+        />
 
 </LinearLayout>

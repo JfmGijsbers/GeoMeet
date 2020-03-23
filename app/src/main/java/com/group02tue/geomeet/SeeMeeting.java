@@ -3,48 +3,82 @@ package com.group02tue.geomeet;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
+import android.location.Location;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ListView;
+import android.widget.TextView;
 import android.widget.Toast;
 
-public class SeeMeeting extends AppCompatActivity {
-    String countryList[] = {"Roel Koopman", "Lucas Vereggen", "Julian Vink",
-            "Kevin Dirksen", "Rik Litjens", "Jeroen Gijsbers"};
-    Integer[] imageId = {
-            R.drawable.ic_launcher_foreground,
-            R.drawable.ic_launcher_foreground,
-            R.drawable.ic_launcher_foreground,
-            R.drawable.ic_launcher_foreground,
-            R.drawable.ic_launcher_foreground,
-            R.drawable.ic_launcher_foreground
-    };
+import com.group02tue.geomeet.backend.Location2D;
 
+import java.text.ParseException;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.Set;
+
+public class SeeMeeting extends AppCompatActivity {
+    TextView txtTitle, txtLocation, txtAdmin, txtDate, txtDescription;
     ListView connectionList;
+    private String meetingId;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_see_meeting);
 
-        /*ConnectionListAdapter listAdapter = new ConnectionListAdapter(SeeMeeting.this,
-                countryList, imageId);
-        connectionList = (ListView) findViewById(R.id.seeMeeting_comingConnectionsListView);
-        connectionList.setAdapter(listAdapter);
+        /*
+         * First, we need to retrieve all the data from the intent
+         */
+        Intent intent = getIntent();
+        String name = intent.getStringExtra("name");
+        String description = intent.getStringExtra("description");
+        Date date = (Date) intent.getSerializableExtra("date");
+        String strLocation = intent.getStringExtra("location");
+        String hostedBy = intent.getStringExtra("hostedBy");
+        meetingId = intent.getStringExtra("meetingId");
+        try {
+            Location2D location = Location2D.parse(strLocation);
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+        String member = "";
+        int i = 0;
+        ArrayList<String> members = new ArrayList<>();
+        while (member != null) {
+            member = intent.getStringExtra("member" + i);
+            i++;
+            members.add(member);
+        }
+        /*
+        Then, we need to find our views
+         */
+        txtTitle = findViewById(R.id.seeMeeting_meetingName);
+        txtLocation = findViewById(R.id.seeMeeting_meetingLocation);
+        txtAdmin = findViewById(R.id.seeMeeting_organizer);
+        txtDate = findViewById(R.id.seeMeeting_date);
+        txtDescription = findViewById(R.id.txtDescription);
 
-        connectionList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view,
-                                    int position, long id) {
-                Toast.makeText(SeeMeeting.this, "You clicked at " +
-                        countryList[position], Toast.LENGTH_SHORT).show();
-            }
-        });*/
+        /*
+        Then, we change the text according to the received data
+         */
+        txtTitle.setText(name);
+        txtLocation.setText(strLocation);
+        txtAdmin.setText("Meeting organizer: " + hostedBy);
+        txtDate.setText(date.toString());
+        txtDescription.setText(description);
+
     }
-    public void toMap(View view){
+    public void toMap(View view) {
         Intent mapIntent = new Intent(this, LocationViewer.class);
         mapIntent.putExtra("fromSeeMeeting", -1);
         startActivity(mapIntent);
+    }
+
+    public void toChat(View view) {
+        Intent chatIntent = new Intent(this, MessageListActivity.class);
+        chatIntent.putExtra("meetingId", meetingId);
+        startActivity(chatIntent);
     }
 }

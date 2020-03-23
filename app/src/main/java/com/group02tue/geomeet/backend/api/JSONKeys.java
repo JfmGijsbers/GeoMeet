@@ -26,4 +26,9 @@ public final class JSONKeys {
     public final static String MEMBERSHIPS = "memberships";
     public final static String INVITES = "invites";
     public final static String ADMIN_USERNAME = "admin";
+
+    public final static String CONNECTIONS = "connections";
+    public final static String CONNECTION_COUNT = "count";
+
+    public final static String FOUND = "found";
 }

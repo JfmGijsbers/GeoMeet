@@ -12,6 +12,10 @@ import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.Toast;
 
+import com.group02tue.geomeet.backend.social.Meeting;
+
+import java.util.ArrayList;
+
 public class Dashboard extends AppCompatActivity {
 
     String countryList[] = {"Sprint retrospection meeting", "Sprint planning", "Lucas' monologue",
@@ -32,8 +36,8 @@ public class Dashboard extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_dashboard);
 
-        MeetinglistAdapter listAdapter = new MeetinglistAdapter(Dashboard.this,
-                countryList, imageId);
+        MeetingListAdapter listAdapter = new MeetingListAdapter(Dashboard.this,
+                new ArrayList<Meeting>());
         list = (ListView) findViewById(R.id.meetingListView);
         list.setAdapter(listAdapter);
 
@@ -134,6 +138,5 @@ public class Dashboard extends AppCompatActivity {
 
     public void toGroups(View view) {
     }
-
 }
 

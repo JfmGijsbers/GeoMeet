@@ -24,6 +24,7 @@ import com.group02tue.geomeet.backend.authentication.AuthenticationManager;
 
 import java.lang.reflect.Type;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -31,7 +32,7 @@ import java.util.NoSuchElementException;
 import java.util.Set;
 import java.util.UUID;
 
-public class MeetingManager extends ObservableManager<MeetingEventListener> {
+public class MeetingManager extends ObservableManager<MeetingSemiAdminEventListener> {
     private final SharedPreferences preferences;                    // Preferences reference
     private final AuthenticationManager authenticationManager;      // Authentication manager
 
@@ -67,71 +68,6 @@ public class MeetingManager extends ObservableManager<MeetingEventListener> {
     }
 
     /**
-     * Request a list to which the user has been invited.
-     */
-    public void requestMeetingInvitations() {
-        new QueryMeetingInvitationsAPICall(authenticationManager, new QueryImmutableMeetingsAPIResponseListener() {
-            @Override
-            public void onSuccess(final ArrayList<ImmutableMeeting> meetings) {
-                if (meetings.size() > 0) {
-                    notifyListeners(new Consumer<MeetingEventListener>() {
-                        @Override
-                        public void accept(MeetingEventListener meetingEventListener) {
-                            meetingEventListener.onReceivedMeetingInvitations(meetings);
-                        }
-                    });
-                }
-            }
-
-            @Override
-            public void onFailure(APIFailureReason response) {
-                // Don't care: failure means no update
-            }
-        }).execute();
-    }
-
-    /**
-     * Gets a list of all current memberships and request to check for new memberships and to remove
-     * old memberships.
-     * @return Current memberships
-     */
-    public Set<UUID> getMeetingMemberships() {
-        new QueryMeetingMembershipsAPICall(authenticationManager, new QueryImmutableMeetingsAPIResponseListener() {
-            @Override
-            public void onSuccess(ArrayList<ImmutableMeeting> currentMeetings) {
-                synchronized (meetings) {
-                    // Remove old meetings
-                    for (UUID meetingId : meetings.keySet()) {
-                        boolean stillInMeeting = false;
-                        for (final ImmutableMeeting meeting : currentMeetings) {
-                            if (meeting.id.equals(meetingId)) {
-                                stillInMeeting = true;
-                                break;
-                            }
-                        }
-                        if (!stillInMeeting) {
-                            leaveMeeting(meetingId);
-                        }
-                    }
-
-                    // Add new meetings
-                    for (final ImmutableMeeting meeting : currentMeetings) {
-                        if (!meetings.containsKey(meeting.id)) {
-                            requestMeetingUpdateFromServer(meeting.id);
-                        }
-                    }
-                }
-            }
-
-            @Override
-            public void onFailure(APIFailureReason response) {
-                // Don't care: failure means no update
-            }
-        }).execute();
-        return meetings.keySet();
-    }
-
-    /**
      * Adds a new meeting both locally and online.
      * @param meeting Meeting to add
      */
@@ -143,9 +79,9 @@ public class MeetingManager extends ObservableManager<MeetingEventListener> {
                     meetings.put(meeting.getId(), meeting);
                     saveMeetings();
                 }
-                notifyListeners(new Consumer<MeetingEventListener>() {
+                notifyListeners(new Consumer<MeetingSemiAdminEventListener>() {
                     @Override
-                    public void accept(MeetingEventListener meetingEventListener) {
+                    public void accept(MeetingSemiAdminEventListener meetingEventListener) {
                         meetingEventListener.onCreatedMeeting(meeting.getId());
                     }
                 });
@@ -177,9 +113,9 @@ public class MeetingManager extends ObservableManager<MeetingEventListener> {
                         saveMeetings();
                     }
                 }
-                notifyListeners(new Consumer<MeetingEventListener>() {
+                notifyListeners(new Consumer<MeetingSemiAdminEventListener>() {
                     @Override
-                    public void accept(MeetingEventListener meetingEventListener) {
+                    public void accept(MeetingSemiAdminEventListener meetingEventListener) {
                         meetingEventListener.onRemovedMeeting(id);
                     }
                 });
@@ -198,75 +134,14 @@ public class MeetingManager extends ObservableManager<MeetingEventListener> {
     }
 
     /**
-     * Leave a meeting.
-     * @param id Id of meeting to leave from
-     */
-    public void leaveMeeting(final UUID id) {
-        new RemoveUserFromMeetingAPICall(authenticationManager, new BooleanAPIResponseListener() {
-            @Override
-            public void onSuccess() {
-                synchronized (meetings) {
-                    if (meetings.containsKey(id)) {
-                        meetings.remove(id);
-                    }
-                }
-                notifyListeners(new Consumer<MeetingEventListener>() {
-                    @Override
-                    public void accept(MeetingEventListener meetingEventListener) {
-                        meetingEventListener.onLeftMeeting(id);
-                    }
-                });
-            }
-
-            @Override
-            public void onFailure(final String reason) {
-                notifyListeners(new Consumer<MeetingEventListener>() {
-                    @Override
-                    public void accept(MeetingEventListener meetingEventListener) {
-                        meetingEventListener.onFailure(id, reason);
-                    }
-                });
-            }
-
-            @Override
-            public void onFailure(APIFailureReason response) {
-                onFailure("Server error: " + response.toString());
-            }
-        }, id, authenticationManager.getUsername()).execute();
-    }
-
-    /**
      * Gets a meeting from the local cache and request a update for this specific meeting.
      * @param id Id of meeting to look for
      * @return Meeting from the cache
      * @throws NoSuchElementException Meeting not found in cache, meeting may still be delivered later
      */
-    public Meeting getMeeting(final UUID id) throws NoSuchElementException {
-        requestMeetingUpdateFromServer(id);
+    public Meeting getMeeting(final UUID id, final MeetingSyncManager syncManager) throws NoSuchElementException {
+        syncManager.requestMeetingUpdateFromServer(id);
         return getLocalMeeting(id);
-    }
-
-    private void requestMeetingUpdateFromServer(final UUID id) {
-        new QueryMeetingAPICall(authenticationManager, new QueryMeetingAPIResponseListener() {
-            @Override
-            public void onSuccess(final Meeting meeting) {
-                synchronized (meetings) {
-                    meetings.put(id, meeting);
-                    saveMeetings();
-                }
-                notifyListeners(new Consumer<MeetingEventListener>() {
-                    @Override
-                    public void accept(MeetingEventListener meetingEventListener) {
-                        meetingEventListener.onMeetingUpdatedReceived(meeting);
-                    }
-                });
-            }
-
-            @Override
-            public void onFailure(APIFailureReason response) {
-                // Ignore
-            }
-        }, id).execute();
     }
 
     private Meeting getLocalMeeting(UUID id) throws NoSuchElementException {
@@ -284,18 +159,13 @@ public class MeetingManager extends ObservableManager<MeetingEventListener> {
      * @param id Id of meeting for which the invite was
      * @param join Join the meeting?
      */
-    public void decideInvitation(final UUID id, final boolean join) {
+    public void decideInvitation(final UUID id, final boolean join, final MeetingSyncManager syncManager) {
         new DecideMeetingInvitationAPICall(authenticationManager, new BooleanAPIResponseListener() {
             @Override
             public void onSuccess() {
                 saveMeetings();
                 if (join) {
-                    notifyListeners(new Consumer<MeetingEventListener>() {
-                        @Override
-                        public void accept(MeetingEventListener meetingEventListener) {
-                            requestMeetingUpdateFromServer(id);
-                        }
-                    });
+                    syncManager.requestMeetingUpdateFromServer(id);
                 }
             }
 
@@ -317,11 +187,149 @@ public class MeetingManager extends ObservableManager<MeetingEventListener> {
      * @param reason Reason of failing
      */
     private void notifyListenersAboutFailure(final UUID id, final String reason) {
-        notifyListeners(new Consumer<MeetingEventListener>() {
+        notifyListeners(new Consumer<MeetingSemiAdminEventListener>() {
             @Override
-            public void accept(MeetingEventListener meetingEventListener) {
+            public void accept(MeetingSemiAdminEventListener meetingEventListener) {
                 meetingEventListener.onFailure(id, reason);
             }
         });
+    }
+
+    /**
+     * The sync manager is responsible for all calls which are required for simple meeting
+     * synchronization with the server.
+     */
+    public class MeetingSyncManager extends ObservableManager<MeetingSyncEventListener> {
+        /**
+         * Requests an update for a meeting from the server.
+         * @param id Id of meeting to update
+         */
+        public void requestMeetingUpdateFromServer(final UUID id) {
+            new QueryMeetingAPICall(authenticationManager, new QueryMeetingAPIResponseListener() {
+                @Override
+                public void onSuccess(final Meeting meeting) {
+                    synchronized (meetings) {
+                        meetings.put(id, meeting);
+                        saveMeetings();
+                    }
+                    notifyListeners(new Consumer<MeetingSyncEventListener>() {
+                        @Override
+                        public void accept(MeetingSyncEventListener meetingEventListener) {
+                            meetingEventListener.onMeetingUpdatedReceived(meeting);
+                        }
+                    });
+                }
+
+                @Override
+                public void onFailure(APIFailureReason response) {
+                    // Ignore
+                }
+            }, id).execute();
+        }
+
+
+        /**
+         * Request a list to which the user has been invited.
+         */
+        public void requestMeetingInvitations() {
+            new QueryMeetingInvitationsAPICall(authenticationManager, new QueryImmutableMeetingsAPIResponseListener() {
+                @Override
+                public void onSuccess(final ArrayList<ImmutableMeeting> meetings) {
+                    if (meetings.size() > 0) {
+                        notifyListeners(new Consumer<MeetingSyncEventListener>() {
+                            @Override
+                            public void accept(MeetingSyncEventListener meetingEventListener) {
+                                meetingEventListener.onReceivedMeetingInvitations(meetings);
+                            }
+                        });
+                    }
+                }
+
+                @Override
+                public void onFailure(APIFailureReason response) {
+                    // Don't care: failure means no update
+                }
+            }).execute();
+        }
+
+
+        /**
+         * Gets a list of all current memberships and request to check for new memberships and to remove
+         * old memberships.
+         * @return Current memberships
+         */
+        public List<Meeting> getMeetingMemberships() {
+            new QueryMeetingMembershipsAPICall(authenticationManager, new QueryImmutableMeetingsAPIResponseListener() {
+                @Override
+                public void onSuccess(ArrayList<ImmutableMeeting> currentMeetings) {
+                    synchronized (meetings) {
+                        // Remove old meetings
+                        for (UUID meetingId : meetings.keySet()) {
+                            boolean stillInMeeting = false;
+                            for (final ImmutableMeeting meeting : currentMeetings) {
+                                if (meeting.id.equals(meetingId)) {
+                                    stillInMeeting = true;
+                                    break;
+                                }
+                            }
+                            if (!stillInMeeting) {
+                                leaveMeeting(meetingId);
+                            }
+                        }
+
+                        // Add new meetings
+                        for (final ImmutableMeeting meeting : currentMeetings) {
+                            if (!meetings.containsKey(meeting.id)) {
+                                requestMeetingUpdateFromServer(meeting.id);
+                            }
+                        }
+                    }
+                }
+
+                @Override
+                public void onFailure(APIFailureReason response) {
+                    // Don't care: failure means no update
+                }
+            }).execute();
+            return new ArrayList<>(meetings.values());
+        }
+
+        /**
+         * Leave a meeting.
+         * @param id Id of meeting to leave from
+         */
+        public void leaveMeeting(final UUID id) {
+            new RemoveUserFromMeetingAPICall(authenticationManager, new BooleanAPIResponseListener() {
+                @Override
+                public void onSuccess() {
+                    synchronized (meetings) {
+                        if (meetings.containsKey(id)) {
+                            meetings.remove(id);
+                        }
+                    }
+                    notifyListeners(new Consumer<MeetingSyncEventListener>() {
+                        @Override
+                        public void accept(MeetingSyncEventListener meetingEventListener) {
+                            meetingEventListener.onLeftMeeting(id);
+                        }
+                    });
+                }
+
+                @Override
+                public void onFailure(final String reason) {
+                    notifyListeners(new Consumer<MeetingSyncEventListener>() {
+                        @Override
+                        public void accept(MeetingSyncEventListener meetingEventListener) {
+                            meetingEventListener.onFailure(id, reason);
+                        }
+                    });
+                }
+
+                @Override
+                public void onFailure(APIFailureReason response) {
+                    onFailure("Server error: " + response.toString());
+                }
+            }, id, authenticationManager.getUsername()).execute();
+        }
     }
 }

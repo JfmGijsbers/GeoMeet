@@ -1,6 +1,8 @@
 package com.group02tue.geomeet.backend.social;
 
 
+import android.icu.text.Edits;
+
 import androidx.core.util.Consumer;
 
 import com.google.gson.Gson;
@@ -23,6 +25,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashSet;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
 import java.util.UUID;
@@ -64,7 +67,13 @@ public class Meeting {
     public String getDescription() { return description; }
     public Date getMoment() { return moment; }
     public Location2D getLocation() { return location; }
-
+    public int getAttendingCount() {
+        return members.size();
+    }
+    public String getAdminUsername() { return adminUsername; }
+    public Set<String> getMembers() {
+        return new HashSet<>(members);
+    }
 
     /**
      * Sends a message in the chat of the meeting.
