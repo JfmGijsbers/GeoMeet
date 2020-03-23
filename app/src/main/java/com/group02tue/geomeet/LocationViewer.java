@@ -1,5 +1,6 @@
 package com.group02tue.geomeet;
 
+import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.FragmentActivity;
 
@@ -26,6 +27,7 @@ import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.tasks.OnSuccessListener;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
 
@@ -35,28 +37,59 @@ public class LocationViewer extends FragmentActivity implements OnMapReadyCallba
 
     private LatLng location;
 
+    private List<LatLng> allLocations = new ArrayList<>();
+
+    private Boolean fromSeeMeeting;
+
     private FusedLocationProviderClient fusedLocationClient;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_location);
+
+        //check if GPS permission was granted
         if (ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION)
                 != PackageManager.PERMISSION_GRANTED) {
 
             Toast.makeText(
                     getBaseContext(),
-                    "Grant GPS permission to GeoMeet to use this functionality", Toast.LENGTH_LONG).show();
+                    "Grant GPS permission to GeoMeet to use this functionality",
+                    Toast.LENGTH_LONG).show();
+
+
+            ActivityCompat.requestPermissions(this,
+                    new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, 0);
 
             Intent locationIntent = new Intent(this, Dashboard.class);
             locationIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
             startActivity(locationIntent);
         }
 
+        //initialize list of all the user's meeting locations
+        this.allLocations.add(new LatLng(51.51, 5.59));
+        this.allLocations.add(new LatLng(51.7, 5.3));
+        this.allLocations.add(new LatLng(52.07, 4.3));
+        this.allLocations.add(new LatLng(51.63, 4.46));
 
-        this.location = new LatLng(51.7, 5.3);
 
-//        // for which location is the activity started (#######OWN LOCATION)
+
+        if (getIntent().getExtras().getInt("fromSeeMeeting") == -1){
+            //the SeeMeeting activity was used to get here, so a specific meeting was selected
+            fromSeeMeeting = true;
+            this.location = new LatLng(51.7, 5.3);
+            //remove the chosen location from the list, because this location gets a dedicated marker
+            allLocations.remove(location);
+        }else{
+            //the MyLocations activity was used to get here, so NO specific meeting was selected
+            fromSeeMeeting = false;
+            this.location = allLocations.get(0);
+        }
+
+
+
+
+        //The user's own location, probably superfluous here but handy elsewhere
         fusedLocationClient = LocationServices.getFusedLocationProviderClient(this);
         fusedLocationClient.getLastLocation()
                 .addOnSuccessListener(this, new OnSuccessListener<Location>() {
@@ -68,6 +101,7 @@ public class LocationViewer extends FragmentActivity implements OnMapReadyCallba
                         }
                     }
                 });
+
 
         // Obtain the SupportMapFragment and get notified when the map is ready to be used.
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
@@ -85,35 +119,40 @@ public class LocationViewer extends FragmentActivity implements OnMapReadyCallba
     public void onMapReady(GoogleMap googleMap) {
         mMap = googleMap;
 
-        //give an option to show the user's location
+        //give an option to show the user's current location
         try {
             mMap.setMyLocationEnabled(true);
         } catch (SecurityException e){}
 
-        //mMap.setOnMyLocationButtonClickListener(this);
-        //mMap.setOnMyLocationClickListener(this);
-        location = new LatLng(51.7, 5.3);
-        //first move and zoom a bit
+
+        //first move to the chosen location and zoom such that The Netherlands is fully visible
         mMap.moveCamera(CameraUpdateFactory.zoomTo((float) 7.0));
         mMap.moveCamera(CameraUpdateFactory.newLatLng(location));
-        //then do the rest when map is loaded
-        mMap.setOnMapLoadedCallback(new GoogleMap.OnMapLoadedCallback() {
-            public void onMapLoaded() {
-                // Add a marker and move+zoom the camera
-                mMap.addMarker(new MarkerOptions().position(location).title("Meeting location"));
-                mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(location, (float) 11.0), 3000, new GoogleMap.CancelableCallback() {
-                    @Override
-                    public void onFinish() {
-                        System.out.println("geen idee wat dit is");
-                    }
 
-                    @Override
-                    public void onCancel() {
+        //add markers for all meetings and make opacity dependant on whether a specific meeting was selected
+        for (LatLng loc: allLocations){
+            mMap.addMarker(new MarkerOptions().position(loc).alpha(fromSeeMeeting ? (float) 0.4 : (float) 1.0));
+        }
+        //if a specific location is selected, zoom further and add special marker
+        if(fromSeeMeeting) {
+            mMap.setOnMapLoadedCallback(new GoogleMap.OnMapLoadedCallback() {
+                public void onMapLoaded() {
+                    // Add a marker and move+zoom the camera
+                    mMap.addMarker(new MarkerOptions().position(location).title("Meeting location"));
+                    mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(location, (float) 11.0), 3000, new GoogleMap.CancelableCallback() {
+                        @Override
+                        public void onFinish() {
+                            System.out.println("geen idee wat dit is");
+                        }
 
-                    }
-                });
-            }
-        });
+                        @Override
+                        public void onCancel() {
+
+                        }
+                    });
+                }
+            });
+        }
 
 
     }
