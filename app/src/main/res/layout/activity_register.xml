@@ -29,7 +29,7 @@
         android:textSize="12sp"
         android:layout_below="@id/et_username"
         android:text="Email address:"
-        android:id="@+id/txt_email"
+        android:id="@+id/txt_meeting_name"
         />
     <EditText
         android:inputType="textEmailAddress"
@@ -37,7 +37,7 @@
         android:layout_height="wrap_content"
         android:ems="10"
         android:id="@+id/et_email"
-        android:layout_below="@id/txt_email"
+        android:layout_below="@id/txt_meeting_name"
         />
     <TextView
         android:layout_below="@id/et_email"
@@ -45,7 +45,7 @@
         android:layout_height="wrap_content"
         android:textSize="12sp"
         android:text="First name:"
-        android:id="@+id/txt_firstname"
+        android:id="@+id/txt_meeting_location"
         />
     <EditText
         android:inputType="textPersonName"
@@ -53,14 +53,14 @@
         android:layout_height="wrap_content"
         android:ems="10"
         android:id="@+id/et_firstname"
-        android:layout_below="@id/txt_firstname"
+        android:layout_below="@id/txt_meeting_location"
         />
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textSize="12sp"
         android:text="Last name:"
-        android:id="@+id/txt_lastname"
+        android:id="@+id/txt_invited_connections"
         android:layout_below="@id/et_firstname"
         />
     <EditText
@@ -69,14 +69,14 @@
         android:layout_height="wrap_content"
         android:ems="10"
         android:id="@+id/et_lastname"
-        android:layout_below="@id/txt_lastname"
+        android:layout_below="@id/txt_invited_connections"
         />
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textSize="12sp"
         android:text="Password:"
-        android:id="@+id/txt_password"
+        android:id="@+id/txt_meeting_description"
         android:layout_below="@id/et_lastname"
         />
     <EditText
@@ -85,7 +85,7 @@
         android:layout_height="wrap_content"
         android:ems="10"
         android:id="@+id/et_password"
-        android:layout_below="@id/txt_password"
+        android:layout_below="@id/txt_meeting_description"
         />
     <TextView
         android:layout_width="wrap_content"

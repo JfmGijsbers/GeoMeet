@@ -1,190 +1,243 @@
 <?xml version="1.0" encoding="utf-8"?>
 
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    xmlns:style="http://schemas.android.com/apk/res-auto"
     tools:context=".NewMeeting"
-    android:background="@color/colorPrimaryDark"
-    android:padding="30dp">
+    android:background="@color/colorPrimaryDark">
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:style="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/relativeLayout"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:padding="10dp">
 
     <TextView
+        android:id="@+id/txt_meeting_name"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:textSize="12sp"
+        android:layout_marginStart="60dp"
+        android:layout_marginLeft="60dp"
+        android:layout_marginTop="60dp"
         android:text="Meeting name:"
-        android:id="@+id/txt_email"
-        />
+        android:textSize="12sp"
+        style:layout_constraintStart_toStartOf="parent"
+        style:layout_constraintTop_toTopOf="parent" />
+
     <EditText
-        android:inputType="textPersonName"
-        android:layout_width="wrap_content"
+        android:id="@+id/et_meeting_name"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:ems="10"
-        android:id="@+id/et_name"
-        android:layout_below="@id/txt_email"
-        />
+        android:maxLines="1"
+        android:inputType="text"
+        style:layout_constraintStart_toStartOf="@+id/txt_meeting_name"
+        style:layout_constraintTop_toBottomOf="@+id/txt_meeting_name" />
+
     <TextView
-        android:layout_below="@id/et_name"
-        android:layout_width="wrap_content"
+        android:id="@+id/txt_meeting_location"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:textSize="12sp"
         android:text="Location:"
-        android:id="@+id/txt_firstname"
-        />
+        android:textSize="12sp"
+        style:layout_constraintStart_toStartOf="@+id/et_meeting_name"
+        style:layout_constraintTop_toBottomOf="@+id/et_meeting_name" />
+
     <EditText
+        android:id="@+id/et_meeting_location"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="1dp"
+        android:ems="10"
+        style:layout_constraintStart_toStartOf="@+id/txt_meeting_location"
+        style:layout_constraintTop_toBottomOf="@+id/txt_meeting_location" />
+
+    <EditText
+        android:id="@+id/et__meeting_manual_user"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:ems="10"
-        android:id="@+id/et_location"
-        android:layout_below="@id/txt_firstname"
-        />
-    <EditText
-        android:layout_marginTop="20dp"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:ems="10"
-        android:id="@+id/et_manualUser"
-        android:layout_below="@id/et_location"
-        />
+        style:layout_constraintTop_toBottomOf="@id/et_meeting_location"
+        style:layout_constraintBaseline_toBaselineOf="@+id/btn_add_user"
+        style:layout_constraintStart_toStartOf="@+id/txt_invited_connections" />
+
     <Button
+        android:id="@+id/btn_add_user"
+        style="@style/Widget.AppCompat.Button.Colored"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:id="@+id/btn_addUser"
+        android:layout_marginStart="8dp"
+        android:layout_marginBottom="12dp"
         android:text="Add user"
-        style="@style/Widget.AppCompat.Button.Colored"
-        android:layout_alignTop="@id/et_manualUser"
-        android:layout_toEndOf="@id/et_manualUser"
+        style:layout_constraintBottom_toTopOf="@+id/listview_connections"
+        style:layout_constraintEnd_toEndOf="parent"
+        style:layout_constraintStart_toEndOf="@+id/et__meeting_manual_user"
+        style:layout_constraintTop_toBottomOf="@+id/et_meeting_location" />
 
-        />
     <TextView
+        android:id="@+id/txt_invited_connections"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:textSize="12sp"
+        android:layout_marginStart="60dp"
         android:text="Invited:"
-        android:id="@+id/txt_lastname"
-        android:layout_below="@id/et_manualUser"
-        />
-    <ListView
-        android:inputType="textPersonName"
-        android:layout_width="wrap_content"
-        android:layout_height="150dp"
-        android:ems="10"
-        android:id="@+id/connectionListView"
-        android:layout_below="@id/txt_lastname"
-        />
-    <TextView
-        android:layout_marginTop="10dp"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
         android:textSize="12sp"
-        android:text="Description:"
-        android:id="@+id/txt_password"
-        android:layout_below="@id/connectionListView"
-        />
-    <EditText
-        android:inputType="textMultiLine|textCapSentences"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:ems="10"
-        android:maxLines="5"
-        android:id="@+id/et_description"
-        android:layout_below="@id/txt_password"
-        />
-    <LinearLayout
-        android:id="@+id/linearlayout_date"
-        android:layout_marginTop="10dp"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@id/et_description"
-        android:orientation="horizontal"
-        >
-        <EditText
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:inputType="number"
-            android:maxLength="2"
-            android:hint="DD"
-            android:id="@+id/et_day"
+        style:layout_constraintStart_toStartOf="@+id/listview_connections"
+        style:layout_constraintTop_toBottomOf="@+id/et__meeting_manual_user" />
 
-        />
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="/"
-            />
-        <EditText
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:inputType="number"
-            android:maxLength="2"
-            android:hint="MM"
-            android:id="@+id/et_month"
-            />
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="/"
-            />
-        <EditText
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:inputType="number"
-            android:maxLength="4"
-            android:hint="YYYY"
-            android:id="@+id/et_year"
-            />
-        <TextView
-            android:layout_marginLeft="10dp"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="at"
-            />
-        <EditText
-            android:layout_marginLeft="10dp"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:inputType="number"
-            android:maxLength="2"
-            android:hint="HH"
-            android:id="@+id/et_hour"
-            />
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text=":"
-            />
-        <EditText
-            android:layout_marginLeft="10dp"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:inputType="number"
-            android:maxLength="2"
-            android:hint="MM"
-            android:id="@+id/et_minute"
-            />
-    </LinearLayout>
-    <Button
-        android:layout_marginTop="5dp"
-        android:layout_gravity="center"
-        android:onClick="createMeeting"
-        android:id="@+id/btn_create"
+    <ListView
+        android:id="@+id/listview_connections"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:enabled="true"
-        android:layout_below="@id/linearlayout_date"
+        android:layout_marginTop="127dp"
+        android:layout_marginBottom="127dp"
         android:ems="10"
-        android:text="Create"
-        style="@style/Widget.AppCompat.Button.Colored"
-        />
+        android:inputType="textPersonName"
+        style:layout_constraintBottom_toBottomOf="@+id/et_day"
+        style:layout_constraintEnd_toEndOf="parent"
+        style:layout_constraintTop_toBottomOf="@+id/txt_meeting_location" />
+
     <TextView
-        android:onClick="toAllMeetings"
-        android:layout_marginTop="10dp"
+        android:id="@+id/txt_meeting_description"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@id/btn_create"
-        android:text="Cancel"
-        android:id="@+id/toRegister"
-        />
+        android:layout_marginStart="60dp"
+        android:layout_marginTop="68dp"
+        android:text="Description:"
+        android:textSize="12sp"
+        style:layout_constraintStart_toStartOf="@+id/listview_connections"
+        style:layout_constraintTop_toBottomOf="@+id/listview_connections" />
 
-</RelativeLayout>
+    <EditText
+        android:id="@+id/et_meeting_description"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:ems="10"
+        android:inputType="textMultiLine|textCapSentences"
+        android:maxLines="5"
+        style:layout_constraintStart_toStartOf="@id/txt_meeting_name"
+        style:layout_constraintTop_toBottomOf="@+id/txt_meeting_description" />
+
+    <EditText
+        android:id="@+id/et_day"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:hint="DD"
+        android:inputType="number"
+        android:maxLength="2"
+        style:layout_constraintTop_toBottomOf="@id/et_meeting_description"
+        style:layout_constraintBaseline_toBaselineOf="@+id/et_month"
+        style:layout_constraintStart_toStartOf="@+id/et_meeting_description" />
+
+    <TextView
+        android:id="@+id/textView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="/"
+        style:layout_constraintBaseline_toBaselineOf="@+id/et_day"
+        style:layout_constraintStart_toEndOf="@+id/et_day" />
+
+    <EditText
+        android:id="@+id/et_month"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="4dp"
+        android:hint="MM"
+        android:inputType="number"
+        android:maxLength="2"
+        style:layout_constraintTop_toBottomOf="@id/et_meeting_description"
+        style:layout_constraintBottom_toTopOf="@+id/btn_create_meeting"
+        style:layout_constraintStart_toEndOf="@+id/textView" />
+
+    <TextView
+        android:id="@+id/textView2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="/"
+        style:layout_constraintTop_toBottomOf="@id/et_meeting_description"
+        style:layout_constraintBaseline_toBaselineOf="@+id/et_month"
+        style:layout_constraintStart_toEndOf="@+id/et_month" />
+
+    <EditText
+        android:id="@+id/et_year"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:hint="YYYY"
+        style:layout_constraintTop_toBottomOf="@id/et_meeting_description"
+        android:inputType="number"
+        android:maxLength="4"
+        style:layout_constraintBaseline_toBaselineOf="@+id/et_month"
+        style:layout_constraintStart_toEndOf="@+id/textView2" />
+
+    <TextView
+        android:id="@+id/textView3"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="9dp"
+        android:layout_marginRight="9dp"
+        android:text="at"
+        style:layout_constraintTop_toBottomOf="@id/et_meeting_description"
+        style:layout_constraintBaseline_toBaselineOf="@+id/et_hour"
+        style:layout_constraintEnd_toStartOf="@+id/et_hour" />
+
+    <EditText
+        android:id="@+id/et_hour"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="13dp"
+        android:layout_marginRight="13dp"
+        android:layout_marginBottom="4dp"
+        android:hint="HH"
+        style:layout_constraintTop_toBottomOf="@id/et_meeting_description"
+        android:inputType="number"
+        android:maxLength="2"
+        style:layout_constraintBottom_toTopOf="@+id/btn_create_meeting"
+        style:layout_constraintEnd_toStartOf="@+id/et_minute" />
+
+    <TextView
+        android:id="@+id/textView4"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text=":"
+        style:layout_constraintTop_toBottomOf="@id/et_meeting_description"
+        style:layout_constraintBaseline_toBaselineOf="@+id/et_hour"
+        style:layout_constraintEnd_toEndOf="@+id/et_hour"
+        style:layout_constraintStart_toEndOf="@+id/et_hour" />
+
+    <EditText
+        android:id="@+id/et_minute"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="42dp"
+        android:layout_marginLeft="42dp"
+        android:hint="MM"
+        style:layout_constraintTop_toBottomOf="@id/et_meeting_description"
+        android:inputType="number"
+        android:maxLength="2"
+        style:layout_constraintBaseline_toBaselineOf="@+id/et_hour"
+        style:layout_constraintStart_toEndOf="@+id/btn_create_meeting" />
+
+    <Button
+        android:id="@+id/btn_create_meeting"
+        style="@style/Widget.AppCompat.Button.Colored"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="138dp"
+        android:ems="10"
+        android:enabled="true"
+        android:onClick="createMeeting"
+        android:text="Create"
+        style:layout_constraintStart_toStartOf="@+id/et_day"
+        style:layout_constraintTop_toBottomOf="@+id/et_year" />
+
+    <TextView
+        android:id="@+id/toRegister"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:onClick="toAllMeetings"
+        android:text="Cancel"
+        style:layout_constraintStart_toStartOf="@+id/btn_create_meeting"
+        style:layout_constraintTop_toBottomOf="@+id/btn_create_meeting" />
+</androidx.constraintlayout.widget.ConstraintLayout>
+</ScrollView>

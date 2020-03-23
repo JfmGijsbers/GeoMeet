@@ -5,7 +5,6 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
-import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ListView;
@@ -19,7 +18,6 @@ import com.group02tue.geomeet.backend.social.Meeting;
 import com.group02tue.geomeet.backend.social.MeetingAsAdminManager;
 import com.group02tue.geomeet.backend.social.MeetingManager;
 import com.group02tue.geomeet.backend.social.MeetingSemiAdminEventListener;
-import com.group02tue.geomeet.backend.social.MeetingSyncEventListener;
 
 import java.text.ParseException;
 import java.util.ArrayList;
@@ -55,11 +53,11 @@ public class NewMeeting extends AppCompatActivity implements MeetingSemiAdminEve
         connectionsManager = ((MainApplication)getApplication()).getConnectionsManager();
 
         String date = "03" + "03" + "2020" + "13" + "30";
-        etName = findViewById(R.id.et_name);
-        etLocation = findViewById(R.id.et_location);
-        etDescription = findViewById(R.id.et_description);
-        connectionList = findViewById(R.id.connectionListView);
-        btnCreate = findViewById(R.id.btn_create);
+        etName = findViewById(R.id.et_meeting_name);
+        etLocation = findViewById(R.id.et_meeting_location);
+        etDescription = findViewById(R.id.et_meeting_description);
+        connectionList = findViewById(R.id.listview_connections);
+        btnCreate = findViewById(R.id.btn_create_meeting);
 
         etDay = findViewById(R.id.et_day);
         etMonth = findViewById(R.id.et_month);
