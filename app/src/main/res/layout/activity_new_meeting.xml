@@ -1,13 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:style="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".NewMeeting"
     android:background="@color/colorPrimaryDark">
 <androidx.constraintlayout.widget.ConstraintLayout
-    xmlns:style="http://schemas.android.com/apk/res-auto"
     android:id="@+id/relativeLayout"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
@@ -72,8 +72,10 @@
         android:text="Add user"
         style:layout_constraintBottom_toTopOf="@+id/listview_connections"
         style:layout_constraintEnd_toEndOf="parent"
+        style:layout_constraintHorizontal_bias="0.0"
         style:layout_constraintStart_toEndOf="@+id/et__meeting_manual_user"
-        style:layout_constraintTop_toBottomOf="@+id/et_meeting_location" />
+        style:layout_constraintTop_toBottomOf="@+id/et_meeting_location"
+        style:layout_constraintVertical_bias="0.514" />
 
     <TextView
         android:id="@+id/txt_invited_connections"
