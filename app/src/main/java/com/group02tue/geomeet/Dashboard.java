@@ -141,6 +141,12 @@ public class Dashboard extends AppCompatActivity {
         startActivity(connectionIntent);
     }
 
+    public void toMyLocations(View view) {
+        Intent locationIntent = new Intent(this, LocationViewer.class);
+        locationIntent.putExtra("fromSeeMeeting", 0);
+        startActivity(locationIntent);
+    }
+
     public void toGroups(View view) {
     }
 }

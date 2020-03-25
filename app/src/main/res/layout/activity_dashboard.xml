@@ -54,24 +54,25 @@
                 android:orientation="horizontal"
                 android:id="@+id/itemRow2"
                 >
+
                 <LinearLayout
-                    android:padding="30dp"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
+                    android:onClick="toMyLocations"
                     android:orientation="vertical"
-                    >
+                    android:padding="30dp">
+
                     <ImageView
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:src="@drawable/baseline_supervisor_account_black_18dp"
-                        />
+                        android:src="@drawable/baseline_supervisor_account_black_18dp" />
+
                     <TextView
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:text="My locations"
                         android:gravity="center"
-                        />
+                        android:text="My locations" />
                 </LinearLayout>
                 <LinearLayout
                     android:onClick="toConnections"
