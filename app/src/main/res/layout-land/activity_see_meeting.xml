@@ -1,14 +1,17 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout
+<LinearLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:paddingTop="20dp"
-    android:paddingLeft="10dp"
-    android:paddingRight="10dp"
+    android:orientation="horizontal"
     tools:context=".SeeMeeting">
-
+<LinearLayout
+    android:padding="20dp"
+    android:layout_width="0dp"
+    android:layout_height="match_parent"
+    android:layout_weight="1"
+    android:orientation="vertical">
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -28,35 +31,42 @@
         android:gravity="center"
         android:layout_marginTop="10dp"
         />
-
+    <!-- style="@style/Widget.AppCompat.Button.Colored" -->
     <Button
         android:id="@+id/seeMeeting_mapsButton"
-        style="@style/Widget.AppCompat.Button.Colored"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@id/seeMeeting_meetingLocation"
-        android:layout_alignEnd="@id/seeMeeting_meetingLocation"
+        android:textSize="8sp"
+        android:layout_height="30dp"
         android:layout_gravity="end"
         android:onClick="toMap"
-        android:text="See on Maps" />
+        android:text="Show on Maps" />
 
+    <Button
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        style="@style/Widget.AppCompat.Button.Colored"
+        android:text="+"
+        android:layout_gravity="end"
+        android:textColor="#FFFFFF"
+        android:layout_below="@id/seeMeeting_comingConnectionsListView"
+        android:layout_alignEnd="@id/seeMeeting_comingConnectionsListView"
+        android:id="@+id/seeMeeting_inviteButton"
+        />
     <ListView
         android:layout_width="match_parent"
         android:layout_height="200dp"
         android:id="@+id/seeMeeting_comingConnectionsListView"
         android:layout_below="@id/seeMeeting_mapsButton"
         />
-    <Button
-        android:layout_width="40dp"
-        android:layout_height="40dp"
-        style="@style/Widget.AppCompat.Button.Colored"
-        android:text="+"
-        android:textColor="#FFFFFF"
-        android:layout_below="@id/seeMeeting_comingConnectionsListView"
-        android:layout_alignEnd="@id/seeMeeting_comingConnectionsListView"
-        android:id="@+id/seeMeeting_inviteButton"
-        />
 
+</LinearLayout>
+
+    <LinearLayout
+        android:padding="20dp"
+        android:layout_width="0dp"
+        android:layout_height="match_parent"
+        android:layout_weight="1"
+        android:orientation="vertical">
 
     <TextView
         android:id="@+id/seeMeeting_organizer"
@@ -64,7 +74,7 @@
         android:layout_height="wrap_content"
         android:layout_below="@id/seeMeeting_inviteButton"
         android:gravity="center"
-        android:text="Meeting organizer: Jeroen Gijsbers" />
+        android:text="Organized by: Jeroen Gijsbers" />
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -88,6 +98,7 @@
             android:id="@+id/txtDescription" />
     </ScrollView>
     <Button
+        android:layout_gravity="end"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         style="@style/Widget.AppCompat.Button.Colored"
@@ -96,6 +107,6 @@
         android:layout_alignEnd="@id/seeMeeting_description"
         android:onClick="toChat"
         />
+    </LinearLayout>
 
-
-</RelativeLayout>
+</LinearLayout>

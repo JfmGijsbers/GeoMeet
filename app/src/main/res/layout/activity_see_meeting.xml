@@ -29,16 +29,16 @@
         android:layout_marginTop="10dp"
         />
 
+    <!--         style="@style/Widget.AppCompat.Button.Colored" -->
     <Button
         android:id="@+id/seeMeeting_mapsButton"
-        style="@style/Widget.AppCompat.Button.Colored"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_below="@id/seeMeeting_meetingLocation"
         android:layout_alignEnd="@id/seeMeeting_meetingLocation"
         android:layout_gravity="end"
         android:onClick="toMap"
-        android:text="See on Maps" />
+        android:text="Show on Maps" />
 
     <ListView
         android:layout_width="match_parent"
@@ -64,7 +64,7 @@
         android:layout_height="wrap_content"
         android:layout_below="@id/seeMeeting_inviteButton"
         android:gravity="center"
-        android:text="Meeting organizer: Jeroen Gijsbers" />
+        android:text="Organized by: Jeroen Gijsbers" />
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"

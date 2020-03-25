@@ -5,16 +5,19 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".MeetingsOverview"
-    android:orientation="vertical">
+    android:padding="10dp"
+    android:orientation="horizontal">
 
     <ListView
         android:layout_marginTop="10dp"
         android:id="@+id/fullMeetingListView"
-        android:layout_width="match_parent"
+        android:layout_width="0dp"
+        android:layout_weight="5"
         android:layout_height="500dp"
         />
     <Button
-        android:layout_width="wrap_content"
+        android:layout_width="0dp"
+        android:layout_weight="1"
         android:layout_gravity="center"
         android:text="Plan new meeting"
         android:onClick="newMeeting"

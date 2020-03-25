@@ -53,8 +53,8 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:ems="10"
+        android:hint="Connection username "
         style:layout_constraintTop_toBottomOf="@id/et_meeting_location"
-        style:layout_constraintBaseline_toBaselineOf="@+id/btn_add_user"
         style:layout_constraintStart_toStartOf="@+id/txt_invited_connections" />
 
     <Button
@@ -62,15 +62,12 @@
         style="@style/Widget.AppCompat.Button.Colored"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
-        android:layout_marginBottom="12dp"
         android:text="Add user"
-        style:layout_constraintBottom_toTopOf="@+id/listview_connections"
-        style:layout_constraintEnd_toEndOf="parent"
+        android:layout_marginEnd="5dp"
         style:layout_constraintHorizontal_bias="0.0"
+        style:layout_constraintBottom_toBottomOf="@id/et_meeting_manual_user"
         style:layout_constraintStart_toEndOf="@+id/et_meeting_manual_user"
         style:layout_constraintTop_toBottomOf="@+id/et_meeting_location"
-        style:layout_constraintVertical_bias="0.514"
         android:onClick="addManualUser"/>
 
     <TextView
@@ -86,24 +83,17 @@
     <ListView
         android:id="@+id/listview_connections"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_marginTop="127dp"
-        android:layout_marginBottom="127dp"
+        android:layout_height="250dp"
         android:ems="10"
-        android:inputType="textPersonName"
-        style:layout_constraintBottom_toTopOf="@+id/et_meeting_description"
-        style:layout_constraintEnd_toEndOf="parent"
         style:layout_constraintTop_toBottomOf="@+id/txt_invited_connections" />
 
     <TextView
         android:id="@+id/txt_meeting_description"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="60dp"
-        android:layout_marginTop="68dp"
         android:text="Description:"
         android:textSize="12sp"
-        style:layout_constraintStart_toStartOf="@+id/listview_connections"
+        style:layout_constraintStart_toStartOf="@+id/txt_invited_connections"
         style:layout_constraintTop_toBottomOf="@+id/listview_connections" />
 
     <EditText
