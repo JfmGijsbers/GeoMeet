@@ -4,6 +4,8 @@ import android.graphics.PointF;
 
 import androidx.annotation.NonNull;
 
+import com.google.android.gms.maps.model.LatLng;
+
 import java.text.ParseException;
 
 
@@ -16,6 +18,10 @@ public class Location2D {
         this.longitude = longitude;
         this.latitude = latitude;
         this.detailedLocation = detailedLocation;
+    }
+
+    public LatLng getLatLng() {
+        return new LatLng(latitude, longitude);
     }
 
     /**
@@ -47,5 +53,14 @@ public class Location2D {
     @NonNull
     public String toString() {
         return Float.toString(this.longitude) + "@" + Float.toString(this.latitude) + "@" + detailedLocation;
+    }
+
+    @Override
+    public boolean equals(Object object) {
+        Location2D toCheck = (Location2D)object;
+        if (toCheck == null) {
+            return false;
+        }
+        return toCheck.latitude == latitude && toCheck.longitude == longitude;
     }
 }

@@ -72,6 +72,8 @@ public class SeeMeeting extends AppCompatActivity {
     }
     public void toMap(View view) {
         Intent mapIntent = new Intent(this, LocationViewer.class);
+        mapIntent.putExtra("fromSeeMeeting", -1);
+        mapIntent.putExtra("location", getIntent().getStringExtra("location"));
         startActivity(mapIntent);
     }
 
