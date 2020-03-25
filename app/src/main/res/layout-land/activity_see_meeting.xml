@@ -1,0 +1,101 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:paddingTop="20dp"
+    android:paddingLeft="10dp"
+    android:paddingRight="10dp"
+    tools:context=".SeeMeeting">
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Meeting name"
+        android:textColor="#000000"
+        android:textSize="24sp"
+        android:gravity="center"
+        android:maxLines="1"
+        android:id="@+id/seeMeeting_meetingName"
+        />
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/seeMeeting_meetingLocation"
+        android:layout_below="@id/seeMeeting_meetingName"
+        android:text="Atlas 3.10, Eindhoven, The Netherlands"
+        android:gravity="center"
+        android:layout_marginTop="10dp"
+        />
+
+    <Button
+        android:id="@+id/seeMeeting_mapsButton"
+        style="@style/Widget.AppCompat.Button.Colored"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/seeMeeting_meetingLocation"
+        android:layout_alignEnd="@id/seeMeeting_meetingLocation"
+        android:layout_gravity="end"
+        android:onClick="toMap"
+        android:text="See on Maps" />
+
+    <ListView
+        android:layout_width="match_parent"
+        android:layout_height="200dp"
+        android:id="@+id/seeMeeting_comingConnectionsListView"
+        android:layout_below="@id/seeMeeting_mapsButton"
+        />
+    <Button
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        style="@style/Widget.AppCompat.Button.Colored"
+        android:text="+"
+        android:textColor="#FFFFFF"
+        android:layout_below="@id/seeMeeting_comingConnectionsListView"
+        android:layout_alignEnd="@id/seeMeeting_comingConnectionsListView"
+        android:id="@+id/seeMeeting_inviteButton"
+        />
+
+
+    <TextView
+        android:id="@+id/seeMeeting_organizer"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/seeMeeting_inviteButton"
+        android:gravity="center"
+        android:text="Meeting organizer: Jeroen Gijsbers" />
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Monday, 16th March, 18:40"
+        android:id="@+id/seeMeeting_date"
+        android:layout_below="@id/seeMeeting_organizer"
+        android:gravity="center"
+        />
+    <ScrollView
+        android:layout_below="@id/seeMeeting_date"
+        android:id="@+id/seeMeeting_description"
+        android:layout_marginTop="10dp"
+        android:background="@drawable/border"
+        android:layout_width="match_parent"
+        android:layout_height="100dp">
+        <TextView
+            android:padding="5dp"
+            android:hint="Insert your description here!"
+            android:layout_width="match_parent"
+            android:layout_height="100dp"
+            android:id="@+id/txtDescription" />
+    </ScrollView>
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        style="@style/Widget.AppCompat.Button.Colored"
+        android:text="Go to chat"
+        android:layout_below="@id/seeMeeting_description"
+        android:layout_alignEnd="@id/seeMeeting_description"
+        android:onClick="toChat"
+        />
+
+
+</RelativeLayout>
