@@ -10,6 +10,8 @@ import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
+import android.widget.CheckBox;
+import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.Toast;
 
@@ -21,6 +23,7 @@ public class MainActivity extends AppCompatActivity implements AuthenticationEve
     private EditText email;
     private EditText password;
     private Button btnLogin;
+    private CheckBox chkKeepLoggedIn;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -29,6 +32,7 @@ public class MainActivity extends AppCompatActivity implements AuthenticationEve
         email = findViewById(R.id.et_email);
         password = findViewById(R.id.et_password);
         btnLogin = findViewById(R.id.btn_login);
+        chkKeepLoggedIn = findViewById(R.id.chk_keep_logged_in);
         authenticationManager = ((MainApplication)getApplication()).getAuthenticationManager();
 
         if (ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION)
@@ -60,7 +64,9 @@ public class MainActivity extends AppCompatActivity implements AuthenticationEve
      * Login button call
      */
     public void login(View view) {
-        authenticationManager.login(String.valueOf(email.getText()), String.valueOf(password.getText()));
+        authenticationManager.login(String.valueOf(email.getText()),
+                String.valueOf(password.getText()),
+                chkKeepLoggedIn.isChecked());
         btnLogin.setEnabled(false);
     }
 

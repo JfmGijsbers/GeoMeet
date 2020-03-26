@@ -62,13 +62,13 @@
         android:text="INLOGGEN"
         android:textColor="#FFFFFF"
         android:textSize="16sp"
-        app:layout_constraintBottom_toTopOf="@+id/checkBox"
+        app:layout_constraintBottom_toTopOf="@+id/chk_keep_logged_in"
         app:layout_constraintStart_toStartOf="@+id/et_password"
         app:layout_constraintTop_toBottomOf="@+id/et_password" />
 
 
     <CheckBox
-        android:id="@+id/checkBox"
+        android:id="@+id/chk_keep_logged_in"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginBottom="20dp"
@@ -83,9 +83,9 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Keep me logged in"
-        app:layout_constraintBaseline_toBaselineOf="@+id/checkBox"
+        app:layout_constraintBaseline_toBaselineOf="@+id/chk_keep_logged_in"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/checkBox" />
+        app:layout_constraintStart_toEndOf="@+id/chk_keep_logged_in" />
 
     <TextView
         android:id="@+id/toRegister"
@@ -98,6 +98,6 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/checkBox" />
+        app:layout_constraintTop_toBottomOf="@+id/chk_keep_logged_in" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

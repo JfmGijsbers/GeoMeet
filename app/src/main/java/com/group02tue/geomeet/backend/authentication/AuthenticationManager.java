@@ -2,6 +2,7 @@ package com.group02tue.geomeet.backend.authentication;
 
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.util.Log;
 
 import androidx.core.util.Consumer;
 import androidx.preference.PreferenceManager;
@@ -34,8 +35,8 @@ public class AuthenticationManager extends ObservableManager<AuthenticationEvent
         new RegisterAPICall(new RegisterAPIResponseListener() {
             @Override
             public void onRegistered(String authenticationKey) {
-                setUsername(username);
-                setAuthenticationKey(authenticationKey);
+                setUsername(username, true);
+                setAuthenticationKey(authenticationKey, true);
                 notifyListeners(new Consumer<AuthenticationEventListener>() {
                     @Override
                     public void accept(AuthenticationEventListener authenticationEventListener) {
@@ -65,20 +66,24 @@ public class AuthenticationManager extends ObservableManager<AuthenticationEvent
      * Tries to login using the credentials in memory.
      */
     public void login() {
-        login(username, authenticationKey);
+        login(username, authenticationKey, true);
     }
 
     /**
      * Tries to login. Saves the username and authentication key on disk if login is successful.
      * @param username Username
      * @param key Password or authentication key
+     * @param keepLoggedIn Keep the user logged in
      */
-    public void login(final String username, String key) {
-        setUsername(username);
+    public void login(final String username, String key, final boolean keepLoggedIn) {
+        if (!keepLoggedIn) {
+            reset();
+        }
+        setUsername(username, keepLoggedIn);
         new LoginAPICall(new LoginAPIResponseListener() {
             @Override
             public void onLoggedIn(String authenticationKey) {
-                setAuthenticationKey(authenticationKey);
+                setAuthenticationKey(authenticationKey, keepLoggedIn);
                 notifyListeners(new Consumer<AuthenticationEventListener>() {
                     @Override
                     public void accept(AuthenticationEventListener authenticationEventListener) {
@@ -110,23 +115,29 @@ public class AuthenticationManager extends ObservableManager<AuthenticationEvent
     /**
      * Sets an authentication key and save it.
      * @param authenticationKey Key to set
+     * @param save Save the authentication key
      */
-    private void setAuthenticationKey(String authenticationKey) {
+    private void setAuthenticationKey(String authenticationKey, boolean save) {
         this.authenticationKey = authenticationKey;
-        SharedPreferences.Editor editor = preferences.edit();
-        editor.putString(AUTHENTICATION_KEY_PREFERENCE, authenticationKey);
-        editor.apply();
+        if (save) {
+            SharedPreferences.Editor editor = preferences.edit();
+            editor.putString(AUTHENTICATION_KEY_PREFERENCE, authenticationKey);
+            editor.apply();
+        }
     }
 
     /**
      * Sets a username and save it.
      * @param username Username to set
+     * @param save Save the username
      */
-    private void setUsername(String username) {
+    private void setUsername(String username, boolean save) {
         this.username = username;
-        SharedPreferences.Editor editor = preferences.edit();
-        editor.putString(USERNAME_PREFERENCE, username);
-        editor.apply();
+        if (save) {
+            SharedPreferences.Editor editor = preferences.edit();
+            editor.putString(USERNAME_PREFERENCE, username);
+            editor.apply();
+        }
     }
 
     /**
