@@ -44,6 +44,8 @@ public class BackendTest implements AuthenticationEventListener, ChatEventListen
         meetingManager = application.getMeetingManager();
         profileManager = application.getProfileManager();
         connectionsManager = application.getConnectionsManager();
+
+        AlarmBroadcastReceiver.start(application.getApplicationContext()); // TODO: move this to settings (with enable/disable option)
     }
 
     public void start() {
@@ -145,7 +147,7 @@ public class BackendTest implements AuthenticationEventListener, ChatEventListen
     }
 
     @Override
-    public void onReceivedMeetingInvitations(ArrayList<ImmutableMeeting> meetings) {
+    public void onReceivedNewMeetingInvitations(ArrayList<ImmutableMeeting> meetings) {
         Log.println(Log.DEBUG, "BackendMeeting", "Invited to meetings: " + meetings.size());
     }
 

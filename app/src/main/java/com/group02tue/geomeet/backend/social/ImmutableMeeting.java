@@ -1,5 +1,7 @@
 package com.group02tue.geomeet.backend.social;
 
+import com.google.gson.annotations.JsonAdapter;
+import com.google.gson.stream.JsonWriter;
 import com.group02tue.geomeet.MainApplication;
 import com.group02tue.geomeet.backend.Location2D;
 import com.group02tue.geomeet.backend.api.JSONKeys;
@@ -7,6 +9,7 @@ import com.group02tue.geomeet.backend.api.JSONKeys;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.IOException;
 import java.text.ParseException;
 import java.util.Date;
 import java.util.UUID;
@@ -15,6 +18,7 @@ import java.util.UUID;
  * This meeting only contains core information about an information and can be used to display
  * meeting memberships.
  */
+@JsonAdapter(ImmutableMeetingAdapter.class)
 public class ImmutableMeeting {
     public final UUID id;
     public final String name;
@@ -57,5 +61,19 @@ public class ImmutableMeeting {
             Location2D.parse(object.getString(JSONKeys.LOCATION)),
             MainApplication.DATE_FORMAT.parse(object.getString(JSONKeys.MOMENT))
         );
+    }
+
+    /**
+     * Serializes this immutable meeting using a JsonWriter. To be used for data storage (gson).
+     * @param writer Writer to use
+     * @throws IOException Incorrect Json data
+     */
+    public void serialize(JsonWriter writer) throws IOException {
+        writer.beginObject();
+        writer.name(ImmutableMeetingAdapter.ID_KEY).value(id.toString());
+        writer.name(ImmutableMeetingAdapter.NAME_KEY).value(name);
+        writer.name(ImmutableMeetingAdapter.LOCATION_KEY).value(location.toString());
+        writer.name(ImmutableMeetingAdapter.MOMENT_KEY).value(MainApplication.DATE_FORMAT.format(moment));
+        writer.endObject();
     }
 }

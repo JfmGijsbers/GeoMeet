@@ -28,8 +28,8 @@ public interface MeetingSyncEventListener extends EventListener {
     void onFailure(UUID id, String reason);
 
     /**
-     * Received a list of meetings to which the user has been invited.
+     * Received new meeting invitations.
      * @param meetings Meetings invited to
      */
-    void onReceivedMeetingInvitations(ArrayList<ImmutableMeeting> meetings);
+    void onReceivedNewMeetingInvitations(ArrayList<ImmutableMeeting> meetings);
 }

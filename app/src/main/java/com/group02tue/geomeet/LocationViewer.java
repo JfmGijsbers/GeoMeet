@@ -208,7 +208,7 @@ public class LocationViewer extends FragmentActivity implements OnMapReadyCallba
     }
 
     @Override
-    public void onReceivedMeetingInvitations(ArrayList<ImmutableMeeting> meetings) {
+    public void onReceivedNewMeetingInvitations(ArrayList<ImmutableMeeting> meetings) {
         // N/A
     }
 }

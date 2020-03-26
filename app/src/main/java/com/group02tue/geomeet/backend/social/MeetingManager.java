@@ -24,12 +24,10 @@ import com.group02tue.geomeet.backend.authentication.AuthenticationManager;
 
 import java.lang.reflect.Type;
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.NoSuchElementException;
-import java.util.Set;
 import java.util.UUID;
 
 public class MeetingManager extends ObservableManager<MeetingSemiAdminEventListener> {
@@ -37,7 +35,9 @@ public class MeetingManager extends ObservableManager<MeetingSemiAdminEventListe
     private final AuthenticationManager authenticationManager;      // Authentication manager
 
     private final static String MEETINGS_PREFERENCE = "meetings";
+    private final static String MEETING_INVITES_PREFERENCE = "meetingInvites";
     private final Map<UUID, Meeting> meetings;
+    private final Map<UUID, ImmutableMeeting> meetingInvites;
 
     public MeetingManager(Context context, AuthenticationManager authenticationManager) {
         this.authenticationManager = authenticationManager;
@@ -52,6 +52,15 @@ public class MeetingManager extends ObservableManager<MeetingSemiAdminEventListe
         } else {
             this.meetings = new HashMap<>();
         }
+        // Load meeting invites from disk
+        String strMeetingInvites = preferences.getString(MEETING_INVITES_PREFERENCE, "");
+        if (!strMeetingInvites.equals("")) {
+            Gson gson = new Gson();
+            Type immutableMeetingListType = new TypeToken<Map<UUID, ImmutableMeeting>>(){}.getType();
+            this.meetingInvites = gson.fromJson(strMeetingInvites, immutableMeetingListType);
+        } else {
+            this.meetingInvites = new HashMap<>();
+        }
     }
 
     /**
@@ -63,6 +72,19 @@ public class MeetingManager extends ObservableManager<MeetingSemiAdminEventListe
             Type meetingListType = new TypeToken<Map<UUID, Meeting>>(){}.getType();
             SharedPreferences.Editor prefsEditor = preferences.edit();
             prefsEditor.putString(MEETINGS_PREFERENCE, gson.toJson(meetings, meetingListType));
+            prefsEditor.apply();
+        }
+    }
+
+    /**
+     * Saves the meeting invites on the disk.
+     */
+    private void saveMeetingInvites() {
+        synchronized (meetingInvites) {
+            Gson gson = new Gson();
+            Type immutableMeetingListType = new TypeToken<Map<UUID, ImmutableMeeting>>(){}.getType();
+            SharedPreferences.Editor prefsEditor = preferences.edit();
+            prefsEditor.putString(MEETING_INVITES_PREFERENCE, gson.toJson(meetingInvites, immutableMeetingListType));
             prefsEditor.apply();
         }
     }
@@ -144,7 +166,13 @@ public class MeetingManager extends ObservableManager<MeetingSemiAdminEventListe
         return getLocalMeeting(id);
     }
 
-    private Meeting getLocalMeeting(UUID id) throws NoSuchElementException {
+    /**
+     * Gets a meeting from the local cache without requesting the server for an update.
+     * @param id Id of meeting to look for
+     * @return Meeting from the cache
+     * @throws NoSuchElementException Meeting not found in cache
+     */
+    public Meeting getLocalMeeting(UUID id) throws NoSuchElementException {
         synchronized (meetings) {
             if (meetings.containsKey(id)) {
                 return meetings.get(id);
@@ -163,9 +191,16 @@ public class MeetingManager extends ObservableManager<MeetingSemiAdminEventListe
         new DecideMeetingInvitationAPICall(authenticationManager, new BooleanAPIResponseListener() {
             @Override
             public void onSuccess() {
+                // Remove the invite
+                synchronized (meetingInvites) {
+                    if (meetingInvites.containsKey(id)) {
+                        meetingInvites.remove(id);
+                        saveMeetingInvites();
+                    }
+                }
                 saveMeetings();
                 if (join) {
-                    syncManager.requestMeetingUpdateFromServer(id);
+                    syncManager.requestMeetingUpdateFromServer(id); // We joined, so now get an update
                 }
             }
 
@@ -234,14 +269,45 @@ public class MeetingManager extends ObservableManager<MeetingSemiAdminEventListe
         public void requestMeetingInvitations() {
             new QueryMeetingInvitationsAPICall(authenticationManager, new QueryImmutableMeetingsAPIResponseListener() {
                 @Override
-                public void onSuccess(final ArrayList<ImmutableMeeting> meetings) {
-                    if (meetings.size() > 0) {
-                        notifyListeners(new Consumer<MeetingSyncEventListener>() {
-                            @Override
-                            public void accept(MeetingSyncEventListener meetingEventListener) {
-                                meetingEventListener.onReceivedMeetingInvitations(meetings);
+                public void onSuccess(final ArrayList<ImmutableMeeting> currentMeetingInvitations) {
+                    if (currentMeetingInvitations.size() > 0) {
+                        ArrayList<ImmutableMeeting> newInvites = new ArrayList<>();
+                        // Update local invitation cache
+                        synchronized (meetingInvites) {
+                            // Remove old meeting invites
+                            for (UUID meetingId : meetingInvites.keySet()) {
+                                boolean stillOpenInvitation = false;
+                                for (final ImmutableMeeting meetingInvite : currentMeetingInvitations) {
+                                    if (meetingInvite.id.equals(meetingId)) {
+                                        stillOpenInvitation = true;
+                                        break;
+                                    }
+                                }
+                                if (!stillOpenInvitation) {
+                                    meetingInvites.remove(meetingId);
+                                }
                             }
-                        });
+
+                            // Add new meetings
+                            for (final ImmutableMeeting meetingInvite : currentMeetingInvitations) {
+                                if (!meetingInvites.containsKey(meetingInvite.id)) {
+                                    newInvites.add(meetingInvite);
+                                    requestMeetingUpdateFromServer(meetingInvite.id);
+                                }
+                            }
+
+                            // Save
+                            saveMeetingInvites();
+                        }
+                        // Update UI and/or send push notifications when a new meeting invitation has come in
+                        if (newInvites.size() > 0) {
+                            notifyListeners(new Consumer<MeetingSyncEventListener>() {
+                                @Override
+                                public void accept(MeetingSyncEventListener meetingEventListener) {
+                                    meetingEventListener.onReceivedNewMeetingInvitations(currentMeetingInvitations);
+                                }
+                            });
+                        }
                     }
                 }
 
@@ -305,6 +371,7 @@ public class MeetingManager extends ObservableManager<MeetingSemiAdminEventListe
                     synchronized (meetings) {
                         if (meetings.containsKey(id)) {
                             meetings.remove(id);
+                            saveMeetings();
                         }
                     }
                     notifyListeners(new Consumer<MeetingSyncEventListener>() {
