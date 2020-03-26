@@ -175,4 +175,18 @@ public class NewMeeting extends AppCompatActivity implements MeetingSemiAdminEve
             }
         });
     }
+
+    public void toPicker(View view){
+        Intent pickIntent = new Intent(this, LocationPicker.class);
+        startActivityForResult(pickIntent,0);
+    }
+
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode,resultCode,data);
+        if (requestCode == 0) {
+            if (resultCode == RESULT_OK) {
+                etLocation.setText(data.getData().toString());
+            }
+        }
+    }
 }

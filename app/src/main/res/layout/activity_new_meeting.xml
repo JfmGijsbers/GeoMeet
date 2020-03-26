@@ -8,6 +8,17 @@
     tools:context=".NewMeeting"
     android:background="@color/colorPrimaryDark">
 
+    <Button
+        android:id="@+id/btn_add_user4"
+        style="@style/Widget.AppCompat.Button.Colored"
+        android:layout_width="129dp"
+        android:layout_height="45dp"
+        android:onClick="addManualUser"
+        android:text="Add user"
+        style:layout_constraintBottom_toBottomOf="@id/et_meeting_manual_user"
+        style:layout_constraintStart_toEndOf="@+id/et_meeting_manual_user"
+        style:layout_constraintTop_toBottomOf="@+id/et_meeting_location" />
+
     <TextView
         android:id="@+id/txt_meeting_name"
         android:layout_width="wrap_content"
@@ -60,15 +71,13 @@
     <Button
         android:id="@+id/btn_add_user"
         style="@style/Widget.AppCompat.Button.Colored"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Add user"
-        android:layout_marginEnd="5dp"
-        style:layout_constraintHorizontal_bias="0.0"
-        style:layout_constraintBottom_toBottomOf="@id/et_meeting_manual_user"
-        style:layout_constraintStart_toEndOf="@+id/et_meeting_manual_user"
-        style:layout_constraintTop_toBottomOf="@+id/et_meeting_location"
-        android:onClick="addManualUser"/>
+        android:layout_width="129dp"
+        android:layout_height="48dp"
+        android:onClick="toPicker"
+        android:text="Pick on map"
+        style:layout_constraintBottom_toBottomOf="@+id/et_meeting_location"
+        style:layout_constraintStart_toEndOf="@+id/et_meeting_location"
+        style:layout_constraintTop_toBottomOf="@+id/et_meeting_name" />
 
     <TextView
         android:id="@+id/txt_invited_connections"
