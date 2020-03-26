@@ -24,6 +24,7 @@ public class MainApplication extends Application {
     private MeetingManager meetingManager;
     private MeetingManager.MeetingSyncManager meetingSyncManager;
     private ConnectionsManager connectionsManager;
+    private PushNotificationManager pushNotificationManager;
 
     @Override
     public void onCreate() {
@@ -35,6 +36,8 @@ public class MainApplication extends Application {
         meetingManager = new MeetingManager(getApplicationContext(), authenticationManager);
         meetingSyncManager = meetingManager.new MeetingSyncManager();
         connectionsManager = new ConnectionsManager(authenticationManager);
+        pushNotificationManager = new PushNotificationManager();
+        pushNotificationManager.createNotificationChannel(getApplicationContext());
 
         // NOTE: part below is for testing
         BackendTest test = new BackendTest(this);
@@ -56,6 +59,7 @@ public class MainApplication extends Application {
     public MeetingManager getMeetingManager() { return meetingManager; }
     public MeetingManager.MeetingSyncManager getMeetingSyncManager() { return meetingSyncManager; }
     public ConnectionsManager getConnectionsManager() { return connectionsManager; }
+    public PushNotificationManager getPushNotificationManager() {return pushNotificationManager;}
 
     public void reset() {
         authenticationManager.reset();

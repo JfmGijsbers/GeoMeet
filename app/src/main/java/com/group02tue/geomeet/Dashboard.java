@@ -90,8 +90,7 @@ public class Dashboard extends AppCompatActivity {
 
     @Override
     public void onBackPressed() {
-        // TODO: alertDialog
-        logout();
+        finish();
     }
 
     /**

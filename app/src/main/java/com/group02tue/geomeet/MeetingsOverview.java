@@ -87,10 +87,20 @@ public class MeetingsOverview extends AppCompatActivity implements MeetingSyncEv
     }
 
     @Override
-    public void onReceivedMeetingInvitations(ArrayList<ImmutableMeeting> meetings) {
+    public void onReceivedNewMeetingInvitations(ArrayList<ImmutableMeeting> meetings) {
     }
     private void toMeeting(Meeting meeting) {
         Intent meetingIntent = new Intent(this, SeeMeeting.class);
+        putMeetingInIntent(meetingIntent, meeting);
+        startActivity(meetingIntent);
+    }
+
+    /**
+     * Puts all the required data for the SeeMeeting activity into an intent.
+     * @param intent Intent to put data in
+     * @param meeting Meeting to show in the SeeMeeting activity
+     */
+    public static void putMeetingInIntent(Intent intent, Meeting meeting) {
         String name = meeting.getName();
         String description = meeting.getDescription();
         Date date = meeting.getMoment();
@@ -98,17 +108,16 @@ public class MeetingsOverview extends AppCompatActivity implements MeetingSyncEv
         String strLocation = location.toString();
         Set<String> members = meeting.getMembers();
         String hostedBy = meeting.getAdminUsername();
-        meetingIntent.putExtra("name", name);
-        meetingIntent.putExtra("description", description);
-        meetingIntent.putExtra("date", date);
-        meetingIntent.putExtra("location", strLocation);
-        meetingIntent.putExtra("hostedBy", hostedBy);
-        meetingIntent.putExtra("meetingId", meeting.getId().toString());
+        intent.putExtra("name", name);
+        intent.putExtra("description", description);
+        intent.putExtra("date", date);
+        intent.putExtra("location", strLocation);
+        intent.putExtra("hostedBy", hostedBy);
+        intent.putExtra("meetingId", meeting.getId().toString());
         int i = 0;
         for (String member: members) {
-            meetingIntent.putExtra("member" + i, member);
+            intent.putExtra("member" + i, member);
             i++;
         }
-        startActivity(meetingIntent);
     }
 }
