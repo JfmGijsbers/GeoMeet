@@ -53,8 +53,13 @@ public class MessageListActivity extends AppCompatActivity implements ChatEventL
 
     }
     private void fixChat() {
-        messageAdapter.notifyDataSetChanged();
-        messageRecycler.scrollToPosition(messageAdapter.getItemCount() - 1);
+        runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                messageAdapter.notifyDataSetChanged();
+                messageRecycler.scrollToPosition(messageAdapter.getItemCount() - 1);
+            }
+        });
     }
 
 

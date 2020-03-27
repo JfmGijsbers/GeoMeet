@@ -33,7 +33,7 @@ public class SendChatMessageAPICall extends AbstractCommandingAPICall {
     protected RequestParams generateParams() {
         RequestParams params = new RequestParams();
         params.add(ParamKeys.RECEIVER, receiver);
-        params.add(ParamKeys.MESSAGE, content);
+        params.add(ParamKeys.CONTENT, content);
         params.add(ParamKeys.ID, id.toString());
         params.add(ParamKeys.MOMENT, MainApplication.DATE_FORMAT.format(moment));
         return params;
