@@ -142,8 +142,8 @@ public class LocationViewer extends FragmentActivity implements OnMapReadyCallba
             } catch (SecurityException e){}
 
 
-            //first move to the chosen location and zoom such that The Netherlands is fully visible
-            mMap.moveCamera(CameraUpdateFactory.zoomTo((float) 7.0));
+            //first zoom such that The Netherlands is fully visible
+            mMap.moveCamera(CameraUpdateFactory.zoomTo(7.0f));
             if (allLocations.size() > 0) {
                 mMap.moveCamera(CameraUpdateFactory.newLatLng(allLocations.get(0).getLatLng()));
 
@@ -162,7 +162,7 @@ public class LocationViewer extends FragmentActivity implements OnMapReadyCallba
                                     allLocations.get(0).getLatLng()).title(allLocations.get(0).detailedLocation));
                             mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(
                                     allLocations.get(0).getLatLng(),
-                                    (float) 11.0), 3000, new GoogleMap.CancelableCallback() {
+                                    11.0f), 3000, new GoogleMap.CancelableCallback() {
                                 @Override
                                 public void onFinish() {
                                 }
@@ -211,4 +211,6 @@ public class LocationViewer extends FragmentActivity implements OnMapReadyCallba
     public void onReceivedNewMeetingInvitations(ArrayList<ImmutableMeeting> meetings) {
         // N/A
     }
+
+
 }
