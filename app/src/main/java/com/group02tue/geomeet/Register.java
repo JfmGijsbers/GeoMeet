@@ -101,10 +101,12 @@ public class Register extends AppCompatActivity implements AuthenticationEventLi
         if (username.equals("")) {
             etUsername.setError("Please fill in your last name");
             noMistake = false;
-        } else if (!validateUsername(username)) {
+        }
+        /*else if (!validateUsername(username)) {
             etUsername.setError("Invalid username");
             noMistake = false;
         }
+        */
         if (noMistake) {
             authenticationManager.register(username, pass, firstName, lastName, email);
             etPass.setText("");
