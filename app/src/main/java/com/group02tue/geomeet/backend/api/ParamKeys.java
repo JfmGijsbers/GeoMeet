@@ -8,7 +8,7 @@ public final class ParamKeys {
     public final static String EMAIL = "email";
     public final static String AUTHENTICATION_KEY = "authenticationKey";
     public final static String RECEIVER = "receiver";
-    public final static String MESSAGE = "message";
+    public final static String CONTENT = "content";
     public final static String ID = "id";
     public final static String MOMENT = "moment";
     public final static String NAME = "name";
