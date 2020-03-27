@@ -35,6 +35,9 @@
         <activity
             android:name=".LocationViewer"
             android:label="@string/title_activity_location" />
+        <activity
+            android:name=".LocationPicker"
+            android:label="@string/title_activity_location" />
         <activity android:name=".ViewLocation" />
         <activity android:name=".SeeMeeting" />
         <activity android:name=".NewMeeting" />
