@@ -120,7 +120,6 @@ public class NewMeeting extends AppCompatActivity implements MeetingSemiAdminEve
             etName.setError("Please enter a meeting name");
             allCorrect = false;
         }
-        // TODO: meeting location validation
         Calendar cal = Calendar.getInstance();
         Date meetingMoment = new Date(mYear, mMonth, mDay, mHour, mMinute);
         Toast.makeText(this, meetingMoment.toString(), Toast.LENGTH_LONG).show();
@@ -133,9 +132,7 @@ public class NewMeeting extends AppCompatActivity implements MeetingSemiAdminEve
         } catch (ParseException e) {
             etLocation.setError("Invalid location");
         }
-
          */
-
     }
     private void createMeeting(String name, String description, Date meetingMoment,
                                Location2D location) {
@@ -144,8 +141,6 @@ public class NewMeeting extends AppCompatActivity implements MeetingSemiAdminEve
         createdMeetingId = meeting.getId();
         meetingManager.addMeeting(meeting);
         btnCreate.setEnabled(false);
-
-
     }
 
     public void toAllMeetings(View view) {
