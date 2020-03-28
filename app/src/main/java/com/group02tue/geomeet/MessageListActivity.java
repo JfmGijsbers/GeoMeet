@@ -78,13 +78,17 @@ public class MessageListActivity extends AppCompatActivity implements ChatEventL
 
     @Override
     public void onNewMessageReceived(ChatMessage message) {
-        messages.add(message);
+        synchronized (messages) {
+            messages.add(message);
+        }
         fixChat();
     }
 
     @Override
     public void onMessageSent(ChatMessage message) {
-        messages.add(message);
+        synchronized (messages) {
+            messages.add(message);
+        }
         fixChat();
     }
 

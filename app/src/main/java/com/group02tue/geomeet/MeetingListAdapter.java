@@ -5,6 +5,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -14,7 +15,7 @@ import java.util.Collection;
 import java.util.List;
 
 
-public class MeetingListAdapter extends ArrayAdapter<Meeting> {
+public class MeetingListAdapter extends ArrayAdapter<Meeting>  {
     private final Activity context;
     private final List<Meeting> meetings;
 
@@ -31,6 +32,7 @@ public class MeetingListAdapter extends ArrayAdapter<Meeting> {
         TextView txtTitle = (TextView) rowView.findViewById(R.id.meetingTitle);
         TextView txtAttending = rowView.findViewById(R.id.meetingAttending);
         TextView txtDate = rowView.findViewById(R.id.meetingDate);
+
         if (position < meetings.size()) {
             txtTitle.setText(meetings.get(position).getName());
             txtAttending.setText(String.valueOf(meetings.get(position).getAttendingCount()));

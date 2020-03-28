@@ -116,12 +116,15 @@ public class ChatManager extends ObservableManager<ChatEventListener> {
     public void checkForNewMessages() {
         new ReceiveChatMessageAPICall(authenticationManager, new ReceiveChatMessageAPIResponseListener() {
             @Override
-            public void onSuccess(final ArrayList<ChatMessage> messages) {
+            public void onSuccess(final ArrayList<ChatMessage> newMessages) {
                 notifyListeners(new Consumer<ChatEventListener>() {
                     @Override
                     public void accept(ChatEventListener listener) {
-                        for (ChatMessage message : messages) {
-                            listener.onNewMessageReceived(message);
+                        synchronized (messages) {
+                            for (ChatMessage message : newMessages) {
+                                messages.put(message.getId(), message);
+                                listener.onNewMessageReceived(message);
+                            }
                         }
                     }
                 });

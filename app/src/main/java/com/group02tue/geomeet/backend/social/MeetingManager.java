@@ -266,7 +266,7 @@ public class MeetingManager extends ObservableManager<MeetingSemiAdminEventListe
         /**
          * Request a list to which the user has been invited.
          */
-        public void requestMeetingInvitations() {
+        public List<ImmutableMeeting> requestMeetingInvitations() {
             new QueryMeetingInvitationsAPICall(authenticationManager, new QueryImmutableMeetingsAPIResponseListener() {
                 @Override
                 public void onSuccess(final ArrayList<ImmutableMeeting> currentMeetingInvitations) {
@@ -316,6 +316,7 @@ public class MeetingManager extends ObservableManager<MeetingSemiAdminEventListe
                     // Don't care: failure means no update
                 }
             }).execute();
+            return new ArrayList<>(meetingInvites.values());
         }
 
 

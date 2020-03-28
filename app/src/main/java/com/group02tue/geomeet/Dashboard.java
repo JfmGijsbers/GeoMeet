@@ -104,15 +104,15 @@ public class Dashboard extends AppCompatActivity {
         Intent profileIntent = new Intent(this, Profile.class);
         startActivity(profileIntent);
     }
-    private void toSettings() {
-        Intent settingsIntent = new Intent(this, SettingsActivity.class);
-        startActivity(settingsIntent);
-    }
     private void logout() {
         ((MainApplication)getApplication()).reset();
         Intent mainActivityIntent = new Intent(this, MainActivity.class);
         startActivity(mainActivityIntent);
         finish();
+    }
+    private void toSettings() {
+        Intent settingsIntent = new Intent(this, SettingsActivity.class);
+        startActivity(settingsIntent);
     }
 
     public void toAllMeetings(View view) {
@@ -120,9 +120,9 @@ public class Dashboard extends AppCompatActivity {
         startActivity(meetingOverviewIntent);
     }
 
-    public void toSettings(View view) {
-        Intent settingsIntent = new Intent(this, SettingsActivity.class);
-        startActivity(settingsIntent);
+    public void toInvites(View view) {
+        Intent invitesIntent = new Intent(this, MeetingInvites.class);
+        startActivity(invitesIntent);
     }
 
     public void toProfile(View view) {
