@@ -53,6 +53,9 @@ public class NewMeeting extends AppCompatActivity implements MeetingSemiAdminEve
     private AuthenticationManager authenticationManager;
     private ConnectionsManager connectionsManager;
 
+    private Date date;
+    private int mMinute, mHour, mDay, mMonth, mYear;
+
     private MaterialDatePicker.Builder<Long> builder = MaterialDatePicker.Builder.datePicker();
 
     //private ExternalUserProfile[] testList = {
@@ -77,7 +80,6 @@ public class NewMeeting extends AppCompatActivity implements MeetingSemiAdminEve
         btnCreate = findViewById(R.id.btn_create_meeting);
 
         txtDate = findViewById(R.id.txt_date);
-        txtTime = findViewById(R.id.txt_time);
 
         manualUser = findViewById(R.id.et_meeting_manual_user);
 
@@ -119,8 +121,9 @@ public class NewMeeting extends AppCompatActivity implements MeetingSemiAdminEve
             allCorrect = false;
         }
         // TODO: meeting location validation
-        // Description can be empty
-
+        Calendar cal = Calendar.getInstance();
+        Date meetingMoment = new Date(mYear, mMonth, mDay, mHour, mMinute);
+        Toast.makeText(this, meetingMoment.toString(), Toast.LENGTH_LONG).show();
         /*
         try {
             Location2D location = Location2D.parse(strLocation);
@@ -216,30 +219,12 @@ public class NewMeeting extends AppCompatActivity implements MeetingSemiAdminEve
     public void showDatePicker(View view) {
         DialogFragment datePicker = new DatePickerFragment();
         datePicker.show(getSupportFragmentManager(), "date picker");
-        /*MaterialDatePicker.Builder<Long> builder = MaterialDatePicker.Builder.datePicker();
-        builder.setTitleText("Pick date");
-        MaterialDatePicker<Long> picker = builder.build();
-        picker.show(getSupportFragmentManager(), picker.toString());
-
-        picker.addOnCancelListener(new DialogInterface.OnCancelListener() {
-            @Override
-            public void onCancel(DialogInterface dialog) {
-                txtDate.setText("No date selected");
-            }
-        });
-        picker.addOnPositiveButtonClickListener(new MaterialPickerOnPositiveButtonClickListener<Long>() {
-            @Override
-            public void onPositiveButtonClick(Long selection) {
-                txtDate.setText(picker);
-            }
-        });
-         */
     }
-    public void showTimePicker(View view) {
+    public void showTimePicker() {
         // Get Current Time
         final Calendar c = Calendar.getInstance();
-        int mHour = c.get(Calendar.HOUR_OF_DAY);
-        int mMinute = c.get(Calendar.MINUTE);
+        mHour = c.get(Calendar.HOUR_OF_DAY);
+        mMinute = c.get(Calendar.MINUTE);
 
         // Launch Time Picker Dialog
         TimePickerDialog timePickerDialog = new TimePickerDialog(this,
@@ -248,10 +233,12 @@ public class NewMeeting extends AppCompatActivity implements MeetingSemiAdminEve
                     @Override
                     public void onTimeSet(TimePicker view, int hourOfDay,
                                           int minute) {
-
-                        txtTime.setText(hourOfDay + ":" + minute);
+                        mHour = hourOfDay;
+                        mMinute = minute;
+                        txtDate.setText("At " + String.valueOf(txtDate.getText()) + "\n" + mHour + ":" + mMinute);
+                        date = c.getTime();
                     }
-                }, mHour, mMinute, false);
+                }, mHour, mMinute, true);
         timePickerDialog.show();
     }
     @Override
@@ -261,7 +248,11 @@ public class NewMeeting extends AppCompatActivity implements MeetingSemiAdminEve
         c.set(Calendar.MONTH, month);
         c.set(Calendar.DAY_OF_MONTH, dayOfMonth);
         String currentDateString = DateFormat.getDateInstance(DateFormat.FULL).format(c.getTime());
-
         txtDate.setText(currentDateString);
+        mYear = year;
+        mMonth = month;
+        mDay = dayOfMonth;
+
+        showTimePicker();
     }
 }

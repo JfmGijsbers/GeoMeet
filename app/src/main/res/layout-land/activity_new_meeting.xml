@@ -67,7 +67,7 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="01/01/2000"
+                android:text=""
                 android:id="@+id/txt_date"
                 />
             <Button
@@ -78,27 +78,6 @@
                 android:text="Select date"
                 android:layout_marginLeft="10dp"
                 android:onClick="showDatePicker"
-                />
-        </LinearLayout>
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal">
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="13:30"
-                android:id="@+id/txt_time"
-                />
-            <Button
-                android:id="@+id/btn_select_time"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                style="@style/Widget.MaterialComponents.Button"
-                android:text="Select time"
-                android:layout_marginLeft="10dp"
-                android:onClick="showTimePicker"
                 />
         </LinearLayout>
 </LinearLayout>
