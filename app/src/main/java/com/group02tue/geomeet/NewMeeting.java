@@ -122,8 +122,7 @@ public class NewMeeting extends AppCompatActivity implements MeetingSemiAdminEve
         }
         Calendar cal = Calendar.getInstance();
         Date meetingMoment = new Date(mYear, mMonth, mDay, mHour, mMinute);
-        Toast.makeText(this, meetingMoment.toString(), Toast.LENGTH_LONG).show();
-        /*
+
         try {
             Location2D location = Location2D.parse(strLocation);
             if (allCorrect) {
@@ -132,7 +131,6 @@ public class NewMeeting extends AppCompatActivity implements MeetingSemiAdminEve
         } catch (ParseException e) {
             etLocation.setError("Invalid location");
         }
-         */
     }
     private void createMeeting(String name, String description, Date meetingMoment,
                                Location2D location) {
