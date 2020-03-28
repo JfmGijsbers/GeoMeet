@@ -32,7 +32,8 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:ems="10"
-        android:inputType="textEmailAddress" />
+        android:inputType="textEmailAddress"
+        android:maxLength="30" />
 
     <TextView
         android:id="@+id/txt_meeting_name"
@@ -46,7 +47,8 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:ems="10"
-        android:inputType="textEmailAddress" />
+        android:inputType="textEmailAddress"
+        android:maxLength="30" />
 
     <TextView
         android:id="@+id/txt_meeting_location"
@@ -60,7 +62,8 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:ems="10"
-        android:inputType="textPersonName" />
+        android:inputType="textPersonName"
+        android:maxLength="15" />
     </LinearLayout>
 
     <LinearLayout
@@ -83,7 +86,8 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:ems="10"
-            android:inputType="textPersonName" />
+            android:inputType="textPersonName"
+            android:maxLength="15" />
 
         <TextView
             android:id="@+id/txt_meeting_description"
@@ -97,7 +101,8 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:ems="10"
-            android:inputType="textPassword" />
+            android:inputType="textPassword"
+            android:maxLength="30" />
 
         <TextView
             android:id="@+id/txt_confirmPassword"
@@ -111,7 +116,8 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:ems="10"
-            android:inputType="textPassword" />
+            android:inputType="textPassword"
+            android:maxLength="30" />
 
     </LinearLayout>
 

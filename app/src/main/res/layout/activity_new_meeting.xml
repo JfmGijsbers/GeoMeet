@@ -122,6 +122,7 @@
         android:hint="DD"
         android:inputType="number"
         android:maxLength="2"
+
         style:layout_constraintTop_toBottomOf="@id/et_meeting_description"
         style:layout_constraintBaseline_toBaselineOf="@+id/et_month"
         style:layout_constraintStart_toStartOf="@+id/et_meeting_description" />
@@ -222,7 +223,7 @@
         android:layout_marginBottom="138dp"
         android:ems="10"
         android:enabled="true"
-        android:onClick="createMeeting"
+        android:onClick="showPicker"
         android:text="Create"
         style:layout_constraintStart_toStartOf="@+id/et_day"
         style:layout_constraintTop_toBottomOf="@+id/et_year" />

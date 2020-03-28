@@ -1,16 +1,25 @@
 package com.group02tue.geomeet;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.fragment.app.DialogFragment;
 
+import android.app.DatePickerDialog;
+import android.app.TimePickerDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.ListView;
+import android.widget.TextView;
+import android.widget.TimePicker;
 import android.widget.Toast;
 
+import com.google.android.material.datepicker.MaterialDatePicker;
+import com.google.android.material.datepicker.MaterialPickerOnPositiveButtonClickListener;
 import com.group02tue.geomeet.backend.Location2D;
 import com.group02tue.geomeet.backend.authentication.AuthenticationManager;
 import com.group02tue.geomeet.backend.social.ConnectionsManager;
@@ -21,8 +30,10 @@ import com.group02tue.geomeet.backend.social.MeetingAsAdminManager;
 import com.group02tue.geomeet.backend.social.MeetingManager;
 import com.group02tue.geomeet.backend.social.MeetingSemiAdminEventListener;
 
+import java.text.DateFormat;
 import java.text.ParseException;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.UUID;
 
@@ -31,16 +42,18 @@ import com.group02tue.geomeet.backend.social.ProfileEventListener;
 
 
 public class NewMeeting extends AppCompatActivity implements MeetingSemiAdminEventListener,
-        ConnectionsEventListener {
+        ConnectionsEventListener, DatePickerDialog.OnDateSetListener {
     private EditText etName, etLocation, etDescription;
-    private EditText etDay, etMonth, etYear, etHour, etMinute;
     private EditText manualUser;
+    private TextView txtDate, txtTime;
     private Button btnCreate;
     private ListView connectionList;
     private MeetingManager meetingManager;
     private MeetingManager.MeetingSyncManager meetingSyncManager;
     private AuthenticationManager authenticationManager;
     private ConnectionsManager connectionsManager;
+
+    private MaterialDatePicker.Builder<Long> builder = MaterialDatePicker.Builder.datePicker();
 
     //private ExternalUserProfile[] testList = {
      //       new ExternalUserProfile("user","a", "b", "email", "test") };
@@ -63,11 +76,8 @@ public class NewMeeting extends AppCompatActivity implements MeetingSemiAdminEve
         connectionList = findViewById(R.id.listview_connections);
         btnCreate = findViewById(R.id.btn_create_meeting);
 
-        etDay = findViewById(R.id.et_day);
-        etMonth = findViewById(R.id.et_month);
-        etYear = findViewById(R.id.et_year);
-        etHour = findViewById(R.id.et_hour);
-        etMinute = findViewById(R.id.et_minute);
+        txtDate = findViewById(R.id.txt_date);
+        txtTime = findViewById(R.id.txt_time);
 
         manualUser = findViewById(R.id.et_meeting_manual_user);
 
@@ -98,28 +108,41 @@ public class NewMeeting extends AppCompatActivity implements MeetingSemiAdminEve
         ((ConnectionListAdapter) connectionList.getAdapter()).notifyDataSetChanged();
     }
 
-    public void createMeeting(View view) {
+    public void checkMeeting(View view) {
+        boolean allCorrect = true;
         String name = String.valueOf(etName.getText());
         String strLocation = String.valueOf(etLocation.getText());
         String description = String.valueOf(etDescription.getText());
 
-        int day = Integer.parseInt(String.valueOf(etDay.getText()));
-        int month = Integer.parseInt(String.valueOf(etMonth.getText()));
-        int year = Integer.parseInt(String.valueOf(etYear.getText()));
-        int hour = Integer.parseInt(String.valueOf(etHour.getText()));
-        int minute = Integer.parseInt(String.valueOf(etMinute.getText()));
-        Date meetingMoment = new Date(year, month, day, hour, minute);
+        if (name.equals("")) {
+            etName.setError("Please enter a meeting name");
+            allCorrect = false;
+        }
+        // TODO: meeting location validation
+        // Description can be empty
 
+        /*
         try {
             Location2D location = Location2D.parse(strLocation);
-            Meeting meeting = new Meeting(name, description, meetingMoment, location,
-                    authenticationManager.getUsername());
-            createdMeetingId = meeting.getId();
-            meetingManager.addMeeting(meeting);
-            btnCreate.setEnabled(false);
+            if (allCorrect) {
+                createMeeting(name, description, meetingMoment, location);
+            }
         } catch (ParseException e) {
             etLocation.setError("Invalid location");
         }
+
+         */
+
+    }
+    private void createMeeting(String name, String description, Date meetingMoment,
+                               Location2D location) {
+        Meeting meeting = new Meeting(name, description, meetingMoment, location,
+                authenticationManager.getUsername());
+        createdMeetingId = meeting.getId();
+        meetingManager.addMeeting(meeting);
+        btnCreate.setEnabled(false);
+
+
     }
 
     public void toAllMeetings(View view) {
@@ -188,5 +211,57 @@ public class NewMeeting extends AppCompatActivity implements MeetingSemiAdminEve
                 etLocation.setText(data.getData().toString());
             }
         }
+    }
+
+    public void showDatePicker(View view) {
+        DialogFragment datePicker = new DatePickerFragment();
+        datePicker.show(getSupportFragmentManager(), "date picker");
+        /*MaterialDatePicker.Builder<Long> builder = MaterialDatePicker.Builder.datePicker();
+        builder.setTitleText("Pick date");
+        MaterialDatePicker<Long> picker = builder.build();
+        picker.show(getSupportFragmentManager(), picker.toString());
+
+        picker.addOnCancelListener(new DialogInterface.OnCancelListener() {
+            @Override
+            public void onCancel(DialogInterface dialog) {
+                txtDate.setText("No date selected");
+            }
+        });
+        picker.addOnPositiveButtonClickListener(new MaterialPickerOnPositiveButtonClickListener<Long>() {
+            @Override
+            public void onPositiveButtonClick(Long selection) {
+                txtDate.setText(picker);
+            }
+        });
+         */
+    }
+    public void showTimePicker(View view) {
+        // Get Current Time
+        final Calendar c = Calendar.getInstance();
+        int mHour = c.get(Calendar.HOUR_OF_DAY);
+        int mMinute = c.get(Calendar.MINUTE);
+
+        // Launch Time Picker Dialog
+        TimePickerDialog timePickerDialog = new TimePickerDialog(this,
+                new TimePickerDialog.OnTimeSetListener() {
+
+                    @Override
+                    public void onTimeSet(TimePicker view, int hourOfDay,
+                                          int minute) {
+
+                        txtTime.setText(hourOfDay + ":" + minute);
+                    }
+                }, mHour, mMinute, false);
+        timePickerDialog.show();
+    }
+    @Override
+    public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
+        Calendar c = Calendar.getInstance();
+        c.set(Calendar.YEAR, year);
+        c.set(Calendar.MONTH, month);
+        c.set(Calendar.DAY_OF_MONTH, dayOfMonth);
+        String currentDateString = DateFormat.getDateInstance(DateFormat.FULL).format(c.getTime());
+
+        txtDate.setText(currentDateString);
     }
 }

@@ -4,6 +4,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -102,11 +103,12 @@ public class Register extends AppCompatActivity implements AuthenticationEventLi
             etUsername.setError("Please fill in your last name");
             noMistake = false;
         }
-        /*else if (!validateUsername(username)) {
-            etUsername.setError("Invalid username");
+        else if (!validateUsername(username)) {
+            etUsername.setError("Username cannot contain special characters. \n " +
+                    "Example correct: test123-t");
             noMistake = false;
         }
-        */
+
         if (noMistake) {
             authenticationManager.register(username, pass, firstName, lastName, email);
             etPass.setText("");
@@ -134,7 +136,7 @@ public class Register extends AppCompatActivity implements AuthenticationEventLi
         return matcher.matches();
     }
     public static boolean validateUsername(String username) {
-        String expression = "/^[a-zA-Z0-9]+([a-zA-Z0-9](_|-| )[a-zA-Z0-9])*[a-zA-Z0-9]+$/";
+        String expression = "^[A-Za-z0-9]+(?:[ _-][A-Za-z0-9]+)*$";
         Pattern pattern = Pattern.compile(expression);
         Matcher matcher = pattern.matcher(username);
         return matcher.matches();

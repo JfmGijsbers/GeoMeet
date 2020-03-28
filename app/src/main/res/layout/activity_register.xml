@@ -13,7 +13,7 @@
         android:id="@+id/txt_username"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="User name:"
+        android:text="Username:"
         android:textSize="12sp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
@@ -25,7 +25,8 @@
         android:ems="10"
         android:inputType="textEmailAddress"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/txt_username" />
+        app:layout_constraintTop_toBottomOf="@id/txt_username"
+        android:maxLength="20" />
 
     <TextView
         android:id="@+id/txt_meeting_name"
@@ -43,7 +44,8 @@
         android:ems="10"
         android:inputType="textEmailAddress"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/txt_meeting_name" />
+        app:layout_constraintTop_toBottomOf="@id/txt_meeting_name"
+        android:maxLength="30" />
 
     <TextView
         android:id="@+id/txt_meeting_location"
@@ -61,7 +63,8 @@
         android:ems="10"
         android:inputType="textPersonName"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/txt_meeting_location" />
+        app:layout_constraintTop_toBottomOf="@id/txt_meeting_location"
+        android:maxLength="15" />
 
     <TextView
         android:id="@+id/txt_invited_connections"
@@ -79,7 +82,8 @@
         android:ems="10"
         android:inputType="textPersonName"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/txt_invited_connections" />
+        app:layout_constraintTop_toBottomOf="@id/txt_invited_connections"
+        android:maxLength="15" />
 
     <TextView
         android:id="@+id/txt_meeting_description"
@@ -97,7 +101,8 @@
         android:ems="10"
         android:inputType="textPassword"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/txt_meeting_description" />
+        app:layout_constraintTop_toBottomOf="@id/txt_meeting_description"
+        android:maxLength="30" />
 
     <TextView
         android:id="@+id/txt_confirmPassword"
@@ -115,7 +120,8 @@
         android:ems="10"
         android:inputType="textPassword"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/txt_confirmPassword" />
+        app:layout_constraintTop_toBottomOf="@id/txt_confirmPassword"
+        android:maxLength="30"/>
 
     <Button
         android:id="@+id/btn_register"
