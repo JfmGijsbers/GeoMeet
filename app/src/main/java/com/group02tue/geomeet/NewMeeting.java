@@ -121,7 +121,7 @@ public class NewMeeting extends AppCompatActivity implements MeetingSemiAdminEve
             allCorrect = false;
         }
         Calendar cal = Calendar.getInstance();
-        Date meetingMoment = new Date(mYear, mMonth, mDay, mHour, mMinute);
+        Date meetingMoment = new Date(mYear - 1900, mMonth, mDay, mHour, mMinute);
 
         try {
             Location2D location = Location2D.parse(strLocation);
