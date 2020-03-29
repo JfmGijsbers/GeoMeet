@@ -87,19 +87,9 @@ public class Dashboard extends AppCompatActivity {
                 return super.onOptionsItemSelected(item);
         }
     }
-
-    @Override
-    public void onBackPressed() {
-        finish();
-    }
-
     /**
      * Below this comment are all methods that simply refer the app to a different activity
      */
-    private void toMeeting() {
-        Intent meetingIntent = new Intent(this, SeeMeeting.class);
-        startActivity(meetingIntent);
-    }
     private void toProfile() {
         Intent profileIntent = new Intent(this, Profile.class);
         startActivity(profileIntent);
@@ -113,6 +103,11 @@ public class Dashboard extends AppCompatActivity {
     private void toSettings() {
         Intent settingsIntent = new Intent(this, SettingsActivity.class);
         startActivity(settingsIntent);
+    }
+
+    private void toMeeting() {
+        Intent meetingIntent = new Intent(this, SeeMeeting.class);
+        startActivity(meetingIntent);
     }
 
     public void toAllMeetings(View view) {
@@ -148,5 +143,11 @@ public class Dashboard extends AppCompatActivity {
 
     public void toGroups(View view) {
     }
+
+    @Override
+    public void onBackPressed() {
+        finish();
+    }
+
 }
 

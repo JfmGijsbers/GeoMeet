@@ -8,18 +8,22 @@
     android:orientation="vertical">
 
     <ListView
-        android:layout_marginTop="10dp"
         android:id="@+id/fullMeetingListView"
         android:layout_width="match_parent"
-        android:layout_height="500dp"
+        android:layout_height="0dp"
+        android:layout_weight="4"
         />
     <Button
+        style="@style/Widget.MaterialComponents.Button"
         android:layout_width="wrap_content"
         android:layout_gravity="center"
         android:text="Plan new meeting"
         android:onClick="newMeeting"
         android:textColor="#FFFFFF"
-        android:layout_height="wrap_content"
+        android:layout_height="0dp"
+        android:maxHeight="50dp"
+        android:ems="10"
+        android:layout_weight="1"
         android:background="@drawable/btn_rounded_corner"/>
 
 

@@ -38,7 +38,8 @@
             android:label="@string/title_activity_location" />
         <activity android:name=".ViewLocation" />
         <activity android:name=".SeeMeeting" />
-        <activity android:name=".NewMeeting" />
+        <activity android:name=".NewMeeting"
+            android:configChanges="orientation|screenSize|keyboardHidden" />
         <activity android:name=".MyConnections" />
         <activity android:name=".MeetingsOverview" />
         <activity android:name=".Profile" />

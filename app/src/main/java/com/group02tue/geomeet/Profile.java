@@ -15,6 +15,7 @@ public class Profile extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_profile);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
     }
 
     /**
@@ -32,6 +33,9 @@ public class Profile extends AppCompatActivity {
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
+            case android.R.id.home:
+                back();
+                return true;
             case R.id.profile:
                 toProfile();
                 return true;
@@ -48,6 +52,10 @@ public class Profile extends AppCompatActivity {
     /**
      * Below this comment are all methods that simply refer the app to a different activity
      */
+    private void back() {
+        Intent backIntent = new Intent(this, Dashboard.class);
+        startActivity(backIntent);
+    }
     private void toProfile() {
         Intent profileIntent = new Intent(this, Profile.class);
         startActivity(profileIntent);

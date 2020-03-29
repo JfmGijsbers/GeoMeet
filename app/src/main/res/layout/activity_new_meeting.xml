@@ -1,14 +1,18 @@
 <?xml version="1.0" encoding="utf-8"?>
 
-<androidx.constraintlayout.widget.ConstraintLayout  xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:style="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".NewMeeting"
-    android:background="@color/colorPrimaryDark"
-    android:padding="20dp">
-
+    android:background="@color/colorPrimaryDark">
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="20dp"
+        >
     <Button
         android:id="@+id/btn_add_user4"
         style="@style/Widget.AppCompat.Button.Colored"
@@ -159,4 +163,5 @@
         android:text="Cancel"
         style:layout_constraintStart_toStartOf="@+id/btn_create_meeting"
         style:layout_constraintTop_toBottomOf="@+id/btn_create_meeting" />
-</androidx.constraintlayout.widget.ConstraintLayout >
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</ScrollView >

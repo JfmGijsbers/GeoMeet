@@ -2,9 +2,13 @@ package com.group02tue.geomeet;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.app.ActionBar;
 import android.content.Intent;
 import android.location.Location;
 import android.os.Bundle;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ListView;
@@ -27,7 +31,7 @@ public class SeeMeeting extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_see_meeting);
-
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         /*
          * First, we need to retrieve all the data from the intent
          */
@@ -51,6 +55,7 @@ public class SeeMeeting extends AppCompatActivity {
             i++;
             members.add(member);
         }
+
         /*
         Then, we need to find our views
          */
@@ -68,8 +73,42 @@ public class SeeMeeting extends AppCompatActivity {
         txtAdmin.setText("Meeting organizer: " + hostedBy);
         txtDate.setText(date.toString());
         txtDescription.setText(description);
-
     }
+    /**
+     *  Create the options menu:
+     *  */
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        MenuInflater menuInflater = getMenuInflater();
+        menuInflater.inflate(R.menu.meeting_menu, menu);
+        return true;
+    }
+    /**
+     * Reacting to menu items getting clicked:
+     */
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case android.R.id.home:
+                back();
+                return true;
+            case R.id.profile:
+                toProfile();
+                return true;
+            case R.id.settings:
+                toSettings();
+                return true;
+            case R.id.logout:
+                logout();
+                return true;
+            case R.id.delete:
+                // TODO delete meeting
+                return true;
+            default:
+                return super.onOptionsItemSelected(item);
+        }
+    }
+
     public void toMap(View view) {
         Intent mapIntent = new Intent(this, LocationViewer.class);
         mapIntent.putExtra("fromSeeMeeting", -1);
@@ -81,5 +120,23 @@ public class SeeMeeting extends AppCompatActivity {
         Intent chatIntent = new Intent(this, MessageListActivity.class);
         chatIntent.putExtra("meetingId", meetingId);
         startActivity(chatIntent);
+    }
+    private void toProfile() {
+        Intent profileIntent = new Intent(this, Profile.class);
+        startActivity(profileIntent);
+    }
+    private void logout() {
+        ((MainApplication)getApplication()).reset();
+        Intent mainActivityIntent = new Intent(this, MainActivity.class);
+        startActivity(mainActivityIntent);
+        finish();
+    }
+    private void toSettings() {
+        Intent settingsIntent = new Intent(this, SettingsActivity.class);
+        startActivity(settingsIntent);
+    }
+    private void back() {
+        Intent backIntent = new Intent(this, MeetingsOverview.class);
+        startActivity(backIntent);
     }
 }

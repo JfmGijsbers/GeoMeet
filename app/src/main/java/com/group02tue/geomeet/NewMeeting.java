@@ -9,6 +9,9 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.DatePicker;
@@ -66,6 +69,7 @@ public class NewMeeting extends AppCompatActivity implements MeetingSemiAdminEve
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_new_meeting);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         meetingManager = ((MainApplication)getApplication()).getMeetingManager();
         meetingSyncManager = ((MainApplication)getApplication()).getMeetingSyncManager();
@@ -86,6 +90,59 @@ public class NewMeeting extends AppCompatActivity implements MeetingSemiAdminEve
         ConnectionListAdapter listAdapter = new ConnectionListAdapter(NewMeeting.this,
                 connections);
         connectionList.setAdapter(listAdapter);
+    }
+
+    /**
+     *  Create the options menu:
+     *  */
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        MenuInflater menuInflater = getMenuInflater();
+        menuInflater.inflate(R.menu.menu, menu);
+        return true;
+    }
+    /**
+     * Reacting to menu items getting clicked:
+     */
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case android.R.id.home:
+                back();
+                return true;
+            case R.id.profile:
+                toProfile();
+                return true;
+            case R.id.settings:
+                toSettings();
+                return true;
+            case R.id.logout:
+                logout();
+                return true;
+            default:
+                return super.onOptionsItemSelected(item);
+        }
+    }
+    /**
+     * Below this comment are all methods that simply refer the app to a different activity
+     */
+    private void back() {
+        Intent backIntent = new Intent(this, MeetingsOverview.class);
+        startActivity(backIntent);
+    }
+    private void toProfile() {
+        Intent profileIntent = new Intent(this, Profile.class);
+        startActivity(profileIntent);
+    }
+    private void logout() {
+        ((MainApplication)getApplication()).reset();
+        Intent mainActivityIntent = new Intent(this, MainActivity.class);
+        startActivity(mainActivityIntent);
+        finish();
+    }
+    private void toSettings() {
+        Intent settingsIntent = new Intent(this, SettingsActivity.class);
+        startActivity(settingsIntent);
     }
 
     @Override
@@ -183,7 +240,7 @@ public class NewMeeting extends AppCompatActivity implements MeetingSemiAdminEve
     }
 
     public void toAllMeetings(View view) {
-        Intent intent = new Intent(this, Dashboard.class);
+        Intent intent = new Intent(this, MeetingsOverview.class);
         startActivity(intent);
         finish();
     }
