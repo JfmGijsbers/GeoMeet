@@ -65,14 +65,16 @@ public class ChatManager extends ObservableManager<ChatEventListener> {
      * Sends a new chat message.
      * @param receiver To who the message should be send
      * @param message The content of the message
+     * @return Message (being) sent
      */
-    public void sendMessage(String receiver, String message)  {
+    public ChatMessage sendMessage(String receiver, String message)  {
         final ChatMessage messageToSend = new ChatMessage(authenticationManager.getUsername(),
                 receiver, message);
         synchronized (messages) {
             messages.put(messageToSend.getId(), messageToSend);
         }
         sendMessage(messageToSend);
+        return messageToSend;
     }
 
     /**
@@ -163,9 +165,10 @@ public class ChatManager extends ObservableManager<ChatEventListener> {
         }
     }
 
-    /*
-     * TODO 1: write this adapter (part of UI).
-     * TODO 2: method which convert List<ChatMessage> into array adapter for ListView (part of backend).
+    /**
+     * Gets all messages related to a specific meeting.
+     * @param meetingId Id of meeting to get messages of
+     * @return List of messages
      */
      public List<ChatMessage> getMessages(String meetingId) {
          synchronized (messages) {

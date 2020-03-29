@@ -5,10 +5,14 @@ import android.app.PendingIntent;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.SystemClock;
 import android.util.Log;
 
+import androidx.preference.PreferenceManager;
+
 import com.group02tue.geomeet.MainApplication;
+import com.group02tue.geomeet.NotificationsFragment;
 import com.group02tue.geomeet.PushNotificationManager;
 import com.group02tue.geomeet.backend.authentication.AuthenticationManager;
 import com.group02tue.geomeet.backend.chat.ChatEventListener;
@@ -39,8 +43,10 @@ public class AlarmBroadcastReceiver extends BroadcastReceiver {
         Log.println(Log.DEBUG, "BackendAlarm", "Received alarm broadcast");
         AuthenticationManager authenticationManager =
                 ((MainApplication)context.getApplicationContext()).getAuthenticationManager();
-        if (authenticationManager.areCredentialsStored()) {
-            synchronize(context);
+        SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(context);
+        if (authenticationManager.areCredentialsStored() &&
+                sp.getBoolean(NotificationsFragment.SHOW_ANY_NOTIFICATION_KEY, false)) {
+            synchronize(context, sp);
         }
     }
 
@@ -48,7 +54,7 @@ public class AlarmBroadcastReceiver extends BroadcastReceiver {
      * Synchronizes data with the server.
      * @param context
      */
-    private void synchronize(final Context context) {
+    private void synchronize(final Context context, SharedPreferences sp) {
         final PushNotificationManager pushNotificationManager =
                 ((MainApplication)context.getApplicationContext()).getPushNotificationManager();
         final MeetingManager.MeetingSyncManager meetingSyncManager =
@@ -56,54 +62,58 @@ public class AlarmBroadcastReceiver extends BroadcastReceiver {
         final ChatManager chatManager =
                 ((MainApplication)context.getApplicationContext()).getChatManager();
 
-        // Sync chat
-        chatManager.addListener(new ChatEventListener() {
-            @Override
-            public void onNewMessageReceived(ChatMessage message) {
-                pushNotificationManager.displayNewMessageNotification(context, message,
-                        ((MainApplication)context.getApplicationContext()).getMeetingManager());
-                chatManager.removeListener(this);
-            }
-
-            @Override
-            public void onMessageSent(ChatMessage message) {
-                chatManager.removeListener(this);
-            }
-
-            @Override
-            public void onFailedToSendMessage(ChatMessage message, String reason) {
-                chatManager.removeListener(this);
-            }
-        });
-        chatManager.checkForNewMessages();
-        chatManager.sendAllUnsendMessages();
-
-        // Sync meetings
-        meetingSyncManager.addListener(new MeetingSyncEventListener() {
-            @Override
-            public void onMeetingUpdatedReceived(Meeting meeting) {
-                meetingSyncManager.removeListener(this);
-            }
-
-            @Override
-            public void onLeftMeeting(UUID id) {
-                meetingSyncManager.removeListener(this);
-            }
-
-            @Override
-            public void onFailure(UUID id, String reason) {
-                meetingSyncManager.removeListener(this);
-            }
-
-            @Override
-            public void onReceivedNewMeetingInvitations(ArrayList<ImmutableMeeting> meetings) {
-                for (ImmutableMeeting invite : meetings) {
-                    pushNotificationManager.displayNewMeetingInviteNotification(context, invite);
+        if (sp.getBoolean(NotificationsFragment.NOTIFICATION_NEW_MESSAGE_KEY, false)) {
+            // Sync chat
+            chatManager.addListener(new ChatEventListener() {
+                @Override
+                public void onNewMessageReceived(ChatMessage message) {
+                    pushNotificationManager.displayNewMessageNotification(context, message,
+                            ((MainApplication)context.getApplicationContext()).getMeetingManager());
+                    chatManager.removeListener(this);
                 }
-                meetingSyncManager.removeListener(this);
-            }
-        });
-        meetingSyncManager.requestMeetingInvitations();
+
+                @Override
+                public void onMessageSent(ChatMessage message) {
+                    chatManager.removeListener(this);
+                }
+
+                @Override
+                public void onFailedToSendMessage(ChatMessage message, String reason) {
+                    chatManager.removeListener(this);
+                }
+            });
+            chatManager.checkForNewMessages();
+            chatManager.sendAllUnsendMessages();
+        }
+
+        if (sp.getBoolean(NotificationsFragment.NOTIFICATION_NEW_MEETING_KEY, false)) {
+            // Sync meetings
+            meetingSyncManager.addListener(new MeetingSyncEventListener() {
+                @Override
+                public void onMeetingUpdatedReceived(Meeting meeting) {
+                    meetingSyncManager.removeListener(this);
+                }
+
+                @Override
+                public void onLeftMeeting(UUID id) {
+                    meetingSyncManager.removeListener(this);
+                }
+
+                @Override
+                public void onFailure(UUID id, String reason) {
+                    meetingSyncManager.removeListener(this);
+                }
+
+                @Override
+                public void onReceivedNewMeetingInvitations(ArrayList<ImmutableMeeting> meetings) {
+                    for (ImmutableMeeting invite : meetings) {
+                        pushNotificationManager.displayNewMeetingInviteNotification(context, invite);
+                    }
+                    meetingSyncManager.removeListener(this);
+                }
+            });
+            meetingSyncManager.requestMeetingInvitations();
+        }
     }
 
     /**
