@@ -16,18 +16,6 @@
 
 <PreferenceScreen xmlns:app="http://schemas.android.com/apk/res-auto">
     <PreferenceCategory app:title="General settings">
-        <EditTextPreference
-            app:key="signature"
-            app:title="@string/signature_title"
-            app:useSimpleSummaryProvider="true" />
-
-        <ListPreference
-            app:defaultValue="earth"
-            app:entries="@array/color_scheme"
-            app:entryValues="@array/color_values"
-            app:key="colorScheme"
-            app:title="Color scheme"
-            app:useSimpleSummaryProvider="true" />
         <Preference
             app:title="Notifications"
             app:fragment="com.group02tue.geomeet.NotificationsFragment"
