@@ -96,9 +96,10 @@ public class MessageListActivity extends AppCompatActivity implements ChatEventL
     @Override
     public void onNewMessageReceived(ChatMessage message) {
         synchronized (messages) {
+            Log.println(Log.DEBUG, "Debug", "1");
             messages.add(message);
+            fixChat();
         }
-        fixChat();
     }
 
     @Override
@@ -114,10 +115,13 @@ public class MessageListActivity extends AppCompatActivity implements ChatEventL
     public void onNewMessage(View view) {
         String message = String.valueOf(chatBox.getText());
         if (!message.isEmpty()) {
+            Log.println(Log.DEBUG, "Debug", "2");
             ChatMessage messageSending = chatManager.sendMessage(meetingId, message);
             synchronized (messages) {
+                Log.println(Log.DEBUG, "Debug", "3");
                 messages.add(messageSending);
                 fixChat();
+                Log.println(Log.DEBUG, "Debug", "4");
             }
         }
         chatBox.setText("");
