@@ -2,6 +2,7 @@ package com.group02tue.geomeet.backend.chat;
 
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.util.Log;
 
 import androidx.core.util.Consumer;
 import androidx.preference.PreferenceManager;
@@ -53,11 +54,14 @@ public class ChatManager extends ObservableManager<ChatEventListener> {
      */
     private void saveMessages() {
         synchronized (messages) {
+            Log.println(Log.DEBUG, "Debug", "gson");
             Gson gson = new Gson();
             Type messageListType = new TypeToken<Map<UUID, ChatMessage>>(){}.getType();
+            Log.println(Log.DEBUG, "Debug", "gson2");
             SharedPreferences.Editor prefsEditor = preferences.edit();
             prefsEditor.putString(MESSAGES_PREFERENCE, gson.toJson(messages, messageListType));
             prefsEditor.apply();
+            Log.println(Log.DEBUG, "Debug", "gson3");
         }
     }
 

@@ -25,8 +25,8 @@ import java.util.Set;
 import java.util.UUID;
 
 public class MeetingsOverview extends AppCompatActivity implements MeetingSyncEventListener {
-    ListView meetingOverviewList;
-
+    private ListView meetingOverviewList;
+    private List<Meeting> meetings;
     private MeetingManager.MeetingSyncManager meetingSyncManager;
 
     @Override
@@ -35,7 +35,7 @@ public class MeetingsOverview extends AppCompatActivity implements MeetingSyncEv
         setContentView(R.layout.activity_meetings_overview);
         meetingSyncManager = ((MainApplication)getApplication()).getMeetingSyncManager();
 
-        List<Meeting> meetings = meetingSyncManager.getMeetingMemberships();
+        meetings = meetingSyncManager.getMeetingMemberships();
         final MeetingListAdapter listAdapter = new MeetingListAdapter(MeetingsOverview.this,
                 meetings);
         meetingOverviewList = (ListView) findViewById(R.id.fullMeetingListView);
@@ -73,7 +73,26 @@ public class MeetingsOverview extends AppCompatActivity implements MeetingSyncEv
 
     @Override
     public void onMeetingUpdatedReceived(Meeting meeting) {
+        synchronized (meetings) {
+            boolean updated = false;
+            for (int i = 0; i < meetings.size(); i++) {
+                if (meetings.get(i).getId().equals(meeting.getId())) {
+                    meetings.set(i, meeting);
+                    updated = true;
+                    break;
+                }
+            }
+            if (!updated) {
+                meetings.add(meeting);
+            }
 
+            runOnUiThread(new Runnable() {
+                @Override
+                public void run() {
+                    ((MeetingListAdapter)meetingOverviewList.getAdapter()).notifyDataSetChanged();
+                }
+            });
+        }
     }
 
     @Override

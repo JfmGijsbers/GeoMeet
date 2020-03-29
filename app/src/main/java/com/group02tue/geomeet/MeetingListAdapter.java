@@ -35,7 +35,7 @@ public class MeetingListAdapter extends ArrayAdapter<Meeting>  {
 
         if (position < meetings.size()) {
             txtTitle.setText(meetings.get(position).getName());
-            txtAttending.setText(String.valueOf(meetings.get(position).getAttendingCount()));
+            txtAttending.setText("Attending: " + String.valueOf(meetings.get(position).getAttendingCount()));
             txtDate.setText(MainApplication.UI_DATE_FORMAT.format(meetings.get(position).getMoment()));
         }
         return rowView;
