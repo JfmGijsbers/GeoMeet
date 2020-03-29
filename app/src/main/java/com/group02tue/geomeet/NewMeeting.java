@@ -35,6 +35,7 @@ import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.List;
 import java.util.UUID;
 
 import com.group02tue.geomeet.backend.social.ConnectionsEventListener;
@@ -48,6 +49,7 @@ public class NewMeeting extends AppCompatActivity implements MeetingSemiAdminEve
     private TextView txtDate, txtTime;
     private Button btnCreate;
     private ListView connectionList;
+    private ArrayList<String> connections = new ArrayList<>();
     private MeetingManager meetingManager;
     private MeetingManager.MeetingSyncManager meetingSyncManager;
     private AuthenticationManager authenticationManager;
@@ -57,9 +59,6 @@ public class NewMeeting extends AppCompatActivity implements MeetingSemiAdminEve
     private int mMinute, mHour, mDay, mMonth, mYear;
 
     private MaterialDatePicker.Builder<Long> builder = MaterialDatePicker.Builder.datePicker();
-
-    //private ExternalUserProfile[] testList = {
-     //       new ExternalUserProfile("user","a", "b", "email", "test") };
 
     private UUID createdMeetingId = null;
 
@@ -85,7 +84,7 @@ public class NewMeeting extends AppCompatActivity implements MeetingSemiAdminEve
 
         // Initialize list adapter
         ConnectionListAdapter listAdapter = new ConnectionListAdapter(NewMeeting.this,
-                new ArrayList<String>());
+                connections);
         connectionList.setAdapter(listAdapter);
     }
 
@@ -104,10 +103,43 @@ public class NewMeeting extends AppCompatActivity implements MeetingSemiAdminEve
         connectionsManager.removeListener(this);
     }
 
+    @Override
+    public void onRestoreInstanceState(Bundle savedInstanceState) {
+        super.onRestoreInstanceState(savedInstanceState);
+        List<String> restoredConnections = savedInstanceState.getStringArrayList("connections");
+        boolean[] connectionsChecked = savedInstanceState.getBooleanArray("connectionsChecked");
+
+        synchronized (connections) {
+            for (int i = 0; i < restoredConnections.size(); i++) {
+                connections.add(restoredConnections.get(i));
+                boolean set = false;
+                if (i < connectionsChecked.length) {
+                    set = connectionsChecked[i];
+                }
+                ((ConnectionListAdapter) connectionList.getAdapter()).setChecked(i, set);
+            }
+            ((ConnectionListAdapter) connectionList.getAdapter()).notifyDataSetChanged();
+        }
+    }
+
+    @Override
+    public void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+        outState.putStringArrayList("connections", connections);
+        outState.putBooleanArray("connectionsChecked",
+                ((ConnectionListAdapter) connectionList.getAdapter()).getCheckedArray());
+    }
+
+
     public void addManualUser(View view) {
         String username = String.valueOf(manualUser.getText());
-        ((ConnectionListAdapter)connectionList.getAdapter()).add(username);
-        ((ConnectionListAdapter) connectionList.getAdapter()).notifyDataSetChanged();
+        synchronized (connections) {
+            Log.println(Log.DEBUG, "Debug6", "Manually adding user1: " + connections.size());
+            connections.add(username);
+            Log.println(Log.DEBUG, "Debug6", "Manually adding user2: " + connections.size());
+            ((ConnectionListAdapter) connectionList.getAdapter()).notifyDataSetChanged();
+            Log.println(Log.DEBUG, "Debug6", "Manually adding user3: " + connections.size());
+        }
     }
 
     public void checkMeeting(View view) {
@@ -137,29 +169,28 @@ public class NewMeeting extends AppCompatActivity implements MeetingSemiAdminEve
         Meeting meeting = new Meeting(name, description, meetingMoment, location,
                 authenticationManager.getUsername());
         createdMeetingId = meeting.getId();
-        meetingManager.addMeeting(meeting);
+        List<String> peopleToAdd = new ArrayList<>();
+        synchronized (connections) {
+            Log.println(Log.DEBUG, "Debug6", "Manually adding user99: " + connections.size());
+            for (int i = 0; i < connections.size(); i++) {
+                if (((ConnectionListAdapter)connectionList.getAdapter()).isChecked(i)) {
+                    peopleToAdd.add(connections.get(i));
+                }
+            }
+        }
+        meetingManager.addMeeting(meeting, peopleToAdd);
         btnCreate.setEnabled(false);
     }
 
     public void toAllMeetings(View view) {
         Intent intent = new Intent(this, Dashboard.class);
         startActivity(intent);
-        finish();   // TODO: code duplication
+        finish();
     }
 
     @Override
     public void onCreatedMeeting(UUID id) {
         if (id.equals(createdMeetingId)) {
-            // Add all invited users to the meeting
-            MeetingAsAdminManager adminManager = new MeetingAsAdminManager(meetingManager,
-                    authenticationManager, meetingManager.getMeeting(id, meetingSyncManager));
-            for (int i = 0; i < connectionList.getAdapter().getCount(); i++) {
-                if (((ConnectionListAdapter)connectionList.getAdapter()).isChecked(i)) {
-                    String username = (String)connectionList.getAdapter().getItem(i);
-                    adminManager.inviteUserToMeeting(username);
-                }
-            }
-
             Intent intent = new Intent(this, MeetingsOverview.class);
             startActivity(intent);
             finish();
@@ -168,7 +199,6 @@ public class NewMeeting extends AppCompatActivity implements MeetingSemiAdminEve
 
     @Override
     public void onRemovedMeeting(UUID id) {
-
     }
 
     @Override
@@ -182,15 +212,16 @@ public class NewMeeting extends AppCompatActivity implements MeetingSemiAdminEve
     }
 
     @Override
-    public void onReceivedConnections(final ArrayList<ExternalUserProfile> connections) {
+    public void onReceivedConnections(final ArrayList<ExternalUserProfile> receivedConnections) {
         runOnUiThread(new Runnable() {
             @Override
             public void run() {
-                for (ExternalUserProfile profile : connections) {
-                    ((ConnectionListAdapter)connectionList.getAdapter()).add(
-                            profile.getUsername());
+                synchronized (connections) {
+                    for (ExternalUserProfile profile : receivedConnections) {
+                        connections.add(profile.getUsername());
+                    }
+                    ((ConnectionListAdapter)connectionList.getAdapter()).notifyDataSetChanged();
                 }
-                ((ConnectionListAdapter)connectionList.getAdapter()).notifyDataSetChanged();
             }
         });
     }

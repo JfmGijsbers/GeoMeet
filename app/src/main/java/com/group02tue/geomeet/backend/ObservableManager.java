@@ -1,5 +1,7 @@
 package com.group02tue.geomeet.backend;
 
+import android.util.Log;
+
 import androidx.core.util.Consumer;
 
 import java.util.ArrayList;
@@ -15,8 +17,11 @@ public abstract class ObservableManager<T extends EventListener> {
      */
     protected void notifyListeners(Consumer<T> action) {
         synchronized (listeners) {
-            for (T listener : listeners) {
-                action.accept(listener);
+            if (listeners.size() > 0) {
+                for (int i = listeners.size() - 1; i > -1; i--) {
+                    Log.println(Log.DEBUG, "DebugList", listeners.get(i).toString());
+                    action.accept(listeners.get(i));
+                }
             }
         }
     }

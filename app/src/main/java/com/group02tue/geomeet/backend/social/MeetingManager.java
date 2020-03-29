@@ -2,12 +2,14 @@ package com.group02tue.geomeet.backend.social;
 
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.util.Log;
 
 import androidx.core.util.Consumer;
 import androidx.preference.PreferenceManager;
 
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
+import com.group02tue.geomeet.ConnectionListAdapter;
 import com.group02tue.geomeet.backend.ObservableManager;
 import com.group02tue.geomeet.backend.api.APIFailureReason;
 import com.group02tue.geomeet.backend.api.BooleanAPIResponseListener;
@@ -93,14 +95,21 @@ public class MeetingManager extends ObservableManager<MeetingSemiAdminEventListe
      * Adds a new meeting both locally and online.
      * @param meeting Meeting to add
      */
-    public void addMeeting(final Meeting meeting) {
+    public void addMeeting(final Meeting meeting, final List<String> usersToAdd) {
+        final MeetingAsAdminManager adminManager = new
+                MeetingAsAdminManager(this, authenticationManager, meeting);
+
         new CreateMeetingAPICall(authenticationManager, new BooleanAPIResponseListener() {
             @Override
             public void onSuccess() {
                 synchronized (meetings) {
                     meetings.put(meeting.getId(), meeting);
+                    for (String userToAdd : usersToAdd) {
+                        adminManager.inviteUserToMeeting(userToAdd);
+                    }
                     saveMeetings();
                 }
+
                 notifyListeners(new Consumer<MeetingSemiAdminEventListener>() {
                     @Override
                     public void accept(MeetingSemiAdminEventListener meetingEventListener) {

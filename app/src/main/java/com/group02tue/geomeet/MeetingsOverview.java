@@ -4,6 +4,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ListView;
@@ -34,13 +35,11 @@ public class MeetingsOverview extends AppCompatActivity implements MeetingSyncEv
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_meetings_overview);
         meetingSyncManager = ((MainApplication)getApplication()).getMeetingSyncManager();
-
         meetings = meetingSyncManager.getMeetingMemberships();
         final MeetingListAdapter listAdapter = new MeetingListAdapter(MeetingsOverview.this,
                 meetings);
         meetingOverviewList = (ListView) findViewById(R.id.fullMeetingListView);
         meetingOverviewList.setAdapter(listAdapter);
-
         meetingOverviewList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view,
@@ -55,8 +54,10 @@ public class MeetingsOverview extends AppCompatActivity implements MeetingSyncEv
 
     @Override
     protected void onStart() {
+        Log.println(Log.DEBUG, "Debug3", "1");
         super.onStart();
         meetingSyncManager.addListener(this);
+        Log.println(Log.DEBUG, "Debug3", "2");
     }
 
     @Override
@@ -73,6 +74,7 @@ public class MeetingsOverview extends AppCompatActivity implements MeetingSyncEv
 
     @Override
     public void onMeetingUpdatedReceived(Meeting meeting) {
+        Log.println(Log.DEBUG, "Debug3", "3");
         synchronized (meetings) {
             boolean updated = false;
             for (int i = 0; i < meetings.size(); i++) {
@@ -82,10 +84,11 @@ public class MeetingsOverview extends AppCompatActivity implements MeetingSyncEv
                     break;
                 }
             }
+            Log.println(Log.DEBUG, "Debug3", "4");
             if (!updated) {
                 meetings.add(meeting);
             }
-
+            Log.println(Log.DEBUG, "Debug3", "5");
             runOnUiThread(new Runnable() {
                 @Override
                 public void run() {
