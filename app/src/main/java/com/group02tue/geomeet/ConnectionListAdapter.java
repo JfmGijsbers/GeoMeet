@@ -80,7 +80,13 @@ public class ConnectionListAdapter extends ArrayAdapter<String>
 
     public boolean[] getCheckedArray() {
         synchronized (mCheckStates) {
-            int maxKey = Collections.max(mCheckStates.keySet()) + 1;
+            int maxKey;
+            if (mCheckStates.size() > 0) {
+                maxKey = Collections.max(mCheckStates.keySet()) + 1;
+            } else {
+                return new boolean[0];
+            }
+
 
             boolean[] checkedArray = new boolean[maxKey];
             for (int key : mCheckStates.keySet()) {

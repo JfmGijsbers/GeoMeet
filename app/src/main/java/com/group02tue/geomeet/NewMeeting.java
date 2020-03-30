@@ -238,7 +238,7 @@ public class NewMeeting extends AppCompatActivity implements MeetingSemiAdminEve
     public void toAllMeetings(View view) {
         Intent intent = new Intent(this, MeetingsOverview.class);
         startActivity(intent);
-        //finish();
+        finish();
     }
 
     @Override
