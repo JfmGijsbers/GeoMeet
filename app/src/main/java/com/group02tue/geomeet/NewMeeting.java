@@ -21,8 +21,7 @@ import android.widget.TextView;
 import android.widget.TimePicker;
 import android.widget.Toast;
 
-import com.google.android.material.datepicker.MaterialDatePicker;
-import com.google.android.material.datepicker.MaterialPickerOnPositiveButtonClickListener;
+
 import com.group02tue.geomeet.backend.Location2D;
 import com.group02tue.geomeet.backend.authentication.AuthenticationManager;
 import com.group02tue.geomeet.backend.social.ConnectionsManager;
@@ -61,7 +60,6 @@ public class NewMeeting extends AppCompatActivity implements MeetingSemiAdminEve
     private Date date;
     private int mMinute, mHour, mDay, mMonth, mYear;
 
-    private MaterialDatePicker.Builder<Long> builder = MaterialDatePicker.Builder.datePicker();
 
     private UUID createdMeetingId = null;
 
@@ -191,12 +189,10 @@ public class NewMeeting extends AppCompatActivity implements MeetingSemiAdminEve
     public void addManualUser(View view) {
         String username = String.valueOf(manualUser.getText());
         synchronized (connections) {
-            Log.println(Log.DEBUG, "Debug6", "Manually adding user1: " + connections.size());
             connections.add(username);
-            Log.println(Log.DEBUG, "Debug6", "Manually adding user2: " + connections.size());
             ((ConnectionListAdapter) connectionList.getAdapter()).notifyDataSetChanged();
-            Log.println(Log.DEBUG, "Debug6", "Manually adding user3: " + connections.size());
         }
+        manualUser.setText("");
     }
 
     public void checkMeeting(View view) {
@@ -242,7 +238,7 @@ public class NewMeeting extends AppCompatActivity implements MeetingSemiAdminEve
     public void toAllMeetings(View view) {
         Intent intent = new Intent(this, MeetingsOverview.class);
         startActivity(intent);
-        finish();
+        //finish();
     }
 
     @Override
@@ -316,7 +312,7 @@ public class NewMeeting extends AppCompatActivity implements MeetingSemiAdminEve
                                           int minute) {
                         mHour = hourOfDay;
                         mMinute = minute;
-                        txtDate.setText("At " + String.valueOf(txtDate.getText()) + "\n" + mHour + ":" + mMinute);
+                        txtDate.setText(String.valueOf(txtDate.getText()) + "\nat: " + mHour + ":" + mMinute);
                         date = c.getTime();
                     }
                 }, mHour, mMinute, true);

@@ -1,6 +1,7 @@
 package com.group02tue.geomeet;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -22,6 +23,7 @@ public class MeetingInvitesListAdapter extends ArrayAdapter<ImmutableMeeting> {
         this.context = context;
         this.meetingInvites = meetingInvites;
     }
+
     @Override
     public View getView(int position, View view, ViewGroup parent) {
         LayoutInflater inflater = context.getLayoutInflater();
@@ -55,14 +57,17 @@ public class MeetingInvitesListAdapter extends ArrayAdapter<ImmutableMeeting> {
     }
 
     private void onClickAcceptOrReject(View v, boolean accept) {
-        int pos = (Integer)v.getTag();
+        int pos = (Integer) v.getTag();
         synchronized (meetingInvites) {
             if (pos < meetingInvites.size()) {
                 ImmutableMeeting meetingInvite = meetingInvites.get(pos);
-                ((MainApplication)context.getApplication()).getMeetingManager().decideInvitation(
+                ((MainApplication) context.getApplication()).getMeetingManager().decideInvitation(
                         meetingInvite.id, accept,
-                        ((MainApplication)context.getApplication()).getMeetingSyncManager());
+                        ((MainApplication) context.getApplication()).getMeetingSyncManager());
                 meetingInvites.remove(pos);
+                //notifyDataSetChanged();
+                Intent dashboardIntent = new Intent(context, Dashboard.class);
+                context.startActivity(dashboardIntent);
             }
         }
     }

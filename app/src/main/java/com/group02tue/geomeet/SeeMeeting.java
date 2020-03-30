@@ -145,7 +145,7 @@ public class SeeMeeting extends AppCompatActivity {
 
     public void toChat(View view) {
         Intent chatIntent = new Intent(this, MessageListActivity.class);
-        chatIntent.putExtra("meetingId", meetingId);
+        chatIntent.putExtra("meetingId", meetingId.toString());
         startActivity(chatIntent);
     }
     private void toProfile() {
