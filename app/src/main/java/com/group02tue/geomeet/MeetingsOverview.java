@@ -111,16 +111,15 @@ public class MeetingsOverview extends AppCompatActivity implements MeetingSyncEv
 
     @Override
     protected void onStart() {
-        Log.println(Log.DEBUG, "Debug3", "1");
         super.onStart();
         meetingSyncManager.addListener(this);
-        Log.println(Log.DEBUG, "Debug3", "2");
     }
 
     @Override
     protected void onStop() {
         super.onStop();
         meetingSyncManager.removeListener(this);
+        Log.e("DEBUG", "1");
     }
 
     public void newMeeting(View view) {
@@ -131,7 +130,6 @@ public class MeetingsOverview extends AppCompatActivity implements MeetingSyncEv
 
     @Override
     public void onMeetingUpdatedReceived(Meeting meeting) {
-        Log.println(Log.DEBUG, "Debug3", "3");
         synchronized (meetings) {
             boolean updated = false;
             for (int i = 0; i < meetings.size(); i++) {
@@ -141,11 +139,9 @@ public class MeetingsOverview extends AppCompatActivity implements MeetingSyncEv
                     break;
                 }
             }
-            Log.println(Log.DEBUG, "Debug3", "4");
             if (!updated) {
                 meetings.add(meeting);
             }
-            Log.println(Log.DEBUG, "Debug3", "5");
             runOnUiThread(new Runnable() {
                 @Override
                 public void run() {
