@@ -16,21 +16,33 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.group02tue.geomeet.backend.Location2D;
+import com.group02tue.geomeet.backend.authentication.AuthenticationManager;
+import com.group02tue.geomeet.backend.social.Meeting;
+import com.group02tue.geomeet.backend.social.MeetingManager;
 
 import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.NoSuchElementException;
 import java.util.Set;
+import java.util.UUID;
 
 public class SeeMeeting extends AppCompatActivity {
     TextView txtTitle, txtLocation, txtAdmin, txtDate, txtDescription;
     ListView connectionList;
-    private String meetingId;
+    private UUID meetingId;
+    private MeetingManager meetingManager;
+    private MeetingManager.MeetingSyncManager meetingSyncManager;
+    private AuthenticationManager authenticationManager;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_see_meeting);
+        meetingManager = ((MainApplication)getApplication()).getMeetingManager();
+        meetingSyncManager = ((MainApplication)getApplication()).getMeetingSyncManager();
+        authenticationManager = ((MainApplication)getApplication()).getAuthenticationManager();
+
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         /*
          * First, we need to retrieve all the data from the intent
@@ -41,7 +53,7 @@ public class SeeMeeting extends AppCompatActivity {
         Date date = (Date) intent.getSerializableExtra("date");
         String strLocation = intent.getStringExtra("location");
         String hostedBy = intent.getStringExtra("hostedBy");
-        meetingId = intent.getStringExtra("meetingId");
+        meetingId = UUID.fromString(intent.getStringExtra("meetingId"));
         try {
             Location2D location = Location2D.parse(strLocation);
         } catch (ParseException e) {
@@ -102,10 +114,25 @@ public class SeeMeeting extends AppCompatActivity {
                 logout();
                 return true;
             case R.id.delete:
-                // TODO delete meeting
+                deleteMeeting();
                 return true;
             default:
                 return super.onOptionsItemSelected(item);
+        }
+    }
+
+    private void deleteMeeting() {
+        try {
+            Meeting meeting = meetingManager.getLocalMeeting(meetingId);
+            if (meeting.getAdminUsername().equals(authenticationManager.getUsername())) {
+                meetingManager.removeMeeting(meetingId);
+                back();
+            } else {
+                meetingSyncManager.leaveMeeting(meetingId);
+                back();
+            }
+        } catch(NoSuchElementException e) {
+            back();
         }
     }
 
