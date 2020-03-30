@@ -21,6 +21,10 @@ public class ExternalUserProfile extends UserProfile {
         this.description = description;
     }
 
+    public String getFullName() {
+        return firstName + " " + lastName;
+    }
+
     /**
      * Convert a jsonObject into an external user profile.
      * @param username Username of user of who the profile is

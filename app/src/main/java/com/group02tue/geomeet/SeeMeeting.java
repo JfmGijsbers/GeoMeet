@@ -6,6 +6,7 @@ import android.app.ActionBar;
 import android.content.Intent;
 import android.location.Location;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -34,6 +35,7 @@ public class SeeMeeting extends AppCompatActivity {
     private MeetingManager meetingManager;
     private MeetingManager.MeetingSyncManager meetingSyncManager;
     private AuthenticationManager authenticationManager;
+    private final ArrayList<String> membersList = new ArrayList<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -61,12 +63,15 @@ public class SeeMeeting extends AppCompatActivity {
         }
         String member = "";
         int i = 0;
-        ArrayList<String> members = new ArrayList<>();
         while (member != null) {
             member = intent.getStringExtra("member" + i);
             i++;
-            members.add(member);
+            if (member != null && !member.isEmpty()) {
+                membersList.add(member);
+            }
         }
+        connectionList = findViewById(R.id.seeMeeting_comingConnectionsListView);
+        connectionList.setAdapter(new MembersListAdapter(this, membersList));
 
         /*
         Then, we need to find our views

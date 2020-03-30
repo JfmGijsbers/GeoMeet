@@ -1,5 +1,7 @@
 package com.group02tue.geomeet.backend.api.connections;
 
+import android.util.Log;
+
 import com.group02tue.geomeet.backend.api.APIFailureReason;
 import com.group02tue.geomeet.backend.api.AbstractAuthorizedAPICall;
 import com.group02tue.geomeet.backend.api.JSONKeys;

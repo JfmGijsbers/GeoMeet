@@ -28,7 +28,7 @@ public final class JSONKeys {
     public final static String ADMIN_USERNAME = "admin";
 
     public final static String CONNECTIONS = "connections";
-    public final static String CONNECTION_COUNT = "count";
+    public final static String CONNECTION_COUNT = "counter";
 
     public final static String FOUND = "found";
 }
