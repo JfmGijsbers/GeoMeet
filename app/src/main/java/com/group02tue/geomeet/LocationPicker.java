@@ -23,6 +23,7 @@ import com.google.android.gms.maps.model.MarkerOptions;
 import com.group02tue.geomeet.backend.Location2D;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 
 public class LocationPicker extends FragmentActivity implements OnMapReadyCallback {
@@ -31,7 +32,7 @@ public class LocationPicker extends FragmentActivity implements OnMapReadyCallba
 
     private LatLng pickedLocation;
 
-    private String pickedAddress;
+    private String pickedAddress = "";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -39,7 +40,7 @@ public class LocationPicker extends FragmentActivity implements OnMapReadyCallba
         setContentView(R.layout.activity_location_picker);
 
 
-        //check if GPS permission was granted
+//        //check if GPS permission was granted
         if (ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION)
                 != PackageManager.PERMISSION_GRANTED) {
 
@@ -85,7 +86,8 @@ public class LocationPicker extends FragmentActivity implements OnMapReadyCallba
             public void onMapClick(LatLng latLng) {
                 mMap.clear();
                 pickedLocation = latLng;
-                mMap.addMarker(new MarkerOptions().position(latLng).title(getPickedAddress()));
+                getPickedAddress();
+                mMap.addMarker(new MarkerOptions().position(latLng).title(pickedAddress));
             }
         });
 
@@ -97,7 +99,7 @@ public class LocationPicker extends FragmentActivity implements OnMapReadyCallba
             return;
         }
         Intent data = new Intent();
-        Location2D returnLoc = new Location2D((float) pickedLocation.longitude, (float) pickedLocation.latitude, "");
+        Location2D returnLoc = new Location2D((float) pickedLocation.longitude, (float) pickedLocation.latitude, pickedAddress);
         //set the data to pass back
         data.setData(Uri.parse(returnLoc.toString()));
         setResult(RESULT_OK, data);
@@ -105,17 +107,18 @@ public class LocationPicker extends FragmentActivity implements OnMapReadyCallba
         finish();
 
     }
-    private String getPickedAddress(){
+    private void getPickedAddress(){
         Geocoder geocoder = new Geocoder(this.getBaseContext());
-        List<Address> foundAddresses;
+        List<Address> foundAddresses = new ArrayList<>();
         try {
             foundAddresses = geocoder.getFromLocation(
                     pickedLocation.latitude, pickedLocation.longitude, 10);
-        }catch(IOException e){return "No address found";}
+        }catch(IOException e){pickedAddress = "";}
 
-        return   foundAddresses.get(0).getAddressLine(0)
+        pickedAddress = foundAddresses.get(0).getAddressLine(0)
                 + ", "
                 + foundAddresses.get(0).getAdminArea();
+
     }
 
 
