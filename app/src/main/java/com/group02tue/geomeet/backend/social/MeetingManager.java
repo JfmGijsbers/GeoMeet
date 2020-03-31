@@ -92,6 +92,20 @@ public class MeetingManager extends ObservableManager<MeetingSemiAdminEventListe
     }
 
     /**
+     * Resets the meeting manager.
+     */
+    public void reset() {
+        synchronized (meetingInvites) {
+            meetingInvites.clear();
+            meetings.clear();
+            SharedPreferences.Editor prefsEditor = preferences.edit();
+            prefsEditor.putString(MEETING_INVITES_PREFERENCE, "");
+            prefsEditor.putString(MEETINGS_PREFERENCE, "");
+            prefsEditor.apply();
+        }
+    }
+
+    /**
      * Adds a new meeting both locally and online.
      * @param meeting Meeting to add
      */

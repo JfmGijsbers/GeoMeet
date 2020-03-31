@@ -21,8 +21,7 @@
         android:onClick="addManualUser"
         android:ems="1"
         android:text="+"
-        style:layout_constraintBottom_toBottomOf="@id/et_meeting_manual_user"
-        style:layout_constraintStart_toEndOf="@+id/et_meeting_manual_user"
+        style:layout_constraintEnd_toEndOf="parent"
         style:layout_constraintTop_toBottomOf="@+id/et_meeting_location" />
 
     <TextView
@@ -62,15 +61,6 @@
         style:layout_constraintStart_toStartOf="@+id/txt_meeting_location"
         style:layout_constraintTop_toBottomOf="@+id/txt_meeting_location" />
 
-    <EditText
-        android:id="@+id/et_meeting_manual_user"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:ems="10"
-        android:hint="Connection username "
-        style:layout_constraintTop_toBottomOf="@id/et_meeting_location"
-        style:layout_constraintStart_toStartOf="@+id/txt_invited_connections" />
-
     <Button
         android:id="@+id/btn_add_user"
         style="@style/Widget.AppCompat.Button.Colored"
@@ -89,7 +79,7 @@
         android:text="Invited:"
         android:textSize="12sp"
         style:layout_constraintStart_toStartOf="@+id/txt_meeting_name"
-        style:layout_constraintTop_toBottomOf="@+id/et_meeting_manual_user" />
+        style:layout_constraintTop_toBottomOf="@+id/btn_add_user4" />
 
     <ListView
         android:id="@+id/listview_connections"

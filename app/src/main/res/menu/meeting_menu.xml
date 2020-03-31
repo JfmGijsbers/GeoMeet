@@ -22,6 +22,11 @@
         android:title="Logout"
         app:showAsAction="never"
         />
+    <item android:id="@+id/edit"
+        android:icon="@drawable/baseline_edit_black_18dp"
+        android:title="Edit profile"
+        app:showAsAction="ifRoom"
+        />
     <!-- For submenu:
         <menu>
             <item/>

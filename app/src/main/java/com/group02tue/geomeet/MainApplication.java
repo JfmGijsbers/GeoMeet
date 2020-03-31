@@ -65,5 +65,6 @@ public class MainApplication extends Application {
         authenticationManager.reset();
         chatManager.reset();
         profileManager.resetLocal();
+        meetingManager.reset();
     }
 }

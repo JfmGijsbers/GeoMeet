@@ -3,6 +3,7 @@ package com.group02tue.geomeet;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.DialogFragment;
 
+import android.app.Activity;
 import android.app.DatePickerDialog;
 import android.app.Dialog;
 import android.app.TimePickerDialog;
@@ -19,6 +20,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
@@ -31,6 +33,8 @@ import android.widget.Toast;
 
 
 import com.group02tue.geomeet.backend.Location2D;
+import com.group02tue.geomeet.backend.api.APIFailureReason;
+import com.group02tue.geomeet.backend.api.profiles.QueryUsersAPIResponseListener;
 import com.group02tue.geomeet.backend.authentication.AuthenticationManager;
 import com.group02tue.geomeet.backend.social.ConnectionsManager;
 import com.group02tue.geomeet.backend.social.ExternalUserProfile;
@@ -45,6 +49,7 @@ import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.HashSet;
 import java.util.List;
 import java.util.UUID;
 
@@ -56,7 +61,7 @@ public class NewMeeting extends AppCompatActivity implements MeetingSemiAdminEve
         ConnectionsEventListener, DatePickerDialog.OnDateSetListener {
     private EditText etName, etLocation, etDescription;
     private EditText manualUser;
-    private TextView txtDate, txtTime;
+    private TextView txtDate;
     private Button btnCreate;
     private ListView connectionList;
     private ArrayList<String> connections = new ArrayList<>();
@@ -193,80 +198,18 @@ public class NewMeeting extends AppCompatActivity implements MeetingSemiAdminEve
                 ((ConnectionListAdapter) connectionList.getAdapter()).getCheckedArray());
     }
 
-
     public void addManualUser(View view) {
-        /*
-        String username = String.valueOf(manualUser.getText());
-        synchronized (connections) {
-            connections.add(username);
-            ((ConnectionListAdapter) connectionList.getAdapter()).notifyDataSetChanged();
-        }
-        manualUser.setText("");
-         */
-        ArrayList<String> array_data = new ArrayList<>();
-        array_data.add("Jeroen");
-        array_data.add("Roel");
-        final Dialog dialog_data = new Dialog(this);
-        dialog_data.requestWindowFeature(Window.FEATURE_ACTION_BAR);
-        dialog_data.getWindow().setGravity(Gravity.CENTER);
-        dialog_data.setContentView(R.layout.search_connection_alertdialog);
-
-        WindowManager.LayoutParams lp_number_picker = new WindowManager.LayoutParams();
-        Window window = dialog_data.getWindow();
-        lp_number_picker.copyFrom(window.getAttributes());
-
-        lp_number_picker.width = WindowManager.LayoutParams.MATCH_PARENT;
-        lp_number_picker.height = WindowManager.LayoutParams.WRAP_CONTENT;
-
-        window.setGravity(Gravity.CENTER);
-        window.setAttributes(lp_number_picker);
-
-        TextView alertdialog_textview = (TextView) dialog_data.findViewById(R.id.alertdialog_textview);
-        alertdialog_textview.setText("selected_string");
-        alertdialog_textview.setHint("selected_string");
-
-        Button btn_cancel = dialog_data.findViewById(R.id.dialog_cancel_btn);
-        btn_cancel.setOnClickListener(new View.OnClickListener() {
+        new ConnectionPickDialog(this, new ConnectionPickDialogEventListener() {
             @Override
-            public void onClick(View v) {
-                if (dialog_data != null) {
-                    dialog_data.dismiss();
-                    dialog_data.cancel();
+            public void onPickedConnection(String username) {
+                synchronized (connections) {
+                    if (!connections.contains(username)) {
+                        connections.add(username);
+                    }
+                    ((ConnectionListAdapter)connectionList.getAdapter()).notifyDataSetChanged();
                 }
             }
-        });
-        EditText filterText = dialog_data.findViewById(R.id.alertdialog_edittext);
-        ListView alertdialog_listview = dialog_data.findViewById(R.id.alertdialog_Listview);
-        alertdialog_listview.setChoiceMode(ListView.CHOICE_MODE_SINGLE);
-        final ArrayAdapter<String> adapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_single_choice, array_data);
-        alertdialog_listview.setAdapter(adapter);
-        alertdialog_listview.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> a, View v, int position, long id) {
-                //Utility.hideKeyboard(this, v);
-                if (dialog_data != null) {
-                    dialog_data.dismiss();
-                    dialog_data.cancel();
-                }
-            }
-        });
-        filterText.addTextChangedListener(new TextWatcher() {
-            @Override
-            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-
-            }
-
-            @Override
-            public void onTextChanged(CharSequence s, int start, int before, int count) {
-
-            }
-
-            @Override
-            public void afterTextChanged(Editable s) {
-                adapter.getFilter().filter(s);
-            }
-        });
-        dialog_data.show();
+        }, authenticationManager).show();
     }
 
     public void checkMeeting(View view) {
@@ -274,11 +217,17 @@ public class NewMeeting extends AppCompatActivity implements MeetingSemiAdminEve
         String name = String.valueOf(etName.getText());
         String strLocation = String.valueOf(etLocation.getText());
         String description = String.valueOf(etDescription.getText());
+        String date = String.valueOf(txtDate.getText());
 
         if (name.equals("")) {
             etName.setError("Please enter a meeting name");
             allCorrect = false;
         }
+        if (date.equals("")) {
+            txtDate.setError("Please set a date");
+            allCorrect = false;
+        }
+
         Calendar cal = Calendar.getInstance();
         Date meetingMoment = new Date(mYear - 1900, mMonth, mDay, mHour, mMinute);
 
