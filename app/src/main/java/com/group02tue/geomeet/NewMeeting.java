@@ -4,15 +4,23 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.DialogFragment;
 
 import android.app.DatePickerDialog;
+import android.app.Dialog;
 import android.app.TimePickerDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.util.Log;
+import android.view.Gravity;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.Window;
+import android.view.WindowManager;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
@@ -187,12 +195,78 @@ public class NewMeeting extends AppCompatActivity implements MeetingSemiAdminEve
 
 
     public void addManualUser(View view) {
+        /*
         String username = String.valueOf(manualUser.getText());
         synchronized (connections) {
             connections.add(username);
             ((ConnectionListAdapter) connectionList.getAdapter()).notifyDataSetChanged();
         }
         manualUser.setText("");
+         */
+        ArrayList<String> array_data = new ArrayList<>();
+        array_data.add("Jeroen");
+        array_data.add("Roel");
+        final Dialog dialog_data = new Dialog(this);
+        dialog_data.requestWindowFeature(Window.FEATURE_ACTION_BAR);
+        dialog_data.getWindow().setGravity(Gravity.CENTER);
+        dialog_data.setContentView(R.layout.search_connection_alertdialog);
+
+        WindowManager.LayoutParams lp_number_picker = new WindowManager.LayoutParams();
+        Window window = dialog_data.getWindow();
+        lp_number_picker.copyFrom(window.getAttributes());
+
+        lp_number_picker.width = WindowManager.LayoutParams.MATCH_PARENT;
+        lp_number_picker.height = WindowManager.LayoutParams.WRAP_CONTENT;
+
+        window.setGravity(Gravity.CENTER);
+        window.setAttributes(lp_number_picker);
+
+        TextView alertdialog_textview = (TextView) dialog_data.findViewById(R.id.alertdialog_textview);
+        alertdialog_textview.setText("selected_string");
+        alertdialog_textview.setHint("selected_string");
+
+        Button btn_cancel = dialog_data.findViewById(R.id.dialog_cancel_btn);
+        btn_cancel.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (dialog_data != null) {
+                    dialog_data.dismiss();
+                    dialog_data.cancel();
+                }
+            }
+        });
+        EditText filterText = dialog_data.findViewById(R.id.alertdialog_edittext);
+        ListView alertdialog_listview = dialog_data.findViewById(R.id.alertdialog_Listview);
+        alertdialog_listview.setChoiceMode(ListView.CHOICE_MODE_SINGLE);
+        final ArrayAdapter<String> adapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_single_choice, array_data);
+        alertdialog_listview.setAdapter(adapter);
+        alertdialog_listview.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> a, View v, int position, long id) {
+                //Utility.hideKeyboard(this, v);
+                if (dialog_data != null) {
+                    dialog_data.dismiss();
+                    dialog_data.cancel();
+                }
+            }
+        });
+        filterText.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+                adapter.getFilter().filter(s);
+            }
+        });
+        dialog_data.show();
     }
 
     public void checkMeeting(View view) {
