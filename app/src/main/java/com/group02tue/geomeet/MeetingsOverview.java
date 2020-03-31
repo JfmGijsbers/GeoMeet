@@ -4,6 +4,10 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ListView;
@@ -25,22 +29,21 @@ import java.util.Set;
 import java.util.UUID;
 
 public class MeetingsOverview extends AppCompatActivity implements MeetingSyncEventListener {
-    ListView meetingOverviewList;
-
+    private ListView meetingOverviewList;
+    private List<Meeting> meetings;
     private MeetingManager.MeetingSyncManager meetingSyncManager;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_meetings_overview);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         meetingSyncManager = ((MainApplication)getApplication()).getMeetingSyncManager();
-
-        List<Meeting> meetings = meetingSyncManager.getMeetingMemberships();
+        meetings = meetingSyncManager.getMeetingMemberships();
         final MeetingListAdapter listAdapter = new MeetingListAdapter(MeetingsOverview.this,
                 meetings);
         meetingOverviewList = (ListView) findViewById(R.id.fullMeetingListView);
         meetingOverviewList.setAdapter(listAdapter);
-
         meetingOverviewList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view,
@@ -53,6 +56,59 @@ public class MeetingsOverview extends AppCompatActivity implements MeetingSyncEv
         });
     }
 
+    /**
+     *  Create the options menu:
+     *  */
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        MenuInflater menuInflater = getMenuInflater();
+        menuInflater.inflate(R.menu.menu, menu);
+        return true;
+    }
+    /**
+     * Reacting to menu items getting clicked:
+     */
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case android.R.id.home:
+                back();
+                return true;
+            case R.id.profile:
+                toProfile();
+                return true;
+            case R.id.settings:
+                toSettings();
+                return true;
+            case R.id.logout:
+                logout();
+                return true;
+            default:
+                return super.onOptionsItemSelected(item);
+        }
+    }
+    /**
+     * Below this comment are all methods that simply refer the app to a different activity
+     */
+    private void back() {
+        Intent backIntent = new Intent(this, Dashboard.class);
+        startActivity(backIntent);
+    }
+    private void toProfile() {
+        Intent profileIntent = new Intent(this, Profile.class);
+        startActivity(profileIntent);
+    }
+    private void logout() {
+        ((MainApplication)getApplication()).reset();
+        Intent mainActivityIntent = new Intent(this, MainActivity.class);
+        startActivity(mainActivityIntent);
+        finish();
+    }
+    private void toSettings() {
+        Intent settingsIntent = new Intent(this, SettingsActivity.class);
+        startActivity(settingsIntent);
+    }
+
     @Override
     protected void onStart() {
         super.onStart();
@@ -63,6 +119,7 @@ public class MeetingsOverview extends AppCompatActivity implements MeetingSyncEv
     protected void onStop() {
         super.onStop();
         meetingSyncManager.removeListener(this);
+        Log.e("DEBUG", "1");
     }
 
     public void newMeeting(View view) {
@@ -73,7 +130,25 @@ public class MeetingsOverview extends AppCompatActivity implements MeetingSyncEv
 
     @Override
     public void onMeetingUpdatedReceived(Meeting meeting) {
-
+        synchronized (meetings) {
+            boolean updated = false;
+            for (int i = 0; i < meetings.size(); i++) {
+                if (meetings.get(i).getId().equals(meeting.getId())) {
+                    meetings.set(i, meeting);
+                    updated = true;
+                    break;
+                }
+            }
+            if (!updated) {
+                meetings.add(meeting);
+            }
+            runOnUiThread(new Runnable() {
+                @Override
+                public void run() {
+                    ((MeetingListAdapter)meetingOverviewList.getAdapter()).notifyDataSetChanged();
+                }
+            });
+        }
     }
 
     @Override

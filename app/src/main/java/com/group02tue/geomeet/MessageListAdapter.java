@@ -68,7 +68,6 @@ public class MessageListAdapter extends RecyclerView.Adapter {
 
     @Override
     public int getItemViewType(int position) {
-        Log.e("DEBUG", "Pos: " + position);
         ChatMessage message = messageList.get(position);
         if (message.isSentByMe(authenticationManager.getUsername())) {
             return VIEW_TYPE_MESSAGE_SENT;

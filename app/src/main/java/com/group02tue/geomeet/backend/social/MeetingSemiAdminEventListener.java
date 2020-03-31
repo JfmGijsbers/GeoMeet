@@ -2,6 +2,7 @@ package com.group02tue.geomeet.backend.social;
 
 import java.util.ArrayList;
 import java.util.EventListener;
+import java.util.Set;
 import java.util.UUID;
 
 /**

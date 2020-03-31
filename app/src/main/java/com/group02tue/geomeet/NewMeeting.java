@@ -1,17 +1,40 @@
 package com.group02tue.geomeet;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.fragment.app.DialogFragment;
 
+import android.app.Activity;
+import android.app.DatePickerDialog;
+import android.app.Dialog;
+import android.app.TimePickerDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.util.Log;
+import android.view.Gravity;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
+import android.view.Window;
+import android.view.WindowManager;
+import android.view.inputmethod.InputMethodManager;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.ListView;
+import android.widget.TextView;
+import android.widget.TimePicker;
 import android.widget.Toast;
 
+
 import com.group02tue.geomeet.backend.Location2D;
+import com.group02tue.geomeet.backend.api.APIFailureReason;
+import com.group02tue.geomeet.backend.api.profiles.QueryUsersAPIResponseListener;
 import com.group02tue.geomeet.backend.authentication.AuthenticationManager;
 import com.group02tue.geomeet.backend.social.ConnectionsManager;
 import com.group02tue.geomeet.backend.social.ExternalUserProfile;
@@ -21,9 +44,13 @@ import com.group02tue.geomeet.backend.social.MeetingAsAdminManager;
 import com.group02tue.geomeet.backend.social.MeetingManager;
 import com.group02tue.geomeet.backend.social.MeetingSemiAdminEventListener;
 
+import java.text.DateFormat;
 import java.text.ParseException;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
+import java.util.HashSet;
+import java.util.List;
 import java.util.UUID;
 
 import com.group02tue.geomeet.backend.social.ConnectionsEventListener;
@@ -31,19 +58,21 @@ import com.group02tue.geomeet.backend.social.ProfileEventListener;
 
 
 public class NewMeeting extends AppCompatActivity implements MeetingSemiAdminEventListener,
-        ConnectionsEventListener {
+        ConnectionsEventListener, DatePickerDialog.OnDateSetListener {
     private EditText etName, etLocation, etDescription;
-    private EditText etDay, etMonth, etYear, etHour, etMinute;
     private EditText manualUser;
+    private TextView txtDate;
     private Button btnCreate;
     private ListView connectionList;
+    private ArrayList<String> connections = new ArrayList<>();
     private MeetingManager meetingManager;
     private MeetingManager.MeetingSyncManager meetingSyncManager;
     private AuthenticationManager authenticationManager;
     private ConnectionsManager connectionsManager;
 
-    //private ExternalUserProfile[] testList = {
-     //       new ExternalUserProfile("user","a", "b", "email", "test") };
+    private Date date;
+    private int mMinute, mHour, mDay, mMonth, mYear;
+
 
     private UUID createdMeetingId = null;
 
@@ -51,6 +80,7 @@ public class NewMeeting extends AppCompatActivity implements MeetingSemiAdminEve
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_new_meeting);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         meetingManager = ((MainApplication)getApplication()).getMeetingManager();
         meetingSyncManager = ((MainApplication)getApplication()).getMeetingSyncManager();
@@ -63,18 +93,67 @@ public class NewMeeting extends AppCompatActivity implements MeetingSemiAdminEve
         connectionList = findViewById(R.id.listview_connections);
         btnCreate = findViewById(R.id.btn_create_meeting);
 
-        etDay = findViewById(R.id.et_day);
-        etMonth = findViewById(R.id.et_month);
-        etYear = findViewById(R.id.et_year);
-        etHour = findViewById(R.id.et_hour);
-        etMinute = findViewById(R.id.et_minute);
+        txtDate = findViewById(R.id.txt_date);
 
         manualUser = findViewById(R.id.et_meeting_manual_user);
 
         // Initialize list adapter
         ConnectionListAdapter listAdapter = new ConnectionListAdapter(NewMeeting.this,
-                new ArrayList<String>());
+                connections);
         connectionList.setAdapter(listAdapter);
+    }
+
+    /**
+     *  Create the options menu:
+     *  */
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        MenuInflater menuInflater = getMenuInflater();
+        menuInflater.inflate(R.menu.menu, menu);
+        return true;
+    }
+    /**
+     * Reacting to menu items getting clicked:
+     */
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case android.R.id.home:
+                back();
+                return true;
+            case R.id.profile:
+                toProfile();
+                return true;
+            case R.id.settings:
+                toSettings();
+                return true;
+            case R.id.logout:
+                logout();
+                return true;
+            default:
+                return super.onOptionsItemSelected(item);
+        }
+    }
+    /**
+     * Below this comment are all methods that simply refer the app to a different activity
+     */
+    private void back() {
+        Intent backIntent = new Intent(this, MeetingsOverview.class);
+        startActivity(backIntent);
+    }
+    private void toProfile() {
+        Intent profileIntent = new Intent(this, Profile.class);
+        startActivity(profileIntent);
+    }
+    private void logout() {
+        ((MainApplication)getApplication()).reset();
+        Intent mainActivityIntent = new Intent(this, MainActivity.class);
+        startActivity(mainActivityIntent);
+        finish();
+    }
+    private void toSettings() {
+        Intent settingsIntent = new Intent(this, SettingsActivity.class);
+        startActivity(settingsIntent);
     }
 
     @Override
@@ -92,55 +171,102 @@ public class NewMeeting extends AppCompatActivity implements MeetingSemiAdminEve
         connectionsManager.removeListener(this);
     }
 
-    public void addManualUser(View view) {
-        String username = String.valueOf(manualUser.getText());
-        ((ConnectionListAdapter)connectionList.getAdapter()).add(username);
-        ((ConnectionListAdapter) connectionList.getAdapter()).notifyDataSetChanged();
+    @Override
+    public void onRestoreInstanceState(Bundle savedInstanceState) {
+        super.onRestoreInstanceState(savedInstanceState);
+        List<String> restoredConnections = savedInstanceState.getStringArrayList("connections");
+        boolean[] connectionsChecked = savedInstanceState.getBooleanArray("connectionsChecked");
+
+        synchronized (connections) {
+            for (int i = 0; i < restoredConnections.size(); i++) {
+                connections.add(restoredConnections.get(i));
+                boolean set = false;
+                if (i < connectionsChecked.length) {
+                    set = connectionsChecked[i];
+                }
+                ((ConnectionListAdapter) connectionList.getAdapter()).setChecked(i, set);
+            }
+            ((ConnectionListAdapter) connectionList.getAdapter()).notifyDataSetChanged();
+        }
     }
 
-    public void createMeeting(View view) {
+    @Override
+    public void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+        outState.putStringArrayList("connections", connections);
+        outState.putBooleanArray("connectionsChecked",
+                ((ConnectionListAdapter) connectionList.getAdapter()).getCheckedArray());
+    }
+
+    public void addManualUser(View view) {
+        new ConnectionPickDialog(this, new ConnectionPickDialogEventListener() {
+            @Override
+            public void onPickedConnection(String username) {
+                synchronized (connections) {
+                    if (!connections.contains(username)) {
+                        connections.add(username);
+                    }
+                    ((ConnectionListAdapter)connectionList.getAdapter()).notifyDataSetChanged();
+                }
+            }
+        }, authenticationManager).show();
+    }
+
+    public void checkMeeting(View view) {
+        boolean allCorrect = true;
         String name = String.valueOf(etName.getText());
         String strLocation = String.valueOf(etLocation.getText());
         String description = String.valueOf(etDescription.getText());
+        String date = String.valueOf(txtDate.getText());
 
-        int day = Integer.parseInt(String.valueOf(etDay.getText()));
-        int month = Integer.parseInt(String.valueOf(etMonth.getText()));
-        int year = Integer.parseInt(String.valueOf(etYear.getText()));
-        int hour = Integer.parseInt(String.valueOf(etHour.getText()));
-        int minute = Integer.parseInt(String.valueOf(etMinute.getText()));
-        Date meetingMoment = new Date(year, month, day, hour, minute);
+        if (name.equals("")) {
+            etName.setError("Please enter a meeting name");
+            allCorrect = false;
+        }
+        if (date.equals("")) {
+            txtDate.setError("Please set a date");
+            allCorrect = false;
+        }
+
+        Calendar cal = Calendar.getInstance();
+        Date meetingMoment = new Date(mYear - 1900, mMonth, mDay, mHour, mMinute);
 
         try {
             Location2D location = Location2D.parse(strLocation);
-            Meeting meeting = new Meeting(name, description, meetingMoment, location,
-                    authenticationManager.getUsername());
-            createdMeetingId = meeting.getId();
-            meetingManager.addMeeting(meeting);
-            btnCreate.setEnabled(false);
+            if (allCorrect) {
+                createMeeting(name, description, meetingMoment, location);
+            }
         } catch (ParseException e) {
             etLocation.setError("Invalid location");
         }
     }
+    private void createMeeting(String name, String description, Date meetingMoment,
+                               Location2D location) {
+        Meeting meeting = new Meeting(name, description, meetingMoment, location,
+                authenticationManager.getUsername());
+        createdMeetingId = meeting.getId();
+        List<String> peopleToAdd = new ArrayList<>();
+        synchronized (connections) {
+            Log.println(Log.DEBUG, "Debug6", "Manually adding user99: " + connections.size());
+            for (int i = 0; i < connections.size(); i++) {
+                if (((ConnectionListAdapter)connectionList.getAdapter()).isChecked(i)) {
+                    peopleToAdd.add(connections.get(i));
+                }
+            }
+        }
+        meetingManager.addMeeting(meeting, peopleToAdd);
+        btnCreate.setEnabled(false);
+    }
 
     public void toAllMeetings(View view) {
-        Intent intent = new Intent(this, Dashboard.class);
+        Intent intent = new Intent(this, MeetingsOverview.class);
         startActivity(intent);
-        finish();   // TODO: code duplication
+        finish();
     }
 
     @Override
     public void onCreatedMeeting(UUID id) {
         if (id.equals(createdMeetingId)) {
-            // Add all invited users to the meeting
-            MeetingAsAdminManager adminManager = new MeetingAsAdminManager(meetingManager,
-                    authenticationManager, meetingManager.getMeeting(id, meetingSyncManager));
-            for (int i = 0; i < connectionList.getAdapter().getCount(); i++) {
-                if (((ConnectionListAdapter)connectionList.getAdapter()).isChecked(i)) {
-                    String username = (String)connectionList.getAdapter().getItem(i);
-                    adminManager.inviteUserToMeeting(username);
-                }
-            }
-
             Intent intent = new Intent(this, MeetingsOverview.class);
             startActivity(intent);
             finish();
@@ -149,7 +275,6 @@ public class NewMeeting extends AppCompatActivity implements MeetingSemiAdminEve
 
     @Override
     public void onRemovedMeeting(UUID id) {
-
     }
 
     @Override
@@ -163,15 +288,16 @@ public class NewMeeting extends AppCompatActivity implements MeetingSemiAdminEve
     }
 
     @Override
-    public void onReceivedConnections(final ArrayList<ExternalUserProfile> connections) {
+    public void onReceivedConnections(final ArrayList<ExternalUserProfile> receivedConnections) {
         runOnUiThread(new Runnable() {
             @Override
             public void run() {
-                for (ExternalUserProfile profile : connections) {
-                    ((ConnectionListAdapter)connectionList.getAdapter()).add(
-                            profile.getUsername());
+                synchronized (connections) {
+                    for (ExternalUserProfile profile : receivedConnections) {
+                        connections.add(profile.getUsername());
+                    }
+                    ((ConnectionListAdapter)connectionList.getAdapter()).notifyDataSetChanged();
                 }
-                ((ConnectionListAdapter)connectionList.getAdapter()).notifyDataSetChanged();
             }
         });
     }
@@ -188,5 +314,45 @@ public class NewMeeting extends AppCompatActivity implements MeetingSemiAdminEve
                 etLocation.setText(data.getData().toString());
             }
         }
+    }
+
+    public void showDatePicker(View view) {
+        DialogFragment datePicker = new DatePickerFragment();
+        datePicker.show(getSupportFragmentManager(), "date picker");
+    }
+    public void showTimePicker() {
+        // Get Current Time
+        final Calendar c = Calendar.getInstance();
+        mHour = c.get(Calendar.HOUR_OF_DAY);
+        mMinute = c.get(Calendar.MINUTE);
+
+        // Launch Time Picker Dialog
+        TimePickerDialog timePickerDialog = new TimePickerDialog(this,
+                new TimePickerDialog.OnTimeSetListener() {
+
+                    @Override
+                    public void onTimeSet(TimePicker view, int hourOfDay,
+                                          int minute) {
+                        mHour = hourOfDay;
+                        mMinute = minute;
+                        txtDate.setText(String.valueOf(txtDate.getText()) + "\nat: " + mHour + ":" + mMinute);
+                        date = c.getTime();
+                    }
+                }, mHour, mMinute, true);
+        timePickerDialog.show();
+    }
+    @Override
+    public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
+        Calendar c = Calendar.getInstance();
+        c.set(Calendar.YEAR, year);
+        c.set(Calendar.MONTH, month);
+        c.set(Calendar.DAY_OF_MONTH, dayOfMonth);
+        String currentDateString = DateFormat.getDateInstance(DateFormat.FULL).format(c.getTime());
+        txtDate.setText(currentDateString);
+        mYear = year;
+        mMonth = month;
+        mDay = dayOfMonth;
+
+        showTimePicker();
     }
 }

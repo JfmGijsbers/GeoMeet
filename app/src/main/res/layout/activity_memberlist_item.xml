@@ -6,18 +6,11 @@
     android:orientation="horizontal">
 
     <TextView
-        android:id="@+id/profileName"
+        android:id="@+id/member_name"
         android:gravity="center"
         android:layout_weight="5"
         android:layout_width="0dp"
         android:layout_height="fill_parent"
-        android:text="Friend name" />
-    <CheckBox
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_weight="1"
-        android:layout_gravity="center"
-        android:id="@+id/listItemCheckbox"
-        />
+        android:text="Member name" />
 
 </LinearLayout>

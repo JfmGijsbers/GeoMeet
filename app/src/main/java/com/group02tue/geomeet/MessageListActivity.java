@@ -5,6 +5,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.os.Bundle;
+import android.os.Handler;
 import android.util.Log;
 import android.view.View;
 import android.widget.TextView;
@@ -15,7 +16,6 @@ import com.group02tue.geomeet.backend.chat.ChatManager;
 import com.group02tue.geomeet.backend.chat.ChatMessage;
 
 import java.util.List;
-
 public class MessageListActivity extends AppCompatActivity implements ChatEventListener {
     private RecyclerView messageRecycler;
     private MessageListAdapter messageAdapter;
@@ -25,6 +25,8 @@ public class MessageListActivity extends AppCompatActivity implements ChatEventL
     private ChatManager chatManager;
     private String meetingId;
 
+    private Handler syncChatTimer = new Handler();      // Timer, implemented as handler
+    private final static int SYNC_CHAT_TIMER_INTERVAL = 5000;  // Run timer code every ... ms
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -35,13 +37,13 @@ public class MessageListActivity extends AppCompatActivity implements ChatEventL
         chatBox = findViewById(R.id.edittext_chatbox);
         chatManager = ((MainApplication)getApplication()).getChatManager();
 
+        // Fill list
         messages = chatManager.getMessages(meetingId);
         messageRecycler = (RecyclerView) findViewById(R.id.recyclerview_message_list);
         messageAdapter = new MessageListAdapter(messages,
                 ((MainApplication)getApplication()).getAuthenticationManager());
         messageRecycler.setLayoutManager(new LinearLayoutManager(this));
         messageRecycler.setAdapter(messageAdapter);
-
         fixChat();
 
         messageRecycler.addOnLayoutChangeListener( new View.OnLayoutChangeListener() {
@@ -50,8 +52,8 @@ public class MessageListActivity extends AppCompatActivity implements ChatEventL
                 fixChat();
             }
         });
-
     }
+
     private void fixChat() {
         runOnUiThread(new Runnable() {
             @Override
@@ -68,24 +70,40 @@ public class MessageListActivity extends AppCompatActivity implements ChatEventL
         super.onStart();
         chatManager.addListener(this);
         chatManager.checkForNewMessages();
+        syncChatTimer.postDelayed(runnableCode, SYNC_CHAT_TIMER_INTERVAL);   // Start timer
     }
 
     @Override
     protected void onStop() {
         super.onStop();
+        syncChatTimer.removeCallbacksAndMessages(null); // 'Stop' the timer
         chatManager.removeListener(this);
     }
 
+    /**
+     * Timer elapsed callback
+     */
+    final Runnable runnableCode = new Runnable() {
+        @Override
+        public void run() {
+            chatManager.sendAllUnsendMessages();
+            chatManager.checkForNewMessages();
+            // Repeat this the same runnable code block again
+            syncChatTimer.postDelayed(runnableCode, SYNC_CHAT_TIMER_INTERVAL);
+        }
+    };
+
     @Override
     public void onNewMessageReceived(ChatMessage message) {
-        messages.add(message);
-        fixChat();
+        synchronized (messages) {
+            Log.println(Log.DEBUG, "Debug", "1");
+            messages.add(message);
+            fixChat();
+        }
     }
 
     @Override
     public void onMessageSent(ChatMessage message) {
-        messages.add(message);
-        fixChat();
     }
 
     @Override
@@ -97,7 +115,14 @@ public class MessageListActivity extends AppCompatActivity implements ChatEventL
     public void onNewMessage(View view) {
         String message = String.valueOf(chatBox.getText());
         if (!message.isEmpty()) {
-            chatManager.sendMessage(meetingId, message);
+            Log.println(Log.DEBUG, "Debug", "2");
+            ChatMessage messageSending = chatManager.sendMessage(meetingId, message);
+            synchronized (messages) {
+                Log.println(Log.DEBUG, "Debug", "3");
+                messages.add(messageSending);
+                fixChat();
+                Log.println(Log.DEBUG, "Debug", "4");
+            }
         }
         chatBox.setText("");
         fixChat();

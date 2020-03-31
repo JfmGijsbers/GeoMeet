@@ -2,12 +2,14 @@ package com.group02tue.geomeet.backend.social;
 
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.util.Log;
 
 import androidx.core.util.Consumer;
 import androidx.preference.PreferenceManager;
 
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
+import com.group02tue.geomeet.ConnectionListAdapter;
 import com.group02tue.geomeet.backend.ObservableManager;
 import com.group02tue.geomeet.backend.api.APIFailureReason;
 import com.group02tue.geomeet.backend.api.BooleanAPIResponseListener;
@@ -90,17 +92,38 @@ public class MeetingManager extends ObservableManager<MeetingSemiAdminEventListe
     }
 
     /**
+     * Resets the meeting manager.
+     */
+    public void reset() {
+        synchronized (meetingInvites) {
+            meetingInvites.clear();
+            meetings.clear();
+            SharedPreferences.Editor prefsEditor = preferences.edit();
+            prefsEditor.putString(MEETING_INVITES_PREFERENCE, "");
+            prefsEditor.putString(MEETINGS_PREFERENCE, "");
+            prefsEditor.apply();
+        }
+    }
+
+    /**
      * Adds a new meeting both locally and online.
      * @param meeting Meeting to add
      */
-    public void addMeeting(final Meeting meeting) {
+    public void addMeeting(final Meeting meeting, final List<String> usersToAdd) {
+        final MeetingAsAdminManager adminManager = new
+                MeetingAsAdminManager(this, authenticationManager, meeting);
+
         new CreateMeetingAPICall(authenticationManager, new BooleanAPIResponseListener() {
             @Override
             public void onSuccess() {
                 synchronized (meetings) {
                     meetings.put(meeting.getId(), meeting);
+                    for (String userToAdd : usersToAdd) {
+                        adminManager.inviteUserToMeeting(userToAdd);
+                    }
                     saveMeetings();
                 }
+
                 notifyListeners(new Consumer<MeetingSemiAdminEventListener>() {
                     @Override
                     public void accept(MeetingSemiAdminEventListener meetingEventListener) {
@@ -266,7 +289,7 @@ public class MeetingManager extends ObservableManager<MeetingSemiAdminEventListe
         /**
          * Request a list to which the user has been invited.
          */
-        public void requestMeetingInvitations() {
+        public List<ImmutableMeeting> requestMeetingInvitations() {
             new QueryMeetingInvitationsAPICall(authenticationManager, new QueryImmutableMeetingsAPIResponseListener() {
                 @Override
                 public void onSuccess(final ArrayList<ImmutableMeeting> currentMeetingInvitations) {
@@ -316,6 +339,7 @@ public class MeetingManager extends ObservableManager<MeetingSemiAdminEventListe
                     // Don't care: failure means no update
                 }
             }).execute();
+            return new ArrayList<>(meetingInvites.values());
         }
 
 

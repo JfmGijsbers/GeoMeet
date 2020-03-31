@@ -66,7 +66,7 @@
                     <ImageView
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:src="@drawable/baseline_supervisor_account_black_18dp" />
+                        android:src="@drawable/baseline_explore_black_18dp" />
 
                     <TextView
                         android:layout_width="match_parent"
@@ -123,7 +123,7 @@
                         />
                 </LinearLayout>
                 <LinearLayout
-                    android:onClick="toSettings"
+                    android:onClick="toInvites"
                     android:padding="30dp"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
@@ -133,12 +133,12 @@
                     <ImageView
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:src="@drawable/baseline_settings_black_18dp"
+                        android:src="@drawable/baseline_mail_black_18dp"
                         />
                     <TextView
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:text="Settings"
+                        android:text="Invites"
                         android:gravity="center"
                         />
                 </LinearLayout>

@@ -2,13 +2,13 @@
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
+    tools:context=".MainActivity"
     android:background="@color/colorPrimaryDark"
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto">
 <androidx.constraintlayout.widget.ConstraintLayout
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".MainActivity"
     android:padding="20dp"
     >
     <ImageView
@@ -32,7 +32,8 @@
         android:ems="10"
         android:hint="Email"
         android:inputType="textEmailAddress"
-        android:maxLines="1" />
+        android:maxLines="1"
+        android:maxLength="30"/>
 
     <EditText
         android:layout_marginLeft="20dp"
@@ -48,6 +49,7 @@
         android:ems="10"
         app:layout_constraintTop_toBottomOf="@id/et_email"
         app:layout_constraintStart_toEndOf="@id/logo"
+        android:maxLength="30"
         />
     <Button
         android:layout_marginLeft="20dp"
@@ -78,6 +80,7 @@
         <CheckBox
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:id="@+id/chk_keep_logged_in"
             />
         <TextView
             android:layout_width="wrap_content"

@@ -9,9 +9,10 @@
         android:layout_height="wrap_content"
         android:layout_weight="5"
         android:orientation="vertical"
+        android:layout_gravity="center"
         android:gravity="center">
         <TextView
-            android:id="@+id/meetingTitle"
+            android:id="@+id/invite_title"
             android:gravity="center"
             android:textSize="16sp"
             android:textColor="#000000"
@@ -20,18 +21,21 @@
             android:text="Meeting title" />
         <TextView
             android:textSize="8sp"
-            android:id="@+id/meetingDate"
+            android:id="@+id/invite_date"
             android:layout_width="match_parent"
             android:gravity="center"
             android:layout_height="wrap_content"
             android:text="03/03/2020 13:30" />
     </LinearLayout>
-    <TextView
-        android:textSize="10sp"
-        android:layout_marginTop="5dp"
-        android:id="@+id/meetingAttending"
+    <Button
+        android:id="@+id/btn_accept_invite"
         android:layout_width="wrap_content"
-        android:gravity="center"
-        android:layout_height="match_parent"
-        android:text="Attending: 0" />
+        android:layout_height="wrap_content"
+        android:text="Accept" />
+    <Button
+        android:id="@+id/btn_reject_invite"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        style="@style/Widget.MaterialComponents.Button.OutlinedButton"
+        android:text="Reject" />
 </LinearLayout>
