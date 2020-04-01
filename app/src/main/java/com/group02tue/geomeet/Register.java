@@ -1,8 +1,11 @@
 package com.group02tue.geomeet;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.preference.PreferenceManager;
 
+import android.app.AlarmManager;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -10,8 +13,10 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import com.group02tue.geomeet.backend.AlarmBroadcastReceiver;
 import com.group02tue.geomeet.backend.authentication.AuthenticationEventListener;
 import com.group02tue.geomeet.backend.authentication.AuthenticationManager;
+import com.group02tue.geomeet.backend.social.InternalUserProfile;
 
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -20,6 +25,7 @@ public class Register extends AppCompatActivity implements AuthenticationEventLi
     private EditText etEmail, etPass, etPass2, etFirstname, etLastname, etUsername;
     private Button btnRegister;
     private AuthenticationManager authenticationManager;
+    private InternalUserProfile.ProfileManager profileManager;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -35,6 +41,7 @@ public class Register extends AppCompatActivity implements AuthenticationEventLi
         btnRegister = findViewById(R.id.btn_register);
 
         authenticationManager = ((MainApplication)getApplication()).getAuthenticationManager();
+        profileManager = ((MainApplication)getApplication()).getProfileManager();
     }
     @Override
     protected void onStart() {
@@ -111,6 +118,12 @@ public class Register extends AppCompatActivity implements AuthenticationEventLi
 
         if (noMistake) {
             authenticationManager.register(username, pass, firstName, lastName, email);
+            profileManager.update(firstName, lastName, email, "");
+            SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(this);
+            if (sp.getBoolean(
+                    NotificationsFragment.SHOW_ANY_NOTIFICATION_KEY, true)) {
+                AlarmBroadcastReceiver.start(this);
+            }
             etPass.setText("");
             etUsername.setText("");
             etPass2.setText("");
