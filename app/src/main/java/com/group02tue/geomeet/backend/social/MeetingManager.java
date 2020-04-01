@@ -113,17 +113,17 @@ public class MeetingManager extends ObservableManager<MeetingSemiAdminEventListe
         final MeetingAsAdminManager adminManager = new
                 MeetingAsAdminManager(this, authenticationManager, meeting);
 
+        synchronized (meetings) {
+            meetings.put(meeting.getId(), meeting);
+            for (String userToAdd : usersToAdd) {
+                adminManager.inviteUserToMeeting(userToAdd);
+            }
+            saveMeetings();
+        }
+
         new CreateMeetingAPICall(authenticationManager, new BooleanAPIResponseListener() {
             @Override
             public void onSuccess() {
-                synchronized (meetings) {
-                    meetings.put(meeting.getId(), meeting);
-                    for (String userToAdd : usersToAdd) {
-                        adminManager.inviteUserToMeeting(userToAdd);
-                    }
-                    saveMeetings();
-                }
-
                 notifyListeners(new Consumer<MeetingSemiAdminEventListener>() {
                     @Override
                     public void accept(MeetingSemiAdminEventListener meetingEventListener) {
@@ -149,15 +149,15 @@ public class MeetingManager extends ObservableManager<MeetingSemiAdminEventListe
      * @param id Id of meeting to remove
      */
     public void removeMeeting(final UUID id) {
+        synchronized (meetings) {
+            if (meetings.containsKey(id)) {
+                meetings.remove(id);
+                saveMeetings();
+            }
+        }
         new DeleteMeetingAPICall(authenticationManager, new BooleanAPIResponseListener() {
             @Override
             public void onSuccess() {
-                synchronized (meetings) {
-                    if (meetings.containsKey(id)) {
-                        meetings.remove(id);
-                        saveMeetings();
-                    }
-                }
                 notifyListeners(new Consumer<MeetingSemiAdminEventListener>() {
                     @Override
                     public void accept(MeetingSemiAdminEventListener meetingEventListener) {
@@ -211,16 +211,16 @@ public class MeetingManager extends ObservableManager<MeetingSemiAdminEventListe
      * @param join Join the meeting?
      */
     public void decideInvitation(final UUID id, final boolean join, final MeetingSyncManager syncManager) {
+        // Remove the invite
+        synchronized (meetingInvites) {
+            if (meetingInvites.containsKey(id)) {
+                meetingInvites.remove(id);
+                saveMeetingInvites();
+            }
+        }
         new DecideMeetingInvitationAPICall(authenticationManager, new BooleanAPIResponseListener() {
             @Override
             public void onSuccess() {
-                // Remove the invite
-                synchronized (meetingInvites) {
-                    if (meetingInvites.containsKey(id)) {
-                        meetingInvites.remove(id);
-                        saveMeetingInvites();
-                    }
-                }
                 saveMeetings();
                 if (join) {
                     syncManager.requestMeetingUpdateFromServer(id); // We joined, so now get an update
@@ -344,11 +344,17 @@ public class MeetingManager extends ObservableManager<MeetingSemiAdminEventListe
 
 
         /**
-         * Gets a list of all current memberships and request to check for new memberships and to remove
-         * old memberships.
+         * Gets a list of all current memberships.
          * @return Current memberships
          */
-        public List<Meeting> getMeetingMemberships() {
+        public List<Meeting> getLocalMeetingMemberships() {
+            return new ArrayList<>(meetings.values());
+        }
+
+        /**
+         * Requests to check for new memberships and to remove old memberships.
+         */
+        public void syncMeetingMemberships() {
             new QueryMeetingMembershipsAPICall(authenticationManager, new QueryImmutableMeetingsAPIResponseListener() {
                 @Override
                 public void onSuccess(ArrayList<ImmutableMeeting> currentMeetings) {
@@ -381,7 +387,6 @@ public class MeetingManager extends ObservableManager<MeetingSemiAdminEventListe
                     // Don't care: failure means no update
                 }
             }).execute();
-            return new ArrayList<>(meetings.values());
         }
 
         /**
@@ -389,15 +394,15 @@ public class MeetingManager extends ObservableManager<MeetingSemiAdminEventListe
          * @param id Id of meeting to leave from
          */
         public void leaveMeeting(final UUID id) {
+            synchronized (meetings) {
+                if (meetings.containsKey(id)) {
+                    meetings.remove(id);
+                    saveMeetings();
+                }
+            }
             new RemoveUserFromMeetingAPICall(authenticationManager, new BooleanAPIResponseListener() {
                 @Override
                 public void onSuccess() {
-                    synchronized (meetings) {
-                        if (meetings.containsKey(id)) {
-                            meetings.remove(id);
-                            saveMeetings();
-                        }
-                    }
                     notifyListeners(new Consumer<MeetingSyncEventListener>() {
                         @Override
                         public void accept(MeetingSyncEventListener meetingEventListener) {

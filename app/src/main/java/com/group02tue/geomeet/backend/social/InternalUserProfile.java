@@ -2,6 +2,7 @@ package com.group02tue.geomeet.backend.social;
 
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.util.Log;
 
 import androidx.core.util.Consumer;
 import androidx.preference.PreferenceManager;
@@ -35,7 +36,35 @@ public class InternalUserProfile extends UserProfile {
         lastName = preferences.getString(LAST_NAME_PREFERENCE, "");
         email = preferences.getString(EMAIL_PREFERENCE, "");
         description = preferences.getString(DESCRIPTION_PREFERENCE, "");
+
+        if (firstName.isEmpty() || lastName.isEmpty() || email.isEmpty() || description.isEmpty()) {
+            new GetProfileAPICall(authenticationManager, new GetProfileAPIResponseListener() {
+                @Override
+                public void onFoundProfile(final ExternalUserProfile profile) {
+                    firstName = profile.getFirstName();
+                    lastName = profile.getLastName();
+                    email = profile.getEmail();
+                    description = profile.getDescription();
+                    SharedPreferences.Editor editor = preferences.edit();
+                    editor.putString(FIRST_NAME_PREFERENCE, firstName);
+                    editor.putString(LAST_NAME_PREFERENCE, lastName);
+                    editor.putString(EMAIL_PREFERENCE, email);
+                    editor.putString(DESCRIPTION_PREFERENCE, description);
+                    editor.apply();
+                }
+
+                @Override
+                public void onProfileNotFound() {
+                }
+
+                @Override
+                public void onFailure(APIFailureReason response) {
+                    onProfileNotFound();
+                }
+            }, authenticationManager.getUsername()).execute();
+        }
     }
+
 
     public class ProfileManager extends ObservableManager<ProfileEventListener> {
         /**
@@ -47,20 +76,21 @@ public class InternalUserProfile extends UserProfile {
          */
         public void update(final String firstName, final String lastName,
                               final String email, final String description) {
+            // Update internally
+            InternalUserProfile.this.firstName = firstName;
+            InternalUserProfile.this.lastName = lastName;
+            InternalUserProfile.this.email = email;
+            InternalUserProfile.this.description = description;
+            SharedPreferences.Editor editor = preferences.edit();
+            editor.putString(FIRST_NAME_PREFERENCE, firstName);
+            editor.putString(LAST_NAME_PREFERENCE, lastName);
+            editor.putString(EMAIL_PREFERENCE, email);
+            editor.putString(DESCRIPTION_PREFERENCE, description);
+            editor.apply();
+
             new UpdateProfileAPICall(authenticationManager, new BooleanAPIResponseListener() {
                 @Override
                 public void onSuccess() {
-                    // Update internally after server has confirmed the update
-                    InternalUserProfile.this.firstName = firstName;
-                    InternalUserProfile.this.lastName = lastName;
-                    InternalUserProfile.this.email = email;
-                    InternalUserProfile.this.description = description;
-                    SharedPreferences.Editor editor = preferences.edit();
-                    editor.putString(FIRST_NAME_PREFERENCE, firstName);
-                    editor.putString(LAST_NAME_PREFERENCE, lastName);
-                    editor.putString(EMAIL_PREFERENCE, email);
-                    editor.putString(DESCRIPTION_PREFERENCE, description);
-                    editor.apply();
                     // Notify
                     notifyListeners(new Consumer<ProfileEventListener>() {
                         @Override

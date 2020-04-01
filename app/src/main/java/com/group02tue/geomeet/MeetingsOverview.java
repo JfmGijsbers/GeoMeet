@@ -4,6 +4,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Handler;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -33,13 +34,16 @@ public class MeetingsOverview extends AppCompatActivity implements MeetingSyncEv
     private List<Meeting> meetings;
     private MeetingManager.MeetingSyncManager meetingSyncManager;
 
+    private Handler syncMeetingsTimer = new Handler();      // Timer, implemented as handler
+    private final static int SYNC_MEETING_TIMER_INTERVAL = 5000;  // Run timer code every ... ms
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_meetings_overview);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         meetingSyncManager = ((MainApplication)getApplication()).getMeetingSyncManager();
-        meetings = meetingSyncManager.getMeetingMemberships();
+        meetings = meetingSyncManager.getLocalMeetingMemberships();
         final MeetingListAdapter listAdapter = new MeetingListAdapter(MeetingsOverview.this,
                 meetings);
         meetingOverviewList = (ListView) findViewById(R.id.fullMeetingListView);
@@ -113,14 +117,28 @@ public class MeetingsOverview extends AppCompatActivity implements MeetingSyncEv
     protected void onStart() {
         super.onStart();
         meetingSyncManager.addListener(this);
+        meetingSyncManager.syncMeetingMemberships();
+        syncMeetingsTimer.postDelayed(runnableCode, SYNC_MEETING_TIMER_INTERVAL);   // Start timer
     }
 
     @Override
     protected void onStop() {
         super.onStop();
+        syncMeetingsTimer.removeCallbacksAndMessages(null); // 'Stop' the timer
         meetingSyncManager.removeListener(this);
-        Log.e("DEBUG", "1");
     }
+
+    /**
+     * Timer elapsed callback
+     */
+    final Runnable runnableCode = new Runnable() {
+        @Override
+        public void run() {
+            meetingSyncManager.syncMeetingMemberships();
+            // Repeat this the same runnable code block again
+            syncMeetingsTimer.postDelayed(runnableCode, SYNC_MEETING_TIMER_INTERVAL);
+        }
+    };
 
     public void newMeeting(View view) {
         Intent newMeeting = new Intent(this, NewMeeting.class);

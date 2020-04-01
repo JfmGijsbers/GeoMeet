@@ -162,6 +162,7 @@ public class SeeMeeting extends AppCompatActivity implements DatePickerDialog.On
             builder.setTitle("New name");
             final EditText input = new EditText(this);
             input.setInputType(InputType.TYPE_CLASS_TEXT);
+            input.setText(txtTitle.getText());
             builder.setView(input);
             builder.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
                 @Override

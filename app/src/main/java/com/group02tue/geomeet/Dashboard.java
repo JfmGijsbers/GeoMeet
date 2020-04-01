@@ -38,7 +38,7 @@ public class Dashboard extends AppCompatActivity implements MeetingSyncEventList
         setContentView(R.layout.activity_dashboard);
 
         meetingSyncManager = ((MainApplication)getApplication()).getMeetingSyncManager();
-        meetings = meetingSyncManager.getMeetingMemberships();
+        meetings = meetingSyncManager.getLocalMeetingMemberships();
         final MeetingListAdapter listAdapter = new MeetingListAdapter(Dashboard.this,
                 meetings);
         meetingOverviewList = (ListView) findViewById(R.id.meetingListView);
@@ -151,10 +151,9 @@ public class Dashboard extends AppCompatActivity implements MeetingSyncEventList
 
     @Override
     protected void onStart() {
-        Log.println(Log.DEBUG, "Debug3", "1");
         super.onStart();
         meetingSyncManager.addListener(this);
-        Log.println(Log.DEBUG, "Debug3", "2");
+        meetingSyncManager.syncMeetingMemberships();
     }
 
     @Override
@@ -171,7 +170,6 @@ public class Dashboard extends AppCompatActivity implements MeetingSyncEventList
 
     @Override
     public void onMeetingUpdatedReceived(Meeting meeting) {
-        Log.println(Log.DEBUG, "Debug3", "3");
         synchronized (meetings) {
             boolean updated = false;
             for (int i = 0; i < meetings.size(); i++) {
@@ -181,11 +179,9 @@ public class Dashboard extends AppCompatActivity implements MeetingSyncEventList
                     break;
                 }
             }
-            Log.println(Log.DEBUG, "Debug3", "4");
             if (!updated) {
                 meetings.add(meeting);
             }
-            Log.println(Log.DEBUG, "Debug3", "5");
             runOnUiThread(new Runnable() {
                 @Override
                 public void run() {

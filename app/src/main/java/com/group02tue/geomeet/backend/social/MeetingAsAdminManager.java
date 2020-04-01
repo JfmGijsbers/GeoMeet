@@ -88,10 +88,11 @@ public class MeetingAsAdminManager extends ObservableManager<MeetingAsAdminEvent
      * @param moment Moment to set
      * @param location Location to set
      */
-    public void updateMeeting(String name, String description, Date moment, Location2D location) {
+    public void updateMeeting(final String name, final String description, final Date moment, final Location2D location) {
         new UpdateMeetingAPICall(authenticationManager, new BooleanAPIResponseListener() {
             @Override
             public void onSuccess() {
+                meeting.update(name, description, moment, location);
                 meetingManager.saveMeetings();
                 notifyListeners(new Consumer<MeetingAsAdminEventListener>() {
                     @Override

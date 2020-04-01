@@ -19,7 +19,6 @@ public abstract class ObservableManager<T extends EventListener> {
         synchronized (listeners) {
             if (listeners.size() > 0) {
                 for (int i = listeners.size() - 1; i > -1; i--) {
-                    Log.println(Log.DEBUG, "DebugList", listeners.get(i).toString());
                     action.accept(listeners.get(i));
                 }
             }

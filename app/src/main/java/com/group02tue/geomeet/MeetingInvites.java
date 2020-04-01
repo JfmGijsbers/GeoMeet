@@ -4,6 +4,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Handler;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -23,6 +24,8 @@ public class MeetingInvites extends AppCompatActivity implements MeetingSyncEven
     private List<ImmutableMeeting> meetingInvites;
     private MeetingManager.MeetingSyncManager meetingSyncManager;
 
+    private Handler syncMeetingInvitesTimer = new Handler();      // Timer, implemented as handler
+    private final static int SYNC_MEETING_INVITES_TIMER_INTERVAL = 5000;  // Run timer code every ... ms
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -95,13 +98,27 @@ public class MeetingInvites extends AppCompatActivity implements MeetingSyncEven
     protected void onStart() {
         super.onStart();
         meetingSyncManager.addListener(this);
+        syncMeetingInvitesTimer.postDelayed(runnableCode, SYNC_MEETING_INVITES_TIMER_INTERVAL);   // Start timer
     }
 
     @Override
     protected void onStop() {
         super.onStop();
+        syncMeetingInvitesTimer.removeCallbacksAndMessages(null); // 'Stop' the timer
         meetingSyncManager.removeListener(this);
     }
+
+    /**
+     * Timer elapsed callback
+     */
+    final Runnable runnableCode = new Runnable() {
+        @Override
+        public void run() {
+            meetingSyncManager.requestMeetingInvitations();
+            // Repeat this the same runnable code block again
+            syncMeetingInvitesTimer.postDelayed(runnableCode, SYNC_MEETING_INVITES_TIMER_INTERVAL);
+        }
+    };
 
     @Override
     public void onReceivedNewMeetingInvitations(ArrayList<ImmutableMeeting> meetings) {
@@ -109,7 +126,6 @@ public class MeetingInvites extends AppCompatActivity implements MeetingSyncEven
             for (ImmutableMeeting meetingInvite : meetings) {
                 meetingInvites.add(meetingInvite);
             }
-
             runOnUiThread(new Runnable() {
                 @Override
                 public void run() {

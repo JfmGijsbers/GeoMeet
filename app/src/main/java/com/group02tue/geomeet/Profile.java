@@ -10,11 +10,16 @@ import android.view.MenuItem;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.group02tue.geomeet.backend.authentication.AuthenticationManager;
+import com.group02tue.geomeet.backend.social.InternalUserProfile;
+
 public class Profile extends AppCompatActivity {
     private TextView txtProfileName;
     private TextView txtUsername;
     private TextView txtDescription;
 
+    private AuthenticationManager authenticationManager;
+    private InternalUserProfile profile;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -25,10 +30,19 @@ public class Profile extends AppCompatActivity {
         txtUsername = findViewById(R.id.username);
         txtDescription = findViewById(R.id.txtDescription);
 
+        authenticationManager = ((MainApplication)getApplication()).getAuthenticationManager();
+        profile = ((MainApplication)getApplication()).getInternalUserProfile();
+
         Intent intent = getIntent();
-        txtProfileName.setText(intent.getStringExtra("profileName"));
-        txtUsername.setText(intent.getStringExtra("username"));
-        txtDescription.setText(intent.getStringExtra("description"));
+        if (intent.getStringExtra("profileName") == null) {
+            txtProfileName.setText(profile.getFirstName() + " " + profile.getLastName());
+            txtUsername.setText(authenticationManager.getUsername());
+            txtDescription.setText(profile.getDescription());
+        } else {
+            txtProfileName.setText(intent.getStringExtra("profileName"));
+            txtUsername.setText(intent.getStringExtra("username"));
+            txtDescription.setText(intent.getStringExtra("description"));
+        }
     }
 
     /**

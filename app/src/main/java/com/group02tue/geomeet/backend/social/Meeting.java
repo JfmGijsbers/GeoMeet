@@ -76,6 +76,16 @@ public class Meeting {
     }
 
     /**
+     * Updates the meeting
+     */
+    public void update(String name, String description, Date moment, Location2D location) {
+        this.name = name;
+        this.description = description;
+        this.moment = moment;
+        this.location = location;
+    }
+
+    /**
      * Sends a message in the chat of the meeting.
      * @param message Message content to send
      * @param chatManager Chat manager

@@ -113,12 +113,13 @@ public class LocationViewer extends FragmentActivity implements OnMapReadyCallba
         meetingSyncManager.addListener(this);
         if (!fromSeeMeeting) {
             synchronized (allLocations) {
-                List<Meeting> meetings = meetingSyncManager.getMeetingMemberships();
+                List<Meeting> meetings = meetingSyncManager.getLocalMeetingMemberships();
                 for (Meeting meeting : meetings) {
                     allLocations.add(meeting.getLocation());
                 }
                 refreshMap();
             }
+            meetingSyncManager.syncMeetingMemberships();
         }
     }
 
