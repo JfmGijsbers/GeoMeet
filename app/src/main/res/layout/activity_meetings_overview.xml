@@ -4,28 +4,27 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".MeetingsOverview"
-    android:orientation="vertical">
+    android:orientation="vertical"
+    tools:context=".MeetingsOverview">
 
     <ListView
         android:id="@+id/fullMeetingListView"
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_weight="4"
-        />
+        android:layout_weight="4" />
+
     <Button
         style="@style/Widget.MaterialComponents.Button"
         android:layout_width="wrap_content"
-        android:layout_gravity="center"
-        android:text="Plan new meeting"
-        android:onClick="newMeeting"
-        android:textColor="#FFFFFF"
         android:layout_height="0dp"
-        android:maxHeight="50dp"
-        android:ems="10"
+        android:layout_gravity="center"
         android:layout_weight="1"
-        android:background="@drawable/btn_rounded_corner"/>
-
+        android:background="@drawable/btn_rounded_corner"
+        android:ems="10"
+        android:maxHeight="50dp"
+        android:onClick="newMeeting"
+        android:text="@string/plan_new_meeting"
+        android:textColor="#FFFFFF" />
 
 
 </LinearLayout>

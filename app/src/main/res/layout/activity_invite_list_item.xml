@@ -1,41 +1,46 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:padding="10dp"
     android:layout_height="wrap_content"
-    android:orientation="horizontal">
+    android:orientation="horizontal"
+    android:padding="10dp">
+
     <LinearLayout
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_weight="5"
-        android:orientation="vertical"
         android:layout_gravity="center"
-        android:gravity="center">
+        android:layout_weight="5"
+        android:gravity="center"
+        android:orientation="vertical">
+
         <TextView
             android:id="@+id/invite_title"
-            android:gravity="center"
-            android:textSize="16sp"
-            android:textColor="#000000"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Meeting title" />
+            android:gravity="center"
+            android:text="@string/meeting_title"
+            android:textColor="#000000"
+            android:textSize="16sp" />
+
         <TextView
-            android:textSize="8sp"
             android:id="@+id/invite_date"
             android:layout_width="match_parent"
-            android:gravity="center"
             android:layout_height="wrap_content"
-            android:text="03/03/2020 13:30" />
+            android:gravity="center"
+            android:text="@string/_03_03_2020_13_30"
+            android:textSize="8sp" />
     </LinearLayout>
+
     <Button
         android:id="@+id/btn_accept_invite"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Accept" />
+        android:text="@string/accept" />
+
     <Button
         android:id="@+id/btn_reject_invite"
+        style="@style/Widget.MaterialComponents.Button.OutlinedButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        style="@style/Widget.MaterialComponents.Button.OutlinedButton"
-        android:text="Reject" />
+        android:text="@string/reject" />
 </LinearLayout>

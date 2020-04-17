@@ -1,46 +1,45 @@
-<RelativeLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:id="@+id/alertdialog_linearlayout"
-    android:layout_height="wrap_content"
     android:layout_width="match_parent"
+    android:layout_height="wrap_content"
     android:background="@null"
     android:padding="20dp">
 
     <LinearLayout
-        android:layout_height="wrap_content"
         android:layout_width="match_parent"
-        android:orientation="vertical"
-        android:background="#FFFFFF">
+        android:layout_height="wrap_content"
+        android:background="#FFFFFF"
+        android:orientation="vertical">
 
         <TextView
             android:id="@+id/alertdialog_textview"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="search"
-            android:textColor="#000000"
-            android:textSize="16sp"
+            android:drawablePadding="10dp"
             android:gravity="center"
-            android:drawablePadding="10dp"/>
+            android:text="@string/search"
+            android:textColor="#000000"
+            android:textSize="16sp" />
 
         <EditText
             android:id="@+id/alertdialog_edittext"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_gravity="start"
             android:ellipsize="end"
-            android:textStyle="normal"
-            android:textColorHint="#939598"
-            android:textColor="#4b4f54"
-            android:maxLines="1"
-            android:textCursorDrawable="@null"
             android:gravity="start"
             android:inputType="text"
-            android:layout_gravity="start" />
+            android:maxLines="1"
+            android:textColor="#4b4f54"
+            android:textColorHint="#939598"
+            android:textCursorDrawable="@null"
+            android:textStyle="normal" />
 
         <ListView
             android:id="@+id/alertdialog_Listview"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:choiceMode="singleChoice"/>
+            android:choiceMode="singleChoice" />
 
     </LinearLayout>
 
@@ -48,13 +47,13 @@
         android:id="@+id/dialog_cancel_btn"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignParentRight="true"
         android:layout_alignParentEnd="true"
-        android:text="Cancel"
-        android:gravity="center"
+        android:layout_alignParentRight="true"
         android:layout_alignParentBottom="true"
-        android:layout_marginRight="10dp"
+        android:layout_marginTop="5dp"
         android:layout_marginEnd="10dp"
-        android:layout_marginTop="5dp"/>
+        android:layout_marginRight="10dp"
+        android:gravity="center"
+        android:text="@string/cancel" />
 
 </RelativeLayout>

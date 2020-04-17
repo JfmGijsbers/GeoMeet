@@ -18,10 +18,10 @@
             android:layout_height="wrap_content"
             android:gravity="center"
             android:maxLines="1"
-            android:text="Meeting name"
+            android:onClick="editMeetingName"
+            android:text="@string/meeting_name_withoutdot"
             android:textColor="#000000"
-            android:textSize="24sp"
-            android:onClick="editMeetingName"/>
+            android:textSize="24sp" />
 
         <TextView
             android:id="@+id/seeMeeting_meetingLocation"
@@ -30,9 +30,8 @@
             android:layout_below="@id/seeMeeting_meetingName"
             android:layout_marginTop="10dp"
             android:gravity="center"
-            android:text="Atlas 3.10, Eindhoven, The Netherlands" />
+            android:text="@string/picked_location" />
 
-        <!--         style="@style/Widget.AppCompat.Button.Colored" -->
         <Button
             android:id="@+id/seeMeeting_mapsButton"
             android:layout_width="wrap_content"
@@ -41,7 +40,7 @@
             android:layout_alignEnd="@id/seeMeeting_meetingLocation"
             android:layout_gravity="end"
             android:onClick="toMap"
-            android:text="Show on Maps" />
+            android:text="@string/show_on_maps" />
 
         <ListView
             android:id="@+id/seeMeeting_comingConnectionsListView"
@@ -62,16 +61,16 @@
                 style="@style/Widget.MaterialComponents.Button.OutlinedButton"
                 android:layout_width="40dp"
                 android:layout_height="40dp"
-                android:text="-"
-                android:onClick="removeUsers"/>
+                android:onClick="removeUsers"
+                android:text="@string/minus" />
 
             <Button
                 android:id="@+id/seeMeeting_inviteButton"
                 style="@style/Widget.MaterialComponents.Button"
                 android:layout_width="40dp"
                 android:layout_height="40dp"
-                android:text="+"
-                android:onClick="addUsers"/>
+                android:onClick="addUsers"
+                android:text="@string/plus" />
         </LinearLayout>
 
         <TextView
@@ -80,7 +79,7 @@
             android:layout_height="wrap_content"
             android:layout_below="@id/linearlayout_addremove"
             android:gravity="center"
-            android:text="Organized by: Jeroen Gijsbers" />
+            android:text="@string/organizer" />
 
         <TextView
             android:id="@+id/seeMeeting_date"
@@ -88,8 +87,8 @@
             android:layout_height="wrap_content"
             android:layout_below="@id/seeMeeting_organizer"
             android:gravity="center"
-            android:text="Monday, 16th March, 18:40"
-            android:onClick="editMeetingDate"/>
+            android:onClick="editMeetingDate"
+            android:text="@string/selected_date" />
 
         <ScrollView
             android:id="@+id/seeMeeting_description"
@@ -103,7 +102,7 @@
                 android:id="@+id/txtDescription"
                 android:layout_width="match_parent"
                 android:layout_height="100dp"
-                android:hint="Insert your description here!"
+                android:hint="@string/insert_description"
                 android:padding="5dp" />
         </ScrollView>
 
@@ -114,7 +113,7 @@
             android:layout_below="@id/seeMeeting_description"
             android:layout_alignEnd="@id/seeMeeting_description"
             android:onClick="toChat"
-            android:text="Go to chat" />
+            android:text="@string/go_to_chat" />
 
     </RelativeLayout>
 </ScrollView>

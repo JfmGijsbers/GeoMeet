@@ -15,7 +15,7 @@ import java.util.Collection;
 import java.util.List;
 
 
-public class MeetingListAdapter extends ArrayAdapter<Meeting>  {
+public class MeetingListAdapter extends ArrayAdapter<Meeting> {
     private final Activity context;
     private final List<Meeting> meetings;
 
@@ -24,6 +24,7 @@ public class MeetingListAdapter extends ArrayAdapter<Meeting>  {
         this.context = context;
         this.meetings = meetings;
     }
+
     @Override
     public View getView(int position, View view, ViewGroup parent) {
         LayoutInflater inflater = context.getLayoutInflater();

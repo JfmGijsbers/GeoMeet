@@ -42,7 +42,7 @@ public class MeetingsOverview extends AppCompatActivity implements MeetingSyncEv
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_meetings_overview);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        meetingSyncManager = ((MainApplication)getApplication()).getMeetingSyncManager();
+        meetingSyncManager = ((MainApplication) getApplication()).getMeetingSyncManager();
         meetings = meetingSyncManager.getLocalMeetingMemberships();
         final MeetingListAdapter listAdapter = new MeetingListAdapter(MeetingsOverview.this,
                 meetings);
@@ -61,14 +61,15 @@ public class MeetingsOverview extends AppCompatActivity implements MeetingSyncEv
     }
 
     /**
-     *  Create the options menu:
-     *  */
+     * Create the options menu:
+     */
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         MenuInflater menuInflater = getMenuInflater();
         menuInflater.inflate(R.menu.menu, menu);
         return true;
     }
+
     /**
      * Reacting to menu items getting clicked:
      */
@@ -91,6 +92,7 @@ public class MeetingsOverview extends AppCompatActivity implements MeetingSyncEv
                 return super.onOptionsItemSelected(item);
         }
     }
+
     /**
      * Below this comment are all methods that simply refer the app to a different activity
      */
@@ -98,16 +100,19 @@ public class MeetingsOverview extends AppCompatActivity implements MeetingSyncEv
         Intent backIntent = new Intent(this, Dashboard.class);
         startActivity(backIntent);
     }
+
     private void toProfile() {
         Intent profileIntent = new Intent(this, Profile.class);
         startActivity(profileIntent);
     }
+
     private void logout() {
-        ((MainApplication)getApplication()).reset();
+        ((MainApplication) getApplication()).reset();
         Intent mainActivityIntent = new Intent(this, MainActivity.class);
         startActivity(mainActivityIntent);
         finish();
     }
+
     private void toSettings() {
         Intent settingsIntent = new Intent(this, SettingsActivity.class);
         startActivity(settingsIntent);
@@ -163,7 +168,7 @@ public class MeetingsOverview extends AppCompatActivity implements MeetingSyncEv
             runOnUiThread(new Runnable() {
                 @Override
                 public void run() {
-                    ((MeetingListAdapter)meetingOverviewList.getAdapter()).notifyDataSetChanged();
+                    ((MeetingListAdapter) meetingOverviewList.getAdapter()).notifyDataSetChanged();
                 }
             });
         }
@@ -182,6 +187,7 @@ public class MeetingsOverview extends AppCompatActivity implements MeetingSyncEv
     @Override
     public void onReceivedNewMeetingInvitations(ArrayList<ImmutableMeeting> meetings) {
     }
+
     private void toMeeting(Meeting meeting) {
         Intent meetingIntent = new Intent(this, SeeMeeting.class);
         putMeetingInIntent(meetingIntent, meeting);
@@ -190,7 +196,8 @@ public class MeetingsOverview extends AppCompatActivity implements MeetingSyncEv
 
     /**
      * Puts all the required data for the SeeMeeting activity into an intent.
-     * @param intent Intent to put data in
+     *
+     * @param intent  Intent to put data in
      * @param meeting Meeting to show in the SeeMeeting activity
      */
     public static void putMeetingInIntent(Intent intent, Meeting meeting) {
@@ -208,7 +215,7 @@ public class MeetingsOverview extends AppCompatActivity implements MeetingSyncEv
         intent.putExtra("hostedBy", hostedBy);
         intent.putExtra("meetingId", meeting.getId().toString());
         int i = 0;
-        for (String member: members) {
+        for (String member : members) {
             intent.putExtra("member" + i, member);
             i++;
         }

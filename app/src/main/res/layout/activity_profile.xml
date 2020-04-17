@@ -3,61 +3,64 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/colorPrimaryDark"
     android:padding="30dp"
-    tools:context=".Profile"
-    android:background="@color/colorPrimaryDark">
+    tools:context=".Profile">
 
     <ImageView
-        xmlns:app="http://schemas.android.com/apk/res-auto"
         android:id="@+id/profilePicture"
         android:layout_width="192dp"
         android:layout_height="192dp"
-        android:background="@drawable/profilepicture"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="20dp"
         android:layout_marginBottom="20dp"
-        />
+        android:background="@drawable/profilepicture" />
+
     <TextView
+        android:id="@+id/profileName"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:textSize="32sp"
-        android:text="Jeroen Gijsbers"
         android:layout_below="@id/profilePicture"
         android:layout_marginTop="20dp"
         android:gravity="center"
-        android:id="@+id/profileName" />
+        android:text="@string/jeroen_gijsbers"
+        android:textSize="32sp" />
+
     <TextView
+        android:id="@+id/username"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="jeroen"
         android:layout_below="@id/profileName"
         android:gravity="center"
-        android:id="@+id/username"/>
+        android:text="@string/jeroen" />
+
     <LinearLayout
-        android:layout_marginTop="10dp"
-        android:orientation="vertical"
-        android:layout_marginLeft="20dp"
-        android:layout_marginRight="20dp"
+        android:id="@+id/description"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@id/username"
-        android:id="@+id/description">
+        android:layout_marginLeft="20dp"
+        android:layout_marginTop="10dp"
+        android:layout_marginRight="20dp"
+        android:orientation="vertical">
 
         <TextView
-            android:text="About me:"
-            android:textSize="10sp"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content" />
+            android:layout_height="wrap_content"
+            android:text="@string/about_me"
+            android:textSize="10sp" />
+
         <ScrollView
-            android:background="@drawable/border"
             android:layout_width="match_parent"
-            android:layout_height="100dp">
+            android:layout_height="100dp"
+            android:background="@drawable/border">
+
             <TextView
-                android:padding="5dp"
-                android:hint="Insert your description here!"
+                android:id="@+id/txtDescription"
                 android:layout_width="match_parent"
                 android:layout_height="100dp"
-                android:id="@+id/txtDescription" />
+                android:hint="@string/insert_your_description_here"
+                android:padding="5dp" />
         </ScrollView>
     </LinearLayout>
 

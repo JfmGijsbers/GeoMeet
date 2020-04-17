@@ -31,7 +31,7 @@ public class MyConnections extends AppCompatActivity implements ConnectionsEvent
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_my_connections);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        connectionsManager = ((MainApplication)getApplication()).getConnectionsManager();
+        connectionsManager = ((MainApplication) getApplication()).getConnectionsManager();
 
         connectionList = findViewById(R.id.listview_connections);
         ProfilesListAdapter listAdapter = new ProfilesListAdapter(this, connections);
@@ -68,14 +68,15 @@ public class MyConnections extends AppCompatActivity implements ConnectionsEvent
     }
 
     /**
-     *  Create the options menu:
-     *  */
+     * Create the options menu:
+     */
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         MenuInflater menuInflater = getMenuInflater();
         menuInflater.inflate(R.menu.menu, menu);
         return true;
     }
+
     /**
      * Reacting to menu items getting clicked:
      */
@@ -98,6 +99,7 @@ public class MyConnections extends AppCompatActivity implements ConnectionsEvent
                 return super.onOptionsItemSelected(item);
         }
     }
+
     /**
      * Below this comment are all methods that simply refer the app to a different activity
      */
@@ -105,16 +107,19 @@ public class MyConnections extends AppCompatActivity implements ConnectionsEvent
         Intent backIntent = new Intent(this, Dashboard.class);
         startActivity(backIntent);
     }
+
     private void toProfile() {
         Intent profileIntent = new Intent(this, Profile.class);
         startActivity(profileIntent);
     }
+
     private void logout() {
-        ((MainApplication)getApplication()).reset();
+        ((MainApplication) getApplication()).reset();
         Intent mainActivityIntent = new Intent(this, MainActivity.class);
         startActivity(mainActivityIntent);
         finish();
     }
+
     private void toSettings() {
         Intent settingsIntent = new Intent(this, SettingsActivity.class);
         startActivity(settingsIntent);
@@ -131,7 +136,7 @@ public class MyConnections extends AppCompatActivity implements ConnectionsEvent
         runOnUiThread(new Runnable() {
             @Override
             public void run() {
-                ((ProfilesListAdapter)connectionList.getAdapter()).notifyDataSetChanged();
+                ((ProfilesListAdapter) connectionList.getAdapter()).notifyDataSetChanged();
             }
         });
     }

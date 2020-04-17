@@ -1,12 +1,12 @@
 package com.group02tue.geomeet;
 
-import android.util.Log;
 import android.view.View;
 import android.widget.TextView;
+
 import androidx.recyclerview.widget.RecyclerView;
 
 public class SentMessageHolder extends RecyclerView.ViewHolder {
-    TextView messageText, timeText;
+    private TextView messageText, timeText;
 
     SentMessageHolder(View itemView) {
         super(itemView);
@@ -16,8 +16,5 @@ public class SentMessageHolder extends RecyclerView.ViewHolder {
 
     void bind(String message) {
         messageText.setText(message);
-
-        // TODO: format datetime: timeText.setText()
-        // TODO: insert profile picture
     }
 }

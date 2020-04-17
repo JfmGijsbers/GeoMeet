@@ -1,54 +1,54 @@
 <?xml version="1.0" encoding="utf-8"?>
 
-<LinearLayout
-    android:orientation="horizontal"
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:style="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".NewMeeting"
-    android:background="@color/colorPrimaryDark">
+    android:background="@color/colorPrimaryDark"
+    android:orientation="horizontal"
+    tools:context=".NewMeeting">
 
     <LinearLayout
-        android:padding="20dp"
         android:layout_width="0dp"
+        android:layout_height="wrap_content"
         android:layout_weight="1"
-        android:layout_height="wrap_content"
         android:orientation="vertical"
-        >
-    <TextView
-        android:id="@+id/txt_meeting_name"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Meeting name:"
-        android:textSize="12sp" />
+        android:padding="20dp">
 
-    <EditText
-        android:id="@+id/et_meeting_name"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:ems="10"
-        android:maxLines="1"
-        android:inputType="text" />
+        <TextView
+            android:id="@+id/txt_meeting_name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/meeting_name"
+            android:textSize="12sp" />
 
-    <TextView
-        android:id="@+id/txt_meeting_location"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Location:"
-        android:textSize="12sp" />
+        <EditText
+            android:id="@+id/et_meeting_name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:ems="10"
+            android:inputType="text"
+            android:maxLines="1" />
 
-    <EditText
-        android:id="@+id/et_meeting_location"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:ems="10" />
+        <TextView
+            android:id="@+id/txt_meeting_location"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/location"
+            android:textSize="12sp" />
+
+        <EditText
+            android:id="@+id/et_meeting_location"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:ems="10" />
+
         <TextView
             android:id="@+id/txt_meeting_description"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Description:"
+            android:text="@string/description"
             android:textSize="12sp" />
 
         <EditText
@@ -65,95 +65,97 @@
             android:orientation="horizontal">
 
             <TextView
+                android:id="@+id/txt_date"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text=""
-                android:id="@+id/txt_date"
-                />
+                android:text="" />
+
             <Button
                 android:id="@+id/btn_select_date"
+                style="@style/Widget.MaterialComponents.Button"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                style="@style/Widget.MaterialComponents.Button"
-                android:text="Select date"
                 android:layout_marginLeft="10dp"
                 android:onClick="showDatePicker"
-                />
+                android:text="@string/select_date" />
         </LinearLayout>
-</LinearLayout>
+    </LinearLayout>
+
     <LinearLayout
-        android:padding="20dp"
         android:layout_width="0dp"
-        android:layout_weight="1"
         android:layout_height="wrap_content"
+        android:layout_weight="1"
         android:orientation="vertical"
-        >
+        android:padding="20dp">
+
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:layout_weight="3"
-            android:orientation="vertical"
-        >
+            android:orientation="vertical">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <EditText
+                    android:id="@+id/et_meeting_manual_user"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:ems="10"
+                    style:layout_constraintBaseline_toBaselineOf="@+id/btn_add_user"
+                    style:layout_constraintStart_toStartOf="@+id/txt_invited_connections"
+                    style:layout_constraintTop_toBottomOf="@id/et_meeting_location" />
+
+                <Button
+                    android:id="@+id/btn_add_user"
+                    style="@style/Widget.AppCompat.Button.Colored"
+                    android:layout_width="40dp"
+                    android:layout_height="wrap_content"
+                    android:onClick="addManualUser"
+                    android:text="@string/plus" />
+            </LinearLayout>
+
+            <TextView
+                android:id="@+id/txt_invited_connections"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/invited"
+                android:textSize="12sp" />
+
+            <ListView
+                android:id="@+id/listview_connections"
+                android:layout_width="match_parent"
+                android:layout_height="200dp"
+                android:ems="10" />
+        </LinearLayout>
+
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal">
-        <EditText
-            android:id="@+id/et_meeting_manual_user"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:ems="10"
-            style:layout_constraintTop_toBottomOf="@id/et_meeting_location"
-            style:layout_constraintBaseline_toBaselineOf="@+id/btn_add_user"
-            style:layout_constraintStart_toStartOf="@+id/txt_invited_connections" />
-
-        <Button
-            android:id="@+id/btn_add_user"
-            style="@style/Widget.AppCompat.Button.Colored"
-            android:layout_width="40dp"
-            android:layout_height="wrap_content"
-            android:text="+"
-            android:onClick="addManualUser"/>
-        </LinearLayout>
-    <TextView
-        android:id="@+id/txt_invited_connections"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Invite:"
-        android:textSize="12sp" />
-
-    <ListView
-        android:id="@+id/listview_connections"
-        android:layout_width="match_parent"
-        android:layout_height="200dp"
-        android:ems="10" />
-        </LinearLayout>
-        <LinearLayout
-            android:gravity="end"
-            android:padding="10dp"
-            android:layout_width="match_parent"
-            android:layout_weight="1"
             android:layout_height="0dp"
+            android:layout_weight="1"
+            android:gravity="end"
             android:orientation="horizontal"
-            >
+            android:padding="10dp">
 
-        <Button
-            android:layout_gravity="end"
-            android:id="@+id/btn_create_meeting"
-            style="@style/Widget.AppCompat.Button.Colored"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:enabled="true"
-            android:onClick="checkMeeting"
-            android:text="Create" />
+            <Button
+                android:id="@+id/btn_create_meeting"
+                style="@style/Widget.AppCompat.Button.Colored"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="end"
+                android:enabled="true"
+                android:onClick="checkMeeting"
+                android:text="@string/create" />
 
-        <Button
-            style="@style/Widget.MaterialComponents.Button.OutlinedButton"
-            android:id="@+id/toRegister"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:onClick="toAllMeetings"
-            android:text="Cancel" />
+            <Button
+                android:id="@+id/toRegister"
+                style="@style/Widget.MaterialComponents.Button.OutlinedButton"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:onClick="toAllMeetings"
+                android:text="@string/cancel" />
         </LinearLayout>
     </LinearLayout>
-</LinearLayout >
+</LinearLayout>

@@ -82,10 +82,10 @@ public class NewMeeting extends AppCompatActivity implements MeetingSemiAdminEve
         setContentView(R.layout.activity_new_meeting);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
-        meetingManager = ((MainApplication)getApplication()).getMeetingManager();
-        meetingSyncManager = ((MainApplication)getApplication()).getMeetingSyncManager();
-        authenticationManager = ((MainApplication)getApplication()).getAuthenticationManager();
-        connectionsManager = ((MainApplication)getApplication()).getConnectionsManager();
+        meetingManager = ((MainApplication) getApplication()).getMeetingManager();
+        meetingSyncManager = ((MainApplication) getApplication()).getMeetingSyncManager();
+        authenticationManager = ((MainApplication) getApplication()).getAuthenticationManager();
+        connectionsManager = ((MainApplication) getApplication()).getConnectionsManager();
 
         etName = findViewById(R.id.et_meeting_name);
         etLocation = findViewById(R.id.et_meeting_location);
@@ -104,14 +104,15 @@ public class NewMeeting extends AppCompatActivity implements MeetingSemiAdminEve
     }
 
     /**
-     *  Create the options menu:
-     *  */
+     * Create the options menu:
+     */
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         MenuInflater menuInflater = getMenuInflater();
         menuInflater.inflate(R.menu.menu, menu);
         return true;
     }
+
     /**
      * Reacting to menu items getting clicked:
      */
@@ -134,6 +135,7 @@ public class NewMeeting extends AppCompatActivity implements MeetingSemiAdminEve
                 return super.onOptionsItemSelected(item);
         }
     }
+
     /**
      * Below this comment are all methods that simply refer the app to a different activity
      */
@@ -141,16 +143,19 @@ public class NewMeeting extends AppCompatActivity implements MeetingSemiAdminEve
         Intent backIntent = new Intent(this, MeetingsOverview.class);
         startActivity(backIntent);
     }
+
     private void toProfile() {
         Intent profileIntent = new Intent(this, Profile.class);
         startActivity(profileIntent);
     }
+
     private void logout() {
-        ((MainApplication)getApplication()).reset();
+        ((MainApplication) getApplication()).reset();
         Intent mainActivityIntent = new Intent(this, MainActivity.class);
         startActivity(mainActivityIntent);
         finish();
     }
+
     private void toSettings() {
         Intent settingsIntent = new Intent(this, SettingsActivity.class);
         startActivity(settingsIntent);
@@ -206,7 +211,7 @@ public class NewMeeting extends AppCompatActivity implements MeetingSemiAdminEve
                     if (!connections.contains(username)) {
                         connections.add(username);
                     }
-                    ((ConnectionListAdapter)connectionList.getAdapter()).notifyDataSetChanged();
+                    ((ConnectionListAdapter) connectionList.getAdapter()).notifyDataSetChanged();
                 }
             }
         }, authenticationManager).show();
@@ -240,6 +245,7 @@ public class NewMeeting extends AppCompatActivity implements MeetingSemiAdminEve
             etLocation.setError("Invalid location");
         }
     }
+
     private void createMeeting(String name, String description, Date meetingMoment,
                                Location2D location) {
         Meeting meeting = new Meeting(name, description, meetingMoment, location,
@@ -249,7 +255,7 @@ public class NewMeeting extends AppCompatActivity implements MeetingSemiAdminEve
         synchronized (connections) {
             Log.println(Log.DEBUG, "Debug6", "Manually adding user99: " + connections.size());
             for (int i = 0; i < connections.size(); i++) {
-                if (((ConnectionListAdapter)connectionList.getAdapter()).isChecked(i)) {
+                if (((ConnectionListAdapter) connectionList.getAdapter()).isChecked(i)) {
                     peopleToAdd.add(connections.get(i));
                 }
             }
@@ -296,19 +302,19 @@ public class NewMeeting extends AppCompatActivity implements MeetingSemiAdminEve
                     for (ExternalUserProfile profile : receivedConnections) {
                         connections.add(profile.getUsername());
                     }
-                    ((ConnectionListAdapter)connectionList.getAdapter()).notifyDataSetChanged();
+                    ((ConnectionListAdapter) connectionList.getAdapter()).notifyDataSetChanged();
                 }
             }
         });
     }
 
-    public void toPicker(View view){
+    public void toPicker(View view) {
         Intent pickIntent = new Intent(this, LocationPicker.class);
-        startActivityForResult(pickIntent,0);
+        startActivityForResult(pickIntent, 0);
     }
 
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
-        super.onActivityResult(requestCode,resultCode,data);
+        super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == 0) {
             if (resultCode == RESULT_OK) {
                 etLocation.setText(data.getData().toString());
@@ -320,6 +326,7 @@ public class NewMeeting extends AppCompatActivity implements MeetingSemiAdminEve
         DialogFragment datePicker = new DatePickerFragment();
         datePicker.show(getSupportFragmentManager(), "date picker");
     }
+
     public void showTimePicker() {
         // Get Current Time
         final Calendar c = Calendar.getInstance();
@@ -341,6 +348,7 @@ public class NewMeeting extends AppCompatActivity implements MeetingSemiAdminEve
                 }, mHour, mMinute, true);
         timePickerDialog.show();
     }
+
     @Override
     public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
         Calendar c = Calendar.getInstance();

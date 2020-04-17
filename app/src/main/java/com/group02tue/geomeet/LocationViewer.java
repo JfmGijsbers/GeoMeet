@@ -52,7 +52,7 @@ public class LocationViewer extends FragmentActivity implements OnMapReadyCallba
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_location);
-        meetingSyncManager = ((MainApplication)getApplication()).getMeetingSyncManager();
+        meetingSyncManager = ((MainApplication) getApplication()).getMeetingSyncManager();
 
         //check if GPS permission was granted
         if (ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION)
@@ -72,7 +72,7 @@ public class LocationViewer extends FragmentActivity implements OnMapReadyCallba
             startActivity(locationIntent);
         }
 
-        if (getIntent().getExtras().getInt("fromSeeMeeting") == -1){
+        if (getIntent().getExtras().getInt("fromSeeMeeting") == -1) {
             //the SeeMeeting activity was used to get here, so a specific meeting was selected
             fromSeeMeeting = true;
             //remove the chosen location from the list, because this location gets a dedicated marker
@@ -140,7 +140,8 @@ public class LocationViewer extends FragmentActivity implements OnMapReadyCallba
             //give an option to show the user's current location
             try {
                 mMap.setMyLocationEnabled(true);
-            } catch (SecurityException e){}
+            } catch (SecurityException e) {
+            }
 
 
             //first zoom such that The Netherlands is fully visible
@@ -150,7 +151,7 @@ public class LocationViewer extends FragmentActivity implements OnMapReadyCallba
 
                 //add markers for all meetings and make opacity dependant on whether a specific meeting was selected
                 if (!fromSeeMeeting) {
-                    for (Location2D loc: allLocations){
+                    for (Location2D loc : allLocations) {
                         mMap.addMarker(new MarkerOptions().position(loc.getLatLng())
                                 .title(loc.detailedLocation));
                     }
@@ -189,7 +190,7 @@ public class LocationViewer extends FragmentActivity implements OnMapReadyCallba
     @Override
     public void onMeetingUpdatedReceived(Meeting meeting) {
         synchronized (allLocations) {
-            for (int i = allLocations.size() -1; i > -1; i--) {
+            for (int i = allLocations.size() - 1; i > -1; i--) {
                 if (allLocations.get(i).equals(meeting.getLocation())) {
                     allLocations.remove(i);
                 }

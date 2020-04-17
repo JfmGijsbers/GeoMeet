@@ -51,6 +51,7 @@ public class SettingsActivity extends AppCompatActivity implements
             setPreferencesFromResource(R.xml.root_preferences, rootKey);
         }
     }
+
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {

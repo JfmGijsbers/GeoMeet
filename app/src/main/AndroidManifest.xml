@@ -41,7 +41,8 @@
             android:label="@string/title_activity_location" />
         <activity android:name=".ViewLocation" />
         <activity android:name=".SeeMeeting" />
-        <activity android:name=".NewMeeting"
+        <activity
+            android:name=".NewMeeting"
             android:configChanges="orientation|screenSize|keyboardHidden" />
         <activity android:name=".MyConnections" />
         <activity android:name=".MeetingsOverview" />
@@ -50,9 +51,11 @@
             android:name=".SettingsActivity"
             android:label="@string/title_activity_settings" />
         <activity android:name=".Dashboard" />
-        <activity android:name=".Register"
-            android:windowSoftInputMode="adjustResize"/>
-        <activity android:name=".MainActivity"
+        <activity
+            android:name=".Register"
+            android:windowSoftInputMode="adjustResize" />
+        <activity
+            android:name=".MainActivity"
             android:windowSoftInputMode="adjustResize">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

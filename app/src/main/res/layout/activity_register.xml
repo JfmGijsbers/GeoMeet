@@ -1,127 +1,125 @@
 <?xml version="1.0" encoding="utf-8"?>
-<ScrollView
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/colorPrimaryDark"
-    tools:context=".Register"
     android:padding="30dp"
-    >
+    tools:context=".Register">
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:orientation="vertical"
-        >
-    <TextView
-        android:id="@+id/txt_username"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Username:"
-        android:textSize="12sp" />
+        android:orientation="vertical">
 
-    <EditText
-        android:id="@+id/et_username"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:ems="10"
-        android:inputType="textEmailAddress"
-        android:maxLength="20" />
+        <TextView
+            android:id="@+id/txt_username"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/username"
+            android:textSize="12sp" />
 
-    <TextView
-        android:id="@+id/txt_meeting_name"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Email address:"
-        android:textSize="12sp" />
+        <EditText
+            android:id="@+id/et_username"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:ems="10"
+            android:inputType="textEmailAddress"
+            android:maxLength="20" />
 
-    <EditText
-        android:id="@+id/et_email"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:ems="10"
-        android:inputType="textEmailAddress"
-        android:maxLength="30" />
+        <TextView
+            android:id="@+id/txt_meeting_name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/email_address"
+            android:textSize="12sp" />
 
-    <TextView
-        android:id="@+id/txt_meeting_location"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="First name:"
-        android:textSize="12sp" />
+        <EditText
+            android:id="@+id/et_email"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:ems="10"
+            android:inputType="textEmailAddress"
+            android:maxLength="30" />
 
-    <EditText
-        android:id="@+id/et_firstname"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:ems="10"
-        android:inputType="textPersonName"
-        android:maxLength="15" />
+        <TextView
+            android:id="@+id/txt_meeting_location"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/first_name"
+            android:textSize="12sp" />
 
-    <TextView
-        android:id="@+id/txt_invited_connections"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Last name:"
-        android:textSize="12sp" />
+        <EditText
+            android:id="@+id/et_firstname"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:ems="10"
+            android:inputType="textPersonName"
+            android:maxLength="15" />
 
-    <EditText
-        android:id="@+id/et_lastname"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:ems="10"
-        android:inputType="textPersonName"
-        android:maxLength="15" />
+        <TextView
+            android:id="@+id/txt_invited_connections"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/last_name"
+            android:textSize="12sp" />
 
-    <TextView
-        android:id="@+id/txt_meeting_description"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Password:"
-        android:textSize="12sp" />
+        <EditText
+            android:id="@+id/et_lastname"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:ems="10"
+            android:inputType="textPersonName"
+            android:maxLength="15" />
 
-    <EditText
-        android:id="@+id/et_password"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:ems="10"
-        android:inputType="textPassword"
-        android:maxLength="30" />
+        <TextView
+            android:id="@+id/txt_meeting_description"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/password"
+            android:textSize="12sp" />
 
-    <TextView
-        android:id="@+id/txt_confirmPassword"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Confirm password:"
-        android:textSize="12sp" />
+        <EditText
+            android:id="@+id/et_password"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:ems="10"
+            android:inputType="textPassword"
+            android:maxLength="30" />
 
-    <EditText
-        android:id="@+id/et_confirmPassword"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:ems="10"
-        android:inputType="textPassword"
-        android:maxLength="30"/>
+        <TextView
+            android:id="@+id/txt_confirmPassword"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/confirm_password"
+            android:textSize="12sp" />
 
-    <Button
-        android:id="@+id/btn_register"
-        style="@style/Widget.AppCompat.Button.Colored"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="20dp"
-        android:ems="10"
-        android:onClick="register"
-        android:text="Register"
-        android:textSize="16sp" />
+        <EditText
+            android:id="@+id/et_confirmPassword"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:ems="10"
+            android:inputType="textPassword"
+            android:maxLength="30" />
 
-    <TextView
-        android:id="@+id/toRegister"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="10dp"
-        android:onClick="toLogin"
-        android:text="Back to login" />
+        <Button
+            android:id="@+id/btn_register"
+            style="@style/Widget.AppCompat.Button.Colored"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            android:ems="10"
+            android:onClick="register"
+            android:text="@string/register"
+            android:textSize="16sp" />
+
+        <TextView
+            android:id="@+id/toRegister"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:onClick="toLogin"
+            android:text="@string/back_to_login" />
     </LinearLayout>
 </ScrollView>

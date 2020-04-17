@@ -40,9 +40,10 @@ public class Register extends AppCompatActivity implements AuthenticationEventLi
 
         btnRegister = findViewById(R.id.btn_register);
 
-        authenticationManager = ((MainApplication)getApplication()).getAuthenticationManager();
-        profileManager = ((MainApplication)getApplication()).getProfileManager();
+        authenticationManager = ((MainApplication) getApplication()).getAuthenticationManager();
+        profileManager = ((MainApplication) getApplication()).getProfileManager();
     }
+
     @Override
     protected void onStart() {
         super.onStart();
@@ -109,8 +110,7 @@ public class Register extends AppCompatActivity implements AuthenticationEventLi
         if (username.equals("")) {
             etUsername.setError("Please fill in your last name");
             noMistake = false;
-        }
-        else if (!validateUsername(username)) {
+        } else if (!validateUsername(username)) {
             etUsername.setError("Username cannot contain special characters. \n " +
                     "Example correct: test123-t");
             noMistake = false;
@@ -133,6 +133,7 @@ public class Register extends AppCompatActivity implements AuthenticationEventLi
             btnRegister.setEnabled(false);
         }
     }
+
     /*
     Input validation functions:
      */
@@ -142,18 +143,21 @@ public class Register extends AppCompatActivity implements AuthenticationEventLi
         Matcher matcher = pattern.matcher(email);
         return matcher.matches();
     }
+
     public static boolean validateInput(String input) {
         String expression = "^[\\w\\s]+$";
         Pattern pattern = Pattern.compile(expression, Pattern.CASE_INSENSITIVE);
         Matcher matcher = pattern.matcher(input);
         return matcher.matches();
     }
+
     public static boolean validateUsername(String username) {
         String expression = "^[A-Za-z0-9]+(?:[ _-][A-Za-z0-9]+)*$";
         Pattern pattern = Pattern.compile(expression);
         Matcher matcher = pattern.matcher(username);
         return matcher.matches();
     }
+
     /*
     Functions for visiting other activities:
      */

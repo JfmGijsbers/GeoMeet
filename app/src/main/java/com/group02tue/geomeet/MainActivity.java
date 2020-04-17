@@ -32,7 +32,7 @@ public class MainActivity extends AppCompatActivity implements AuthenticationEve
         password = findViewById(R.id.et_password);
         btnLogin = findViewById(R.id.btn_login);
         chkKeepLoggedIn = findViewById(R.id.chk_keep_logged_in);
-        authenticationManager = ((MainApplication)getApplication()).getAuthenticationManager();
+        authenticationManager = ((MainApplication) getApplication()).getAuthenticationManager();
 
         if (ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION)
                 != PackageManager.PERMISSION_GRANTED) {

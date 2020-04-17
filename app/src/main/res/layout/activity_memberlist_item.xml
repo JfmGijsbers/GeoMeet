@@ -1,16 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:padding="5dp"
     android:layout_height="wrap_content"
-    android:orientation="horizontal">
+    android:orientation="horizontal"
+    android:padding="5dp">
 
     <TextView
         android:id="@+id/member_name"
-        android:gravity="center"
-        android:layout_weight="5"
         android:layout_width="0dp"
         android:layout_height="fill_parent"
-        android:text="Member name" />
+        android:layout_weight="5"
+        android:gravity="center"
+        android:text="@string/member_name" />
 
 </LinearLayout>

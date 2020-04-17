@@ -9,7 +9,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import java.util.Date;
 
 public class ReceivedMessageHolder extends RecyclerView.ViewHolder {
-    TextView messageText, timeText, nameText;
+    private TextView messageText, timeText, nameText;
 
     ReceivedMessageHolder(View itemView) {
         super(itemView);
@@ -20,9 +20,6 @@ public class ReceivedMessageHolder extends RecyclerView.ViewHolder {
 
     void bind(String message, Date date, String name) {
         messageText.setText(message);
-
-        // TODO: format datetime: timeText.setText()
         nameText.setText(name);
-        // TODO: insert profile picture
     }
 }

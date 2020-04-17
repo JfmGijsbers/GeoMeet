@@ -1,59 +1,58 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/colorPrimaryDark"
     android:padding="20dp">
 
     <RelativeLayout
+        android:id="@+id/newsArticles"
         android:layout_width="match_parent"
-        android:layout_height="280dp"
-        android:id="@+id/newsArticles">
+        android:layout_height="280dp">
+
         <TextView
+            android:id="@+id/titleUpcomingMeetings"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:id="@+id/titleUpcomingMeetings"
-            android:text="Upcoming meetings"
-            android:textSize="32sp"
             android:gravity="center"
-            />
+            android:text="@string/upcoming_meetings"
+            android:textSize="32sp" />
+
         <ListView
-            android:layout_marginTop="10dp"
             android:id="@+id/meetingListView"
             android:layout_width="match_parent"
             android:layout_height="200dp"
             android:layout_below="@id/titleUpcomingMeetings"
-            />
+            android:layout_marginTop="10dp" />
+
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="View all meetings"
+            android:layout_below="@id/meetingListView"
             android:layout_marginTop="10dp"
-            android:textColor="@color/colorAnalogous"
             android:gravity="end"
             android:onClick="toAllMeetings"
-            android:layout_below="@id/meetingListView"
-            />
+            android:text="@string/view_all_meetings"
+            android:textColor="@color/colorAnalogous" />
     </RelativeLayout>
+
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@id/newsArticles"
-        >
+        android:layout_below="@id/newsArticles">
+
         <LinearLayout
+            android:id="@+id/wrapper"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:id="@+id/wrapper"
-            android:orientation="vertical"
-            >
+            android:orientation="vertical">
+
             <LinearLayout
-                android:layout_marginTop="20dp"
+                android:id="@+id/itemRow2"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                android:id="@+id/itemRow2"
-                >
+                android:layout_marginTop="20dp"
+                android:orientation="horizontal">
 
                 <LinearLayout
                     android:layout_width="0dp"
@@ -72,75 +71,75 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:gravity="center"
-                        android:text="My locations" />
+                        android:text="@string/my_locations" />
                 </LinearLayout>
+
                 <LinearLayout
-                    android:onClick="toConnections"
-                    android:padding="30dp"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
+                    android:onClick="toConnections"
                     android:orientation="vertical"
-                    >
+                    android:padding="30dp">
+
                     <ImageView
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:src="@drawable/baseline_face_black_18dp"
-                        />
+                        android:src="@drawable/baseline_face_black_18dp" />
+
                     <TextView
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:text="My connections"
                         android:gravity="center"
-                        />
+                        android:text="@string/my_connections" />
                 </LinearLayout>
             </LinearLayout>
+
             <LinearLayout
-                android:layout_marginTop="20dp"
+                android:id="@+id/itemRow3"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                android:id="@+id/itemRow3"
-                >
+                android:layout_marginTop="20dp"
+                android:orientation="horizontal">
+
                 <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
                     android:onClick="toProfile"
-                    android:padding="30dp"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
                     android:orientation="vertical"
-                    >
+                    android:padding="30dp">
+
                     <ImageView
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:src="@drawable/baseline_tag_faces_black_18dp"
-                        />
+                        android:src="@drawable/baseline_tag_faces_black_18dp" />
+
                     <TextView
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:text="My profile"
                         android:gravity="center"
-                        />
+                        android:text="@string/my_profile" />
                 </LinearLayout>
+
                 <LinearLayout
-                    android:onClick="toInvites"
-                    android:padding="30dp"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
+                    android:onClick="toInvites"
                     android:orientation="vertical"
-                    >
+                    android:padding="30dp">
+
                     <ImageView
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:src="@drawable/baseline_mail_black_18dp"
-                        />
+                        android:src="@drawable/baseline_mail_black_18dp" />
+
                     <TextView
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:text="Invites"
                         android:gravity="center"
-                        />
+                        android:text="@string/invites" />
                 </LinearLayout>
             </LinearLayout>
         </LinearLayout>

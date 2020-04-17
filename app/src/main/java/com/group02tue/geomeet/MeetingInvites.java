@@ -33,7 +33,7 @@ public class MeetingInvites extends AppCompatActivity implements MeetingSyncEven
         setContentView(R.layout.activity_meeting_invites);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         meetingInvitesList = findViewById(R.id.invites_meeting_list);
-        meetingSyncManager = ((MainApplication)getApplication()).getMeetingSyncManager();
+        meetingSyncManager = ((MainApplication) getApplication()).getMeetingSyncManager();
 
         meetingInvites = meetingSyncManager.requestMeetingInvitations();
         final MeetingInvitesListAdapter listAdapter = new MeetingInvitesListAdapter(
@@ -42,14 +42,15 @@ public class MeetingInvites extends AppCompatActivity implements MeetingSyncEven
     }
 
     /**
-     *  Create the options menu:
-     *  */
+     * Create the options menu:
+     */
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         MenuInflater menuInflater = getMenuInflater();
         menuInflater.inflate(R.menu.menu, menu);
         return true;
     }
+
     /**
      * Reacting to menu items getting clicked:
      */
@@ -72,6 +73,7 @@ public class MeetingInvites extends AppCompatActivity implements MeetingSyncEven
                 return super.onOptionsItemSelected(item);
         }
     }
+
     /**
      * Below this comment are all methods that simply refer the app to a different activity
      */
@@ -79,16 +81,19 @@ public class MeetingInvites extends AppCompatActivity implements MeetingSyncEven
         Intent backIntent = new Intent(this, Dashboard.class);
         startActivity(backIntent);
     }
+
     private void toProfile() {
         Intent profileIntent = new Intent(this, Profile.class);
         startActivity(profileIntent);
     }
+
     private void logout() {
-        ((MainApplication)getApplication()).reset();
+        ((MainApplication) getApplication()).reset();
         Intent mainActivityIntent = new Intent(this, MainActivity.class);
         startActivity(mainActivityIntent);
         finish();
     }
+
     private void toSettings() {
         Intent settingsIntent = new Intent(this, SettingsActivity.class);
         startActivity(settingsIntent);
@@ -129,7 +134,7 @@ public class MeetingInvites extends AppCompatActivity implements MeetingSyncEven
             runOnUiThread(new Runnable() {
                 @Override
                 public void run() {
-                    ((MeetingInvitesListAdapter)meetingInvitesList.getAdapter()).notifyDataSetChanged();
+                    ((MeetingInvitesListAdapter) meetingInvitesList.getAdapter()).notifyDataSetChanged();
                 }
             });
         }

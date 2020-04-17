@@ -44,8 +44,9 @@ public class PushNotificationManager {
 
     /**
      * Displays a notification for when a new message has been received by the user.
-     * @param context Context
-     * @param chatMessage Message received
+     *
+     * @param context        Context
+     * @param chatMessage    Message received
      * @param meetingManager Meeting manager
      */
     public void displayNewMessageNotification(Context context, ChatMessage chatMessage,
@@ -77,6 +78,7 @@ public class PushNotificationManager {
 
     /**
      * Displays a notification for when the user has been invited to a new meeting.
+     *
      * @param context Context
      * @param meeting Meeting to which the user has been invited
      */

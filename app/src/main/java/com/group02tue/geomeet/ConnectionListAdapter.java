@@ -47,7 +47,7 @@ public class ConnectionListAdapter extends ArrayAdapter<String>
         View rowView = inflater.inflate(R.layout.activity_connectionlist_item, null,
                 true);
         TextView txtTitle = (TextView) rowView.findViewById(R.id.profileName);
-        CheckBox chkUser = (CheckBox)rowView.findViewById(R.id.listItemCheckbox);
+        CheckBox chkUser = (CheckBox) rowView.findViewById(R.id.listItemCheckbox);
         chkUser.setOnCheckedChangeListener(this);
         chkUser.setTag(position);
         if (mCheckStates.containsKey(position)) {

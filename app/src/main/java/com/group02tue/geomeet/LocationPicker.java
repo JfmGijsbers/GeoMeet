@@ -75,10 +75,11 @@ public class LocationPicker extends FragmentActivity implements OnMapReadyCallba
         //give an option to show the user's current location
         try {
             mMap.setMyLocationEnabled(true);
-        } catch (SecurityException e){}
+        } catch (SecurityException e) {
+        }
 
         mMap.moveCamera(CameraUpdateFactory.zoomTo(7.0f));
-        mMap.moveCamera(CameraUpdateFactory.newLatLng(new LatLng(51.7,5.1))); //TODO: Waar moet ie heenzoomen
+        mMap.moveCamera(CameraUpdateFactory.newLatLng(new LatLng(51.7, 5.1))); //TODO: Waar moet ie heenzoomen
 
 
         mMap.setOnMapClickListener(new GoogleMap.OnMapClickListener() {
@@ -95,7 +96,7 @@ public class LocationPicker extends FragmentActivity implements OnMapReadyCallba
     }
 
     public void onPick(View view) {
-        if(pickedLocation == null){
+        if (pickedLocation == null) {
             return;
         }
         Intent data = new Intent();
@@ -107,20 +108,22 @@ public class LocationPicker extends FragmentActivity implements OnMapReadyCallba
         finish();
 
     }
-    private void getPickedAddress(){
+
+    private void getPickedAddress() {
         Geocoder geocoder = new Geocoder(this.getBaseContext());
         List<Address> foundAddresses = new ArrayList<>();
         try {
             foundAddresses = geocoder.getFromLocation(
                     pickedLocation.latitude, pickedLocation.longitude, 10);
-        }catch(IOException e){pickedAddress = "";}
+        } catch (IOException e) {
+            pickedAddress = "";
+        }
 
         pickedAddress = foundAddresses.get(0).getAddressLine(0)
                 + ", "
                 + foundAddresses.get(0).getAdminArea();
 
     }
-
 
 
 }

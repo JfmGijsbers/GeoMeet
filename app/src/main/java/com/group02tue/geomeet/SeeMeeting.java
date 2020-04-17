@@ -55,9 +55,9 @@ public class SeeMeeting extends AppCompatActivity implements DatePickerDialog.On
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_see_meeting);
-        meetingManager = ((MainApplication)getApplication()).getMeetingManager();
-        meetingSyncManager = ((MainApplication)getApplication()).getMeetingSyncManager();
-        authenticationManager = ((MainApplication)getApplication()).getAuthenticationManager();
+        meetingManager = ((MainApplication) getApplication()).getMeetingManager();
+        meetingSyncManager = ((MainApplication) getApplication()).getMeetingSyncManager();
+        authenticationManager = ((MainApplication) getApplication()).getAuthenticationManager();
 
         Button btnAddUsers = findViewById(R.id.seeMeeting_inviteButton);
         Button btnRemoveUsers = findViewById(R.id.seeMeeting_removeButton);
@@ -117,15 +117,17 @@ public class SeeMeeting extends AppCompatActivity implements DatePickerDialog.On
             btnRemoveUsers.setVisibility(View.INVISIBLE);
         }
     }
+
     /**
-     *  Create the options menu:
-     *  */
+     * Create the options menu:
+     */
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         MenuInflater menuInflater = getMenuInflater();
         menuInflater.inflate(R.menu.meeting_menu, menu);
         return true;
     }
+
     /**
      * Reacting to menu items getting clicked:
      */
@@ -258,7 +260,7 @@ public class SeeMeeting extends AppCompatActivity implements DatePickerDialog.On
                 meetingSyncManager.leaveMeeting(meetingId);
                 back();
             }
-        } catch(NoSuchElementException e) {
+        } catch (NoSuchElementException e) {
             back();
         }
     }
@@ -305,7 +307,7 @@ public class SeeMeeting extends AppCompatActivity implements DatePickerDialog.On
 
                         if (membersList.contains(username)) {
                             membersList.remove(username);
-                            ((MembersListAdapter)connectionList.getAdapter()).notifyDataSetChanged();
+                            ((MembersListAdapter) connectionList.getAdapter()).notifyDataSetChanged();
                         }
                     }
                 } catch (NoSuchElementException e) {
@@ -327,20 +329,24 @@ public class SeeMeeting extends AppCompatActivity implements DatePickerDialog.On
         chatIntent.putExtra("meetingId", meetingId.toString());
         startActivity(chatIntent);
     }
+
     private void toProfile() {
         Intent profileIntent = new Intent(this, Profile.class);
         startActivity(profileIntent);
     }
+
     private void logout() {
-        ((MainApplication)getApplication()).reset();
+        ((MainApplication) getApplication()).reset();
         Intent mainActivityIntent = new Intent(this, MainActivity.class);
         startActivity(mainActivityIntent);
         finish();
     }
+
     private void toSettings() {
         Intent settingsIntent = new Intent(this, SettingsActivity.class);
         startActivity(settingsIntent);
     }
+
     private void back() {
         Intent backIntent = new Intent(this, MeetingsOverview.class);
         startActivity(backIntent);

@@ -85,7 +85,7 @@ public class ConnectionPickDialog {
                             eventListener.onPickedConnection(userSelected);
                         }
                     }
-                    InputMethodManager imm = (InputMethodManager)context.getSystemService(Activity.INPUT_METHOD_SERVICE);
+                    InputMethodManager imm = (InputMethodManager) context.getSystemService(Activity.INPUT_METHOD_SERVICE);
                     imm.hideSoftInputFromWindow(v.getWindowToken(), 0);
                     dialog_data.dismiss();
                     dialog_data.cancel();

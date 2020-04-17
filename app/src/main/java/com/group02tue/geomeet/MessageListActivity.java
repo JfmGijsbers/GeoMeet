@@ -16,6 +16,7 @@ import com.group02tue.geomeet.backend.chat.ChatManager;
 import com.group02tue.geomeet.backend.chat.ChatMessage;
 
 import java.util.List;
+
 public class MessageListActivity extends AppCompatActivity implements ChatEventListener {
     private RecyclerView messageRecycler;
     private MessageListAdapter messageAdapter;
@@ -35,18 +36,18 @@ public class MessageListActivity extends AppCompatActivity implements ChatEventL
 
         meetingId = getIntent().getStringExtra("meetingId");
         chatBox = findViewById(R.id.edittext_chatbox);
-        chatManager = ((MainApplication)getApplication()).getChatManager();
+        chatManager = ((MainApplication) getApplication()).getChatManager();
 
         // Fill list
         messages = chatManager.getMessages(meetingId);
         messageRecycler = (RecyclerView) findViewById(R.id.recyclerview_message_list);
         messageAdapter = new MessageListAdapter(messages,
-                ((MainApplication)getApplication()).getAuthenticationManager());
+                ((MainApplication) getApplication()).getAuthenticationManager());
         messageRecycler.setLayoutManager(new LinearLayoutManager(this));
         messageRecycler.setAdapter(messageAdapter);
         fixChat();
 
-        messageRecycler.addOnLayoutChangeListener( new View.OnLayoutChangeListener() {
+        messageRecycler.addOnLayoutChangeListener(new View.OnLayoutChangeListener() {
             public void onLayoutChange(View v, int left, int top, int right, int bottom,
                                        int leftWas, int topWas, int rightWas, int bottomWas) {
                 fixChat();
@@ -127,5 +128,5 @@ public class MessageListActivity extends AppCompatActivity implements ChatEventL
         chatBox.setText("");
         fixChat();
     }
-    
+
 }

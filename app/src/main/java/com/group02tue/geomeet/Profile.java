@@ -36,8 +36,8 @@ public class Profile extends AppCompatActivity implements ProfileEventListener {
         txtUsername = findViewById(R.id.username);
         txtDescription = findViewById(R.id.txtDescription);
 
-        authenticationManager = ((MainApplication)getApplication()).getAuthenticationManager();
-        profile = ((MainApplication)getApplication()).getInternalUserProfile();
+        authenticationManager = ((MainApplication) getApplication()).getAuthenticationManager();
+        profile = ((MainApplication) getApplication()).getInternalUserProfile();
         profileManager = ((MainApplication) getApplication()).getProfileManager();
 
         Intent intent = getIntent();
@@ -68,14 +68,15 @@ public class Profile extends AppCompatActivity implements ProfileEventListener {
     }
 
     /**
-     *  Create the options menu:
-     *  */
+     * Create the options menu:
+     */
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         MenuInflater menuInflater = getMenuInflater();
         menuInflater.inflate(R.menu.profile_menu, menu);
         return true;
     }
+
     /**
      * Reacting to menu items getting clicked:
      */
@@ -98,6 +99,7 @@ public class Profile extends AppCompatActivity implements ProfileEventListener {
                 return super.onOptionsItemSelected(item);
         }
     }
+
     /**
      * Below this comment are all methods that simply refer the app to a different activity
      */
@@ -105,14 +107,17 @@ public class Profile extends AppCompatActivity implements ProfileEventListener {
         Intent backIntent = new Intent(this, Dashboard.class);
         startActivity(backIntent);
     }
+
     private void toProfile() {
         Intent profileIntent = new Intent(this, Profile.class);
         startActivity(profileIntent);
     }
+
     private void toSettings() {
         // TODO: add either activity or fragment
         Toast.makeText(this, "Settings not implemented yet", Toast.LENGTH_SHORT).show();
     }
+
     private void toEdit() {
         // TODO: allow for editing of the profile
         Toast.makeText(this, "Editing of profile not implemented yet", Toast.LENGTH_SHORT).show();

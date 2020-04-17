@@ -47,19 +47,34 @@ public class MainApplication extends Application {
     public AuthenticationManager getAuthenticationManager() {
         return authenticationManager;
     }
+
     public ChatManager getChatManager() {
         return chatManager;
     }
+
     public InternalUserProfile getInternalUserProfile() {
         return internalUserProfile;
     }
+
     public InternalUserProfile.ProfileManager getProfileManager() {
         return profileManager;
     }
-    public MeetingManager getMeetingManager() { return meetingManager; }
-    public MeetingManager.MeetingSyncManager getMeetingSyncManager() { return meetingSyncManager; }
-    public ConnectionsManager getConnectionsManager() { return connectionsManager; }
-    public PushNotificationManager getPushNotificationManager() {return pushNotificationManager;}
+
+    public MeetingManager getMeetingManager() {
+        return meetingManager;
+    }
+
+    public MeetingManager.MeetingSyncManager getMeetingSyncManager() {
+        return meetingSyncManager;
+    }
+
+    public ConnectionsManager getConnectionsManager() {
+        return connectionsManager;
+    }
+
+    public PushNotificationManager getPushNotificationManager() {
+        return pushNotificationManager;
+    }
 
     public void reset() {
         authenticationManager.reset();
